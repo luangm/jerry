@@ -1,0 +1,1 @@
+Chapter 1 - Create an MVP Ecommerce site

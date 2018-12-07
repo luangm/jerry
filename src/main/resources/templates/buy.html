@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Confirm Order: </h1>
+<form action="/buyProcess" method="post">
+    <input type="hidden" name="userId" th:value="${user.id}" />
+    <input type="hidden" name="itemId" th:value="${item.id}" />
+    <table>
+        <tr>
+            <td>Nick:</td>
+            <td th:text="${user.nick}"></td>
+        </tr>
+        <tr>
+            <td>Item:</td>
+            <td th:text="${item.title}"></td>
+        </tr>
+        <tr>
+            <td>Price:</td>
+            <td th:text="${item.price}"></td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
