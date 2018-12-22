@@ -6,22 +6,47 @@
 </head>
 <body>
 <h1>Welcome <span th:text="${nick}"></span></h1>
+<div>
 <a href="/login">Login</a>
-<br />
+    <span>&nbsp;|&nbsp;</span>
 <a href="/register">Register</a>
-
+</div>
+<br/>
+<div>Items: </div>
 <table>
+    <tr>
+        <th>Item ID</th>
+        <th>Title</th>
+        <th>Price</th>
+    </tr>
     <th:block th:each="item:${items}">
         <tr>
             <td th:text="${item.id}"></td>
             <td th:text="${item.title}"></td>
             <td th:text="${item.price}"></td>
-            <td>
+            <td th:if="${nick != null}">
                 <a th:href="@{/buy(itemId=${item.id})}">Buy Now</a>
             </td>
         </tr>
     </th:block>
 </table>
 
+<br/>
+
+<div>Orders: </div>
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>User ID</th>
+        <th>Item ID</th>
+    </tr>
+    <th:block th:each="order:${orders}">
+        <tr>
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.userId}"></td>
+            <td th:text="${order.itemId}"></td>
+        </tr>
+    </th:block>
+</table>
 </body>
 </html>

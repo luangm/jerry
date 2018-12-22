@@ -1,0 +1,8 @@
+CREATE TABLE `item` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(45) NOT NULL,
+  `price` int(20) NOT NULL,
+  `gmt_create` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `gmt_modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

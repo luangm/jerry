@@ -1,13 +1,22 @@
-package io.luan.jerry;
+package io.luan.jerry.order.data;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
-@Repository
+@Component
 public interface OrderMapper {
+
+    @DeleteProvider(type = OrderSqlProvider.class, method = "delete")
+    int delete(OrderDO orderDO);
+
+
+    @SelectProvider(type = OrderSqlProvider.class, method = "findAll")
+    @ResultMap("orderResult")
+    List<OrderDO> findAll();
 
     @SelectProvider(type = OrderSqlProvider.class, method = "findById")
     @Results(id = "orderResult", value = {
@@ -18,17 +27,34 @@ public interface OrderMapper {
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
     })
-    Order findById(@Param("id") long id);
+    OrderDO findById(Long id);
 
     @InsertProvider(type = OrderSqlProvider.class, method = "insert")
     @Options(useGeneratedKeys = true)
-    void insert(Order order);
+    void insert(OrderDO order);
+
+    @DeleteProvider(type = OrderSqlProvider.class, method = "unsafeDeleteAll")
+    int unsafeDeleteAll();
 
     class OrderSqlProvider {
 
         private static final String TABLE_ORDER = "`order`";
 
-        public static String findById(final long id) {
+        public static String delete(final OrderDO order) {
+            return new SQL() {{
+                DELETE_FROM(TABLE_ORDER);
+                WHERE("id = #{id}");
+            }}.toString();
+        }
+
+        public static String findAll() {
+            return new SQL() {{
+                SELECT("*");
+                FROM(TABLE_ORDER);
+            }}.toString();
+        }
+
+        public static String findById(final Long id) {
             return new SQL() {{
                 SELECT("*");
                 FROM(TABLE_ORDER);
@@ -36,7 +62,7 @@ public interface OrderMapper {
             }}.toString();
         }
 
-        public static String insert(final Order order) {
+        public static String insert(final OrderDO order) {
             return new SQL() {{
                 INSERT_INTO(TABLE_ORDER);
                 VALUES("user_id", "#{userId}");
@@ -48,6 +74,12 @@ public interface OrderMapper {
                 if (order.getGmtModified() != null) {
                     VALUES("gmt_modified", "#{gmtModified}");
                 }
+            }}.toString();
+        }
+
+        public static String unsafeDeleteAll() {
+            return new SQL() {{
+                DELETE_FROM(TABLE_ORDER);
             }}.toString();
         }
     }

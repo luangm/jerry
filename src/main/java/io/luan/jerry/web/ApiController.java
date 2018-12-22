@@ -1,10 +1,9 @@
-package io.luan.jerry;
+package io.luan.jerry.web;
 
+import io.luan.jerry.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 
 @RestController
 public class ApiController {
@@ -18,7 +17,7 @@ public class ApiController {
 
     @GetMapping("/api/order/get")
     public Object get(Long id) {
-        var order = orderService.getById(id);
+        var order = orderService.findById(id);
         return order;
     }
 }

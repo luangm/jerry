@@ -1,13 +1,15 @@
-package io.luan.jerry;
+package io.luan.jerry.user.data;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 @Mapper
-@Repository
+@Component
 public interface UserMapper {
+
+    @DeleteProvider(type = UserSqlProvider.class, method = "delete")
+    int delete(UserDO user);
 
     @SelectProvider(type = UserSqlProvider.class, method = "findById")
     @Results(id = "userResult", value = {
@@ -16,21 +18,28 @@ public interface UserMapper {
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
     })
-    User findById(@Param("id") long id);
+    UserDO findById(Long id);
 
     @SelectProvider(type = UserSqlProvider.class, method = "findByNick")
     @ResultMap("userResult")
-    User findByNick(@Param("nick") String nick);
+    UserDO findByNick(String nick);
 
     @InsertProvider(type = UserSqlProvider.class, method = "insert")
     @Options(useGeneratedKeys = true)
-    void insert(User user);
+    void insert(UserDO user);
 
     class UserSqlProvider {
 
         private static final String TABLE_USER = "`user`";
 
-        public static String findById(final long id) {
+        public static String delete(final UserDO user) {
+            return new SQL() {{
+                DELETE_FROM(TABLE_USER);
+                WHERE("id = #{id}");
+            }}.toString();
+        }
+
+        public static String findById(final Long id) {
             return new SQL() {{
                 SELECT("*");
                 FROM(TABLE_USER);
@@ -46,7 +55,7 @@ public interface UserMapper {
             }}.toString();
         }
 
-        public static String insert(final User user) {
+        public static String insert(final UserDO user) {
             return new SQL() {{
                 INSERT_INTO(TABLE_USER);
                 VALUES("nick", "#{nick}");

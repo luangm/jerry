@@ -1,5 +1,8 @@
-package io.luan.jerry;
+package io.luan.jerry.web;
 
+import io.luan.jerry.item.service.ItemService;
+import io.luan.jerry.order.service.OrderService;
+import io.luan.jerry.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +29,8 @@ public class BuyController {
     @RequestMapping("/buy")
     public ModelAndView buy(@SessionAttribute(value = "nick", required = false) String nick, @RequestParam("itemId") Long itemId) {
 
-        var item = itemService.getById(itemId);
-        var user = userService.getByNick(nick);
+        var item = itemService.findById(itemId);
+        var user = userService.findByNick(nick);
 
         ModelAndView modelAndView = new ModelAndView("buy");
         modelAndView.addObject("user", user);
@@ -37,10 +40,10 @@ public class BuyController {
 
     @RequestMapping(value = "/buyProcess")
     public ModelAndView loginProcess(@SessionAttribute("nick") String nick, @RequestParam Long itemId) {
-        var item = itemService.getById(itemId);
-        var user = userService.getByNick(nick);
+        var item = itemService.findById(itemId);
+        var user = userService.findByNick(nick);
 
-        var order = orderService.createOrder(user.getId(), itemId);
+        var order = orderService.create(user.getId(), itemId);
 
         var mav = new ModelAndView("buySuccess");
         mav.addObject("order", order);

@@ -1,5 +1,6 @@
-package io.luan.jerry;
+package io.luan.jerry.web;
 
+import io.luan.jerry.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class LoginController {
 
     @RequestMapping(value = "/registerProcess")
     public ModelAndView registerProcess(@RequestParam String nick) {
-        userService.register(nick);
+        userService.create(nick);
         return new ModelAndView("registerSuccess");
     }
 
