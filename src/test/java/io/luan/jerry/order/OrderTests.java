@@ -4,6 +4,7 @@ import io.luan.jerry.item.repository.ItemRepository;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.repository.OrderRepository;
 import io.luan.jerry.order.service.OrderService;
+import io.luan.jerry.user.dto.UserRegistrationDTO;
 import io.luan.jerry.user.repository.UserRepository;
 import io.luan.jerry.user.service.UserService;
 import org.junit.Assert;
@@ -37,8 +38,11 @@ public class OrderTests {
 
     @Test
     public void createThenQueryThenDelete() {
-        var nick = "User" + System.currentTimeMillis();
-        var user = userService.create(nick);
+        var username = "User" + System.currentTimeMillis();
+        var registrationDto = new UserRegistrationDTO();
+        registrationDto.setUsername(username);
+        registrationDto.setPassword("Password");
+        var user = userService.register(registrationDto);
 
         var title = "Item" + System.currentTimeMillis();
         var item = itemService.create(title, 100L);

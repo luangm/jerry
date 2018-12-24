@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <title>Jerry E-Commerce</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -8,11 +8,15 @@
 
 <h1>Register</h1>
 
-<form action="/registerProcess" method="post">
+<form th:action="@{/register}" th:object="${register}" method="post">
     <table>
         <tr>
-            <td>Nick:</td>
-            <td><input type="text" name="nick"/></td>
+            <td>Username:</td>
+            <td><input type="text" name="username"/></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type="text" name="password"/></td>
         </tr>
         <tr>
             <td><input type="submit"/></td>

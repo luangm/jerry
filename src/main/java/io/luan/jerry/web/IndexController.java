@@ -2,11 +2,13 @@ package io.luan.jerry.web;
 
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.service.OrderService;
+import io.luan.jerry.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class IndexController {
@@ -22,12 +24,24 @@ public class IndexController {
     }
 
     @RequestMapping("/")
-    public ModelAndView index(@SessionAttribute(value = "nick", required = false) String nick) {
+    public String root() {
+        return "redirect:/index";
+    }
+
+
+    @RequestMapping("/index")
+    public ModelAndView index(HttpSession session) {
+        var user = (User) (session.getAttribute("user"));
+
+        if (user != null) {
+
+        }
+
         var items = itemService.findAll();
         var orders = orderService.findAll();
 
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("nick", nick);
+        modelAndView.addObject("user", user);
         modelAndView.addObject("items", items);
         modelAndView.addObject("orders", orders);
         return modelAndView;

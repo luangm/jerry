@@ -8,7 +8,7 @@ public interface ItemService {
 
     Item create(String title, Long price);
 
-    Item findById(Long id);
-
     List<Item> findAll();
+
+    Item findById(Long id);
 }

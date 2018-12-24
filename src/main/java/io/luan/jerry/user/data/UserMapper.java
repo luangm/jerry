@@ -14,15 +14,16 @@ public interface UserMapper {
     @SelectProvider(type = UserSqlProvider.class, method = "findById")
     @Results(id = "userResult", value = {
             @Result(column = "id", property = "id"),
-            @Result(column = "nick", property = "nick"),
+            @Result(column = "username", property = "username"),
+            @Result(column = "password", property = "password"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
     })
     UserDO findById(Long id);
 
-    @SelectProvider(type = UserSqlProvider.class, method = "findByNick")
+    @SelectProvider(type = UserSqlProvider.class, method = "findByUsername")
     @ResultMap("userResult")
-    UserDO findByNick(String nick);
+    UserDO findByUsername(String username);
 
     @InsertProvider(type = UserSqlProvider.class, method = "insert")
     @Options(useGeneratedKeys = true)
@@ -47,24 +48,21 @@ public interface UserMapper {
             }}.toString();
         }
 
-        public static String findByNick(final String nick) {
+        public static String findByUsername(final String username) {
             return new SQL() {{
                 SELECT("*");
                 FROM(TABLE_USER);
-                WHERE("nick = #{nick}");
+                WHERE("username = #{username}");
             }}.toString();
         }
 
         public static String insert(final UserDO user) {
             return new SQL() {{
                 INSERT_INTO(TABLE_USER);
-                VALUES("nick", "#{nick}");
-                if (user.getGmtCreate() != null) {
-                    VALUES("gmt_create", "#{gmtCreate}");
-                }
-                if (user.getGmtModified() != null) {
-                    VALUES("gmt_modified", "#{gmtModified}");
-                }
+                VALUES("username", "#{username}");
+                VALUES("password", "#{password}");
+                VALUES("gmt_create", "#{gmtCreate}");
+                VALUES("gmt_modified", "#{gmtModified}");
             }}.toString();
         }
     }

@@ -5,6 +5,6 @@ import io.luan.jerry.user.domain.User;
 
 public interface UserRepository extends Repository<User, Long> {
 
-    User findByNick(String nick);
+    User findByUsername(String username);
 
 }

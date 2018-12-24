@@ -1,6 +1,7 @@
 package io.luan.jerry.user.service.impl;
 
 import io.luan.jerry.user.domain.User;
+import io.luan.jerry.user.dto.UserRegistrationDTO;
 import io.luan.jerry.user.repository.UserRepository;
 import io.luan.jerry.user.service.UserService;
 import lombok.extern.java.Log;
@@ -24,15 +25,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByNick(String nick) {
-        return userRepository.findByNick(nick);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
-    public User create(String nick) {
+    public User register(UserRegistrationDTO request) {
         var user = new User();
-        user.setNick(nick);
-
+        user.setUsername(request.getUsername());
+        user.changePassword(request.getPassword());
         return userRepository.save(user);
     }
 }

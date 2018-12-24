@@ -68,12 +68,8 @@ public interface OrderMapper {
                 VALUES("user_id", "#{userId}");
                 VALUES("item_id", "#{itemId}");
                 VALUES("total_fee", "#{totalFee}");
-                if (order.getGmtCreate() != null) {
-                    VALUES("gmt_create", "#{gmtCreate}");
-                }
-                if (order.getGmtModified() != null) {
-                    VALUES("gmt_modified", "#{gmtModified}");
-                }
+                VALUES("gmt_create", "#{gmtCreate}");
+                VALUES("gmt_modified", "#{gmtModified}");
             }}.toString();
         }
 

@@ -7,13 +7,12 @@
 <body>
 
 <h1>Confirm Order: </h1>
-<form action="/buyProcess" method="post">
-    <input type="hidden" name="userId" th:value="${user.id}" />
+<form action="/buy" method="post">
     <input type="hidden" name="itemId" th:value="${item.id}" />
     <table>
         <tr>
-            <td>Nick:</td>
-            <td th:text="${user.nick}"></td>
+            <td>Username:</td>
+            <td th:text="${user.username}"></td>
         </tr>
         <tr>
             <td>Item:</td>

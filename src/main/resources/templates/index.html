@@ -1,15 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head lang="en">
     <title>Jerry E-Commerce</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<h1>Welcome <span th:text="${nick}"></span></h1>
+<h1>Welcome <span th:if="${user != null}" th:text="${user.getUsername()}"></span></h1>
 <div>
 <a href="/login">Login</a>
     <span>&nbsp;|&nbsp;</span>
 <a href="/register">Register</a>
+</div>
+<div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
+    Logged in user: <span sec:authentication="name"></span> |
+    Roles: <span sec:authentication="principal.authorities"></span>
+    <div>
+        <form action="#" th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout" />
+        </form>
+    </div>
 </div>
 <br/>
 <div>Items: </div>
@@ -24,7 +33,7 @@
             <td th:text="${item.id}"></td>
             <td th:text="${item.title}"></td>
             <td th:text="${item.price}"></td>
-            <td th:if="${nick != null}">
+            <td th:if="${#httpServletRequest.getRemoteUser() != null}">
                 <a th:href="@{/buy(itemId=${item.id})}">Buy Now</a>
             </td>
         </tr>

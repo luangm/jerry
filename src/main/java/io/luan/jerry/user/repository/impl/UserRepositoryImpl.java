@@ -55,8 +55,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByNick(String nick) {
-        var userDO = userMapper.findByNick(nick);
+    public User findByUsername(String username) {
+        var userDO = userMapper.findByUsername(username);
         if (userDO != null) {
             return userDO.toEntity();
         }

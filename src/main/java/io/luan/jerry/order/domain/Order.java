@@ -14,8 +14,7 @@ public class Order implements Serializable {
     private Long userId;
     private Long itemId;
     private Long totalFee;
-
-    private LocalDateTime gmtCreate;
-    private LocalDateTime gmtModified;
+    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtModified = LocalDateTime.now();
 
 }

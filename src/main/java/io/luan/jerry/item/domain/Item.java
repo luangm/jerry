@@ -13,7 +13,7 @@ public class Item implements Serializable {
     private Long id;
     private String title;
     private Long price;
-    private LocalDateTime gmtCreate;
-    private LocalDateTime gmtModified;
+    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtModified = LocalDateTime.now();
 
 }

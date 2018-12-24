@@ -11,7 +11,9 @@ Chapter 1 - Create an MVP Ecommerce site
 
 1.4? CQRS - Query / QueryResult / Command / CommandResult / RequestHandler / Validator 
 
-Chapter 2 - 
+
+Chapter 2 - Ecommerce Business Logic
+ 
 2.1 - C2C vs B2C vs B2B
     * User as C
     * Shop bind User as B
@@ -21,7 +23,7 @@ Chapter 2 -
 
 2.3 - SPU vs Item, and concept of Offers, Sell
 
-2.4 - Promotions
+2.4 - Promotions（满减、单品限时、套装、赠品、满赠、定金预购）
 
 2.5 - Buy, BizOrder, PayOrder, SubBizOrder, SubPayOrder, LogisticsOrder, SubLogisticsOrder
 
@@ -29,8 +31,9 @@ Chapter 2 -
 
 2.7 - Carts
 
-2.9 - Inventory
+2.9 - Inventory（锁定、解锁、扣减、退货返还）
 
+2.10 - Logistics
 
 
 2.x - Supporting multiple types of business models, using plugins
@@ -43,6 +46,4 @@ Chapter 3 - Microservices
 
 Chapter 4 - Event-Driven Architecture
 
-Chapter 5 - Big Data
-
-Chapter 6 - AI
+Chapter 5 - Big Data and ML
