@@ -7,7 +7,7 @@ public class SecurityUtils {
 
     public static User getCurrentUser() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
+        if (auth != null && auth.getPrincipal() != null && auth.getPrincipal() instanceof UserPrincipal) {
             var principle = (UserPrincipal) auth.getPrincipal();
             return principle.getUser();
         }

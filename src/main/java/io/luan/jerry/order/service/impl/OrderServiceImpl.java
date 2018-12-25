@@ -29,7 +29,8 @@ public class OrderServiceImpl implements OrderService {
 
         var order = new Order();
         order.setItemId(itemId);
-        order.setUserId(userId);
+        order.setBuyerId(userId);
+        order.setSellerId(item.getUserId());
         order.setTotalFee(item.getPrice());
 
         return orderRepository.save(order);

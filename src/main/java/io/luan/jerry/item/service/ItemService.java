@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ItemService {
 
-    Item create(String title, Long price);
-
     List<Item> findAll();
 
     Item findById(Long id);
+
+    Item save(Item item);
 }

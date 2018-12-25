@@ -20,12 +20,9 @@ public class ItemServiceImpl implements ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public Item create(String title, Long price) {
-        Item item = new Item();
-        item.setTitle(title);
-        item.setPrice(price);
-
-        return itemRepository.save(item);
+    @Override
+    public List<Item> findAll() {
+        return itemRepository.findAll();
     }
 
     @Override
@@ -34,8 +31,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> findAll() {
-        return itemRepository.findAll();
+    public Item save(Item item) {
+        return itemRepository.save(item);
     }
 
 }

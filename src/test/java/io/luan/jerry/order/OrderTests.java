@@ -1,5 +1,6 @@
 package io.luan.jerry.order;
 
+import io.luan.jerry.item.domain.Item;
 import io.luan.jerry.item.repository.ItemRepository;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.repository.OrderRepository;
@@ -45,13 +46,18 @@ public class OrderTests {
         var user = userService.register(registrationDto);
 
         var title = "Item" + System.currentTimeMillis();
-        var item = itemService.create(title, 100L);
+        var item = new Item();
+        item.setTitle(title);
+        item.setImgUrl("http://www.baidu.com/logo.jpg");
+        item.setPrice(100L);
+        item.setUserId(1L);
+        item = itemService.save(item);
 
         var order = orderService.create(user.getId(), item.getId());
         Assert.assertNotNull(order);
         Assert.assertNotNull(order.getId());
         Assert.assertEquals(order.getItemId(), item.getId());
-        Assert.assertEquals(order.getUserId(), user.getId());
+        Assert.assertEquals(order.getBuyerId(), user.getId());
 
         var success = orderRepository.delete(order);
         Assert.assertTrue(success);

@@ -21,7 +21,8 @@ public interface OrderMapper {
     @SelectProvider(type = OrderSqlProvider.class, method = "findById")
     @Results(id = "orderResult", value = {
             @Result(column = "id", property = "id"),
-            @Result(column = "user_id", property = "userId"),
+            @Result(column = "buyer_id", property = "buyerId"),
+            @Result(column = "seller_id", property = "sellerId"),
             @Result(column = "item_id", property = "itemId"),
             @Result(column = "total_fee", property = "totalFee"),
             @Result(column = "gmt_create", property = "gmtCreate"),
@@ -65,7 +66,8 @@ public interface OrderMapper {
         public static String insert(final OrderDO order) {
             return new SQL() {{
                 INSERT_INTO(TABLE_ORDER);
-                VALUES("user_id", "#{userId}");
+                VALUES("buyer_id", "#{buyerId}");
+                VALUES("seller_id", "#{sellerId}");
                 VALUES("item_id", "#{itemId}");
                 VALUES("total_fee", "#{totalFee}");
                 VALUES("gmt_create", "#{gmtCreate}");

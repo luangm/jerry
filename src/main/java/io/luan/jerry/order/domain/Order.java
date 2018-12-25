@@ -11,7 +11,8 @@ public class Order implements Serializable {
     static final long serialVersionUID = 1L;
 
     private Long id;
-    private Long userId;
+    private Long buyerId;
+    private Long sellerId;
     private Long itemId;
     private Long totalFee;
     private LocalDateTime gmtCreate = LocalDateTime.now();

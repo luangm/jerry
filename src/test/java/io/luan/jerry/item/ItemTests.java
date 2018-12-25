@@ -1,6 +1,7 @@
 package io.luan.jerry.item;
 
 import io.luan.jerry.item.data.ItemMapper;
+import io.luan.jerry.item.domain.Item;
 import io.luan.jerry.item.repository.ItemRepository;
 import io.luan.jerry.item.service.ItemService;
 import org.junit.Assert;
@@ -27,9 +28,18 @@ public class ItemTests {
 
     @Test
     public void createItemThenQueryThenDelete() {
+
         var title = "Item" + System.currentTimeMillis();
-        var item = itemService.create(title, 100L);
+
+        var item = new Item();
+        item.setTitle(title);
+        item.setImgUrl("http://www.baidu.com/logo.jpg");
+        item.setPrice(100L);
+        item.setUserId(1L);
+
+        item = itemService.save(item);
         Assert.assertNotNull(item);
+
         Long itemId = item.getId();
         Assert.assertNotNull(itemId);
 
@@ -47,13 +57,28 @@ public class ItemTests {
     @Test
     public void findAll() {
         var title = "Item" + System.currentTimeMillis();
-        var item = itemService.create(title, 100L);
+        var item = new Item();
+        item.setTitle(title);
+        item.setImgUrl("http://www.baidu.com/logo.jpg");
+        item.setPrice(100L);
+        item.setUserId(1L);
+        item = itemService.save(item);
 
         var title2 = "Item" + System.currentTimeMillis();
-        var item2 = itemService.create(title2, 100L);
+        var item2 = new Item();
+        item2.setTitle(title2);
+        item2.setImgUrl("http://www.baidu.com/logo.jpg");
+        item2.setPrice(100L);
+        item2.setUserId(1L);
+        item2 = itemService.save(item2);
 
         var title3 = "Item" + System.currentTimeMillis();
-        var item3 = itemService.create(title3, 100L);
+        var item3 = new Item();
+        item3.setTitle(title3);
+        item3.setImgUrl("http://www.baidu.com/logo.jpg");
+        item3.setPrice(100L);
+        item3.setUserId(1L);
+        item3 = itemService.save(item3);
 
         var items = itemService.findAll();
         Assert.assertNotNull(items);

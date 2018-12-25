@@ -12,7 +12,8 @@ public class OrderDO implements Serializable {
     static final long serialVersionUID = 1L;
 
     private Long id;
-    private Long userId;
+    private Long buyerId;
+    private Long sellerId;
     private Long itemId;
     private Long totalFee;
 
@@ -23,7 +24,8 @@ public class OrderDO implements Serializable {
         var orderDO = new OrderDO();
         orderDO.setId(order.getId());
         orderDO.setItemId(order.getItemId());
-        orderDO.setUserId(order.getUserId());
+        orderDO.setBuyerId(order.getBuyerId());
+        orderDO.setSellerId(order.getSellerId());
         orderDO.setTotalFee(order.getTotalFee());
         orderDO.setGmtCreate(order.getGmtCreate());
         orderDO.setGmtModified(order.getGmtModified());
@@ -33,7 +35,8 @@ public class OrderDO implements Serializable {
     public Order toEntity() {
         var order = new Order();
         order.setId(this.getId());
-        order.setUserId(this.getUserId());
+        order.setBuyerId(this.getBuyerId());
+        order.setSellerId(this.getSellerId());
         order.setItemId(this.getItemId());
         order.setTotalFee(this.getTotalFee());
         order.setGmtCreate(this.getGmtCreate());

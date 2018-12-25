@@ -2,6 +2,7 @@ package io.luan.jerry.web;
 
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.service.OrderService;
+import io.luan.jerry.security.SecurityUtils;
 import io.luan.jerry.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.security.Security;
 
 @Controller
 public class IndexController {
@@ -31,11 +33,7 @@ public class IndexController {
 
     @RequestMapping("/index")
     public ModelAndView index(HttpSession session) {
-        var user = (User) (session.getAttribute("user"));
-
-        if (user != null) {
-
-        }
+        var user = SecurityUtils.getCurrentUser();
 
         var items = itemService.findAll();
         var orders = orderService.findAll();

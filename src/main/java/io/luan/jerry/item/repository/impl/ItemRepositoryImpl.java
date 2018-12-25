@@ -56,6 +56,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             itemMapper.insert(itemDO);
             return findById(itemDO.getId());
         } else {
+            itemMapper.update(itemDO);
             return item;
         }
     }
