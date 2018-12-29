@@ -1,5 +1,6 @@
 package io.luan.jerry.web;
 
+import io.luan.jerry.category.service.CategoryService;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.security.SecurityUtils;
 import io.luan.jerry.sell.dto.PublishItemDTO;
@@ -19,10 +20,13 @@ public class SellController {
 
     private final ItemService itemService;
 
+    private final CategoryService categoryService;
+
     @Autowired
-    public SellController(SellService sellService, ItemService itemService) {
+    public SellController(SellService sellService, ItemService itemService, CategoryService categoryService) {
         this.sellService = sellService;
         this.itemService = itemService;
+        this.categoryService = categoryService;
     }
 
     @PostMapping("/sell")
@@ -41,22 +45,27 @@ public class SellController {
     }
 
     @GetMapping("/sell")
-    public ModelAndView sell(@RequestParam("itemId") Long itemId) {
+    public ModelAndView sell(@RequestParam(value = "itemId", required = false) Long itemId) {
         var user = SecurityUtils.getCurrentUser();
+        var categories = categoryService.findAll();
+
         var mav = new ModelAndView("sell");
 
         if (itemId != null) {
             var existing = itemService.findById(itemId);
             if (existing != null && existing.getUserId() == user.getId()) {
                 var dto = new PublishItemDTO();
+                dto.setCategoryId(existing.getCategoryId());
                 dto.setTitle(existing.getTitle());
                 dto.setImgUrl(existing.getImgUrl());
                 dto.setPrice(existing.getPrice());
                 dto.setItemId(itemId);
                 mav.addObject("item", dto);
+                mav.addObject("categories", categories);
             }
         } else {
             mav.addObject("item", new PublishItemDTO());
+            mav.addObject("categories", categories);
         }
 
         return mav;

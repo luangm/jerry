@@ -36,6 +36,11 @@ public class Item implements Serializable {
     private Long price;
 
     /**
+     * Leaf category ID
+     */
+    private Long categoryId;
+
+    /**
      * Time when the item is created
      */
     private LocalDateTime gmtCreate = LocalDateTime.now();

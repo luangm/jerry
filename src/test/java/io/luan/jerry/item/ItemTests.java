@@ -32,6 +32,7 @@ public class ItemTests {
         var title = "Item" + System.currentTimeMillis();
 
         var item = new Item();
+        item.setCategoryId(1L);
         item.setTitle(title);
         item.setImgUrl("http://www.baidu.com/logo.jpg");
         item.setPrice(100L);
@@ -56,8 +57,11 @@ public class ItemTests {
 
     @Test
     public void findAll() {
+        itemMapper.unsafeDeleteAll();
+
         var title = "Item" + System.currentTimeMillis();
         var item = new Item();
+        item.setCategoryId(1L);
         item.setTitle(title);
         item.setImgUrl("http://www.baidu.com/logo.jpg");
         item.setPrice(100L);
@@ -66,6 +70,7 @@ public class ItemTests {
 
         var title2 = "Item" + System.currentTimeMillis();
         var item2 = new Item();
+        item2.setCategoryId(1L);
         item2.setTitle(title2);
         item2.setImgUrl("http://www.baidu.com/logo.jpg");
         item2.setPrice(100L);
@@ -74,6 +79,7 @@ public class ItemTests {
 
         var title3 = "Item" + System.currentTimeMillis();
         var item3 = new Item();
+        item3.setCategoryId(1L);
         item3.setTitle(title3);
         item3.setImgUrl("http://www.baidu.com/logo.jpg");
         item3.setPrice(100L);
@@ -89,8 +95,5 @@ public class ItemTests {
         itemRepository.delete(item3);
     }
 
-    @Before
-    public void cleanDb() {
-        itemMapper.unsafeDeleteAll();
-    }
+
 }

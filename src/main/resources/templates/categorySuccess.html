@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Category Publish Successful</h1>
+
+<table  th:object="${category}" >
+    <tr>
+        <td>Category Id:</td>
+        <td th:text="${category.getId()}"></td>
+    </tr>
+    <tr>
+        <td>Parent Id:</td>
+        <td th:text="${category.getParentId()}"></td>
+    </tr>
+    <tr>
+        <td>Name:</td>
+        <td th:text="${category.getName()}"></td>
+    </tr>
+    <tr>
+        <td>IsLeaf:</td>
+        <td th:text="${category.getIsLeaf()}"></td>
+    </tr>
+    <tr>
+        <td>Created: </td>
+        <td th:text="${category.getGmtCreate()}"></td>
+    </tr>
+</table>
+
+<a href="/">Go home</a>
+</body>
+</html>

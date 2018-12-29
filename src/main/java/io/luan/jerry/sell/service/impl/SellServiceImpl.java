@@ -27,6 +27,7 @@ public class SellServiceImpl implements SellService {
         }
         var item = new Item();
         item.setUserId(user.getId());
+        item.setCategoryId(request.getCategoryId());
         item.setTitle(request.getTitle());
         item.setImgUrl(request.getImgUrl());
         item.setPrice(request.getPrice());

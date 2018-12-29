@@ -21,6 +21,7 @@ public interface ItemMapper {
     @Results(id = "itemResult", value = {
             @Result(column = "id", property = "id"),
             @Result(column = "user_id", property = "userId"),
+            @Result(column = "category_id", property = "categoryId"),
             @Result(column = "title", property = "title"),
             @Result(column = "img_url", property = "imgUrl"),
             @Result(column = "price", property = "price"),
@@ -69,6 +70,7 @@ public interface ItemMapper {
             return new SQL() {{
                 INSERT_INTO(TABLE_ITEM);
                 VALUES("user_id", "#{userId}");
+                VALUES("category_id", "#{categoryId}");
                 VALUES("title", "#{title}");
                 VALUES("img_url", "#{imgUrl}");
                 VALUES("price", "#{price}");

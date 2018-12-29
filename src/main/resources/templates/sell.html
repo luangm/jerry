@@ -10,8 +10,19 @@
 <h1 th:if="${item.itemId == null}">Publish Item</h1>
 
 <form th:action="@{/sell}" th:object="${item}" method="post">
-    <input th:if="${item.itemId != null}" type="hidden" name="itemId" th:value="${item.getItemId()}"/>
+    <input th:if="${item.getItemId() != null}" type="hidden" name="itemId" th:value="${item.getItemId()}"/>
     <table>
+        <tr>
+            <td>Category:</td>
+            <td>
+                <select id="categoryId" name="categoryId">
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.getId()}"
+                            th:text="${cat.getName()}"
+                            th:selected="${cat.getId()==item.getCategoryId()}"></option>
+                </select>
+            </td>
+        </tr>
         <tr>
             <td>Title:</td>
             <td><input type="text" id="title" name="title" th:value="${item.title}"/></td>

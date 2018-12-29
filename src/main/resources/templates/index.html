@@ -7,27 +7,53 @@
 <body>
 <h1>Welcome <span th:if="${user != null}" th:text="${user.getUsername()}"></span></h1>
 <div>
-<a href="/login">Login</a>
+    <a href="/login">Login</a>
     <span>&nbsp;|&nbsp;</span>
-
-<a href="/register">Register</a>
+    <a href="/register">Register</a>
     <span>&nbsp;|&nbsp;</span>
     <a href="/sell">Sell</a>
+    <span>&nbsp;|&nbsp;</span>
+    <a href="/category">Category</a>
 </div>
 <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
     Logged in user: <span sec:authentication="name"></span> |
     Roles: <span sec:authentication="principal.authorities"></span>
     <div>
         <form action="#" th:action="@{/logout}" method="post">
-            <input type="submit" value="Logout" />
+            <input type="submit" value="Logout"/>
         </form>
     </div>
 </div>
 <br/>
-<div>Items: </div>
+
+<div>Categories:</div>
+<table>
+    <tr>
+        <th>Category ID</th>
+        <th>Parent ID</th>
+        <th>Name</th>
+        <th>IsLeaf</th>
+    </tr>
+    <th:block th:each="category : ${categories}">
+        <tr>
+            <td th:text="${category.id}"></td>
+            <td th:text="${category.parentId}"></td>
+            <td th:text="${category.name}"></td>
+            <td th:text="${category.isLeaf}"></td>
+            <td>
+                <a th:href="@{/category(categoryId=${category.id})}">Edit</a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+
+<br/>
+
+<div>Items:</div>
 <table>
     <tr>
         <th>Item ID</th>
+        <th>Category ID</th>
         <th>User ID</th>
         <th>Title</th>
         <th>Price</th>
@@ -35,6 +61,7 @@
     <th:block th:each="item:${items}">
         <tr>
             <td th:text="${item.id}"></td>
+            <td th:text="${item.categoryId}"></td>
             <td th:text="${item.userId}"></td>
             <td th:text="${item.title}"></td>
             <td th:text="${item.price}"></td>
@@ -50,17 +77,19 @@
 
 <br/>
 
-<div>Orders: </div>
+<div>Orders:</div>
 <table>
     <tr>
         <th>Order ID</th>
-        <th>User ID</th>
+        <th>Buyer ID</th>
+        <th>Seller ID</th>
         <th>Item ID</th>
     </tr>
     <th:block th:each="order:${orders}">
         <tr>
             <td th:text="${order.id}"></td>
-            <td th:text="${order.userId}"></td>
+            <td th:text="${order.buyerId}"></td>
+            <td th:text="${order.sellerId}"></td>
             <td th:text="${order.itemId}"></td>
         </tr>
     </th:block>

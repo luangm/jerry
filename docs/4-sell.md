@@ -29,10 +29,5 @@ publish flow:
 6. publish
 
 
-4.1 - Category, CPV etc.
 
-When the amount of items grow, it quickly become evident that simply listing items on the home page is bad.
-Also managing the item explosion is also bad.
-
-Introducing Category into item.
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1 th:if="${category.getCategoryId() != null}">Edit Category</h1>
+<h1 th:if="${category.getCategoryId() == null}">New Category</h1>
+
+<form th:action="@{/category}" th:object="${category}" method="post">
+    <input th:if="${category.getCategoryId() != null}" type="hidden" name="categoryId" th:value="${category.getCategoryId()}"/>
+    <table>
+        <tr>
+            <td>Parent Category:</td>
+            <td>
+                <select id="parentId" name="parentId">
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.getId()}"
+                            th:text="${cat.getName()}"
+                            th:selected="${cat.getId()==category.getParentId()}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" id="name" name="name" th:value="${category.getName()}"/></td>
+        </tr>
+        <tr>
+            <td>IsLeaf:</td>
+            <td><input type="checkbox" id="isLeaf" name="isLeaf" th:checked="${category.getIsLeaf()}"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class PublishItemDTO implements Serializable {
 
     private Long itemId;
+    private Long categoryId;
     private String title;
     private String imgUrl;
     private Long price;

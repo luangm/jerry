@@ -47,6 +47,7 @@ public class OrderTests {
 
         var title = "Item" + System.currentTimeMillis();
         var item = new Item();
+        item.setCategoryId(1L);
         item.setTitle(title);
         item.setImgUrl("http://www.baidu.com/logo.jpg");
         item.setPrice(100L);
