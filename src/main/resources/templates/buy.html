@@ -7,7 +7,7 @@
 <body>
 
 <h1>Confirm Order: </h1>
-<form action="/buy" method="post">
+<form action="/buy" method="post" th:object="${request}">
     <input type="hidden" name="itemId" th:value="${item.id}" />
     <table>
         <tr>
@@ -19,8 +19,14 @@
             <td th:text="${item.title}"></td>
         </tr>
         <tr>
-            <td>Price:</td>
+            <td>Unit Price:</td>
             <td th:text="${item.price}"></td>
+        </tr>
+        <tr>
+            <td>Amount:</td>
+            <td>
+                <input type="number" name="amount" id="amount" value="1"/>
+            </td>
         </tr>
         <tr>
             <td><input type="submit"/></td>

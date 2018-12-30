@@ -3,6 +3,7 @@ package io.luan.jerry.order.data;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public interface OrderMapper {
             @Result(column = "buyer_id", property = "buyerId"),
             @Result(column = "seller_id", property = "sellerId"),
             @Result(column = "item_id", property = "itemId"),
+            @Result(column = "amount", property = "amount"),
             @Result(column = "total_fee", property = "totalFee"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
@@ -69,6 +71,7 @@ public interface OrderMapper {
                 VALUES("buyer_id", "#{buyerId}");
                 VALUES("seller_id", "#{sellerId}");
                 VALUES("item_id", "#{itemId}");
+                VALUES("amount", "#{amount}");
                 VALUES("total_fee", "#{totalFee}");
                 VALUES("gmt_create", "#{gmtCreate}");
                 VALUES("gmt_modified", "#{gmtModified}");

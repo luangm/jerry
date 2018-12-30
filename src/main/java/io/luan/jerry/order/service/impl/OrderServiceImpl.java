@@ -24,15 +24,8 @@ public class OrderServiceImpl implements OrderService {
         this.itemService = itemService;
     }
 
-    public Order create(Long userId, Long itemId) {
-        var item = itemService.findById(itemId);
-
-        var order = new Order();
-        order.setItemId(itemId);
-        order.setBuyerId(userId);
-        order.setSellerId(item.getUserId());
-        order.setTotalFee(item.getPrice());
-
+    @Override
+    public Order createOrder(Order order) {
         return orderRepository.save(order);
     }
 

@@ -31,7 +31,7 @@ public class SellServiceImpl implements SellService {
         item.setTitle(request.getTitle());
         item.setImgUrl(request.getImgUrl());
         item.setPrice(request.getPrice());
-        return itemService.save(item);
+        return itemService.publish(item);
     }
 
     @Override
@@ -52,6 +52,6 @@ public class SellServiceImpl implements SellService {
         item.setPrice(request.getPrice());
         item.setGmtModified(LocalDateTime.now());
 
-        return itemService.save(item);
+        return itemService.publish(item);
     }
 }

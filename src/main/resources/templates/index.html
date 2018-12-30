@@ -84,6 +84,8 @@
         <th>Buyer ID</th>
         <th>Seller ID</th>
         <th>Item ID</th>
+        <th>Amount</th>
+        <th>Total Fee</th>
     </tr>
     <th:block th:each="order:${orders}">
         <tr>
@@ -91,6 +93,8 @@
             <td th:text="${order.buyerId}"></td>
             <td th:text="${order.sellerId}"></td>
             <td th:text="${order.itemId}"></td>
+            <td th:text="${order.amount}"></td>
+            <td th:text="${order.totalFee}"></td>
         </tr>
     </th:block>
 </table>

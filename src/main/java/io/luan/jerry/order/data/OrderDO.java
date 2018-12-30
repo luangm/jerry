@@ -15,6 +15,7 @@ public class OrderDO implements Serializable {
     private Long buyerId;
     private Long sellerId;
     private Long itemId;
+    private Integer amount;
     private Long totalFee;
 
     private LocalDateTime gmtCreate;
@@ -26,6 +27,7 @@ public class OrderDO implements Serializable {
         orderDO.setItemId(order.getItemId());
         orderDO.setBuyerId(order.getBuyerId());
         orderDO.setSellerId(order.getSellerId());
+        orderDO.setAmount(order.getAmount());
         orderDO.setTotalFee(order.getTotalFee());
         orderDO.setGmtCreate(order.getGmtCreate());
         orderDO.setGmtModified(order.getGmtModified());
@@ -38,6 +40,7 @@ public class OrderDO implements Serializable {
         order.setBuyerId(this.getBuyerId());
         order.setSellerId(this.getSellerId());
         order.setItemId(this.getItemId());
+        order.setAmount(this.getAmount());
         order.setTotalFee(this.getTotalFee());
         order.setGmtCreate(this.getGmtCreate());
         order.setGmtModified(this.getGmtModified());

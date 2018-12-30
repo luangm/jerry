@@ -31,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item save(Item item) {
+    public Item publish(Item item) {
         return itemRepository.save(item);
     }
 

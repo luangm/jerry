@@ -7,6 +7,8 @@ import java.io.Serializable;
 @Data
 public class PublishCategoryDTO implements Serializable {
 
+    static final long serialVersionUID = 1L;
+
     private Long categoryId;
     private Long parentId;
     private String name;
