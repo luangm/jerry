@@ -7,8 +7,6 @@ import io.luan.jerry.item.repository.ItemRepository;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.repository.OrderRepository;
 import io.luan.jerry.order.service.OrderService;
-import io.luan.jerry.user.repository.UserRepository;
-import io.luan.jerry.user.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +51,7 @@ public class OrderTests {
         var request = new CreateOrderDTO();
         request.setUserId(userId);
         request.setItemId(item.getId());
-        request.setAmount(5);
+        request.setQuantity(5);
 
         var order = buyService.createOrder(request);
         Assert.assertNotNull(order);
@@ -61,7 +59,7 @@ public class OrderTests {
         Assert.assertEquals(order.getItemId(), item.getId());
         Assert.assertEquals(order.getBuyerId(), userId);
         Assert.assertEquals(Long.valueOf(505L), order.getTotalFee());
-        Assert.assertEquals(Integer.valueOf(5), order.getAmount());
+        Assert.assertEquals(Integer.valueOf(5), order.getQuantity());
 
         var success = orderRepository.delete(order);
         Assert.assertTrue(success);

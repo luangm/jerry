@@ -17,29 +17,19 @@ public class ItemDO {
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
 
-    public static ItemDO fromEntity(Item item) {
-        var itemDO = new ItemDO();
-        itemDO.setId(item.getId());
-        itemDO.setUserId(item.getUserId());
-        itemDO.setTitle(item.getTitle());
-        itemDO.setImgUrl(item.getImgUrl());
-        itemDO.setPrice(item.getPrice());
-        itemDO.setCategoryId(item.getCategoryId());
-        itemDO.setGmtCreate(item.getGmtCreate());
-        itemDO.setGmtModified(item.getGmtModified());
-        return itemDO;
+    public ItemDO() {
+        // do nothing
     }
 
-    public Item toEntity() {
-        var item = new Item();
-        item.setId(this.getId());
-        item.setUserId(this.getUserId());
-        item.setTitle(this.getTitle());
-        item.setImgUrl(this.getImgUrl());
-        item.setPrice(this.getPrice());
-        item.setCategoryId(this.getCategoryId());
-        item.setGmtCreate(this.getGmtCreate());
-        item.setGmtModified(this.getGmtModified());
-        return item;
+    public ItemDO(Item item) {
+        this.id = item.getId();
+        this.userId = item.getUserId();
+        this.title = item.getTitle();
+        this.imgUrl = item.getImgUrl();
+        this.price = item.getPrice();
+        this.categoryId = item.getCategoryId();
+        this.gmtCreate = item.getGmtCreate();
+        this.gmtModified = item.getGmtModified();
     }
+
 }

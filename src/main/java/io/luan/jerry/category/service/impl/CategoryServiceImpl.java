@@ -33,7 +33,8 @@ public class CategoryServiceImpl implements CategoryService {
         category.setIsLeaf(request.getIsLeaf());
         category.setGmtModified(LocalDateTime.now());
 
-        return categoryRepository.save(category);
+        categoryRepository.save(category);
+        return category;
     }
 
     @Override
@@ -52,12 +53,13 @@ public class CategoryServiceImpl implements CategoryService {
         category.setName(request.getName());
         category.setParentId(request.getParentId());
         category.setIsLeaf(request.getIsLeaf());
-        return categoryRepository.save(category);
+        categoryRepository.save(category);
+        return category;
     }
 
     @Override
-    public Category save(Category category) {
-        return categoryRepository.save(category);
+    public void save(Category category) {
+        categoryRepository.save(category);
     }
 
 }

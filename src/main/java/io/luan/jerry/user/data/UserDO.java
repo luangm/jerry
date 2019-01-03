@@ -17,23 +17,16 @@ public class UserDO implements Serializable {
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
 
-    public static UserDO fromEntity(User user) {
-        var userDO = new UserDO();
-        userDO.setId(user.getId());
-        userDO.setUsername(user.getUsername());
-        userDO.setPassword(user.getPassword());
-        userDO.setGmtCreate(user.getGmtCreate());
-        userDO.setGmtModified(user.getGmtModified());
-        return userDO;
+    public UserDO() {
+        //
     }
 
-    public User toEntity() {
-        var user = new User();
-        user.setId(this.getId());
-        user.setUsername(this.getUsername());
-        user.setPassword(this.getPassword());
-        user.setGmtCreate(this.getGmtCreate());
-        user.setGmtModified(this.getGmtModified());
-        return user;
+    public UserDO(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.gmtCreate = user.getGmtCreate();
+        this.gmtModified = user.getGmtModified();
     }
+
 }

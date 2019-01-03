@@ -16,6 +16,6 @@ public class CreateOrderDTO implements Serializable {
     private Long itemId;
 
     @NotNull
-    private Integer amount;
+    private Integer quantity;
 
 }

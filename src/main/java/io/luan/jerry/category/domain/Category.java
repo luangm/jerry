@@ -1,6 +1,8 @@
 package io.luan.jerry.category.domain;
 
+import io.luan.jerry.common.domain.Entity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,7 +14,8 @@ import java.util.List;
  * since no CategoryProperty can be read without reading in Category first.
  */
 @Data
-public class Category implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class Category extends Entity {
 
     static final long serialVersionUID = 1L;
 

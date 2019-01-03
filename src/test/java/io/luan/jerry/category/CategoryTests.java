@@ -4,12 +4,7 @@ import io.luan.jerry.category.data.CategoryMapper;
 import io.luan.jerry.category.domain.Category;
 import io.luan.jerry.category.repository.CategoryRepository;
 import io.luan.jerry.category.service.CategoryService;
-import io.luan.jerry.item.data.ItemMapper;
-import io.luan.jerry.item.domain.Item;
-import io.luan.jerry.item.repository.ItemRepository;
-import io.luan.jerry.item.service.ItemService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +34,7 @@ public class CategoryTests {
         category.setParentId(9999L);
         category.setIsLeaf(true);
 
-        category = categoryService.save(category);
+        categoryService.save(category);
         Assert.assertNotNull(category);
 
         Long categoryId = category.getId();
@@ -67,19 +62,19 @@ public class CategoryTests {
         var cat1 = new Category();
         cat1.setName(name);
         cat1.setIsLeaf(true);
-        cat1 = categoryService.save(cat1);
+        categoryService.save(cat1);
 
         var name2 = "Category" + System.currentTimeMillis();
         var cat2 = new Category();
         cat2.setName(name2);
         cat2.setIsLeaf(true);
-        cat2 = categoryService.save(cat2);
+        categoryService.save(cat2);
 
         var name3 = "Category" + System.currentTimeMillis();
         var cat3 = new Category();
         cat3.setName(name3);
         cat3.setIsLeaf(true);
-        cat3 = categoryService.save(cat3);
+        categoryService.save(cat3);
 
         var categories = categoryService.findAll();
         Assert.assertNotNull(categories);

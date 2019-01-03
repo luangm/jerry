@@ -5,7 +5,6 @@ import io.luan.jerry.buy.service.BuyService;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.domain.Order;
 import io.luan.jerry.order.service.OrderService;
-import io.luan.jerry.user.domain.User;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +29,11 @@ public class BuyServiceImpl implements BuyService {
 
         var order = new Order();
         order.setItemId(request.getItemId());
-        order.setAmount(request.getAmount());
+        order.setQuantity(request.getQuantity());
         order.setBuyerId(request.getUserId());
         order.setSellerId(item.getUserId());
 
-        var totalFee = item.getPrice() * request.getAmount();
+        var totalFee = item.getPrice() * request.getQuantity();
         order.setTotalFee(totalFee);
 
         return orderService.createOrder(order);

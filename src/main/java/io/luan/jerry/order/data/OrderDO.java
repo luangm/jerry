@@ -15,35 +15,24 @@ public class OrderDO implements Serializable {
     private Long buyerId;
     private Long sellerId;
     private Long itemId;
-    private Integer amount;
+    private Integer quantity;
     private Long totalFee;
 
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
 
-    public static OrderDO fromEntity(Order order) {
-        var orderDO = new OrderDO();
-        orderDO.setId(order.getId());
-        orderDO.setItemId(order.getItemId());
-        orderDO.setBuyerId(order.getBuyerId());
-        orderDO.setSellerId(order.getSellerId());
-        orderDO.setAmount(order.getAmount());
-        orderDO.setTotalFee(order.getTotalFee());
-        orderDO.setGmtCreate(order.getGmtCreate());
-        orderDO.setGmtModified(order.getGmtModified());
-        return orderDO;
+    public OrderDO() {
+        //
     }
 
-    public Order toEntity() {
-        var order = new Order();
-        order.setId(this.getId());
-        order.setBuyerId(this.getBuyerId());
-        order.setSellerId(this.getSellerId());
-        order.setItemId(this.getItemId());
-        order.setAmount(this.getAmount());
-        order.setTotalFee(this.getTotalFee());
-        order.setGmtCreate(this.getGmtCreate());
-        order.setGmtModified(this.getGmtModified());
-        return order;
+    public OrderDO(Order order) {
+        this.id = order.getId();
+        this.itemId = order.getItemId();
+        this.buyerId = order.getBuyerId();
+        this.sellerId = order.getSellerId();
+        this.quantity = order.getQuantity();
+        this.totalFee = order.getTotalFee();
+        this.gmtCreate = order.getGmtCreate();
+        this.gmtModified = order.getGmtModified();
     }
 }

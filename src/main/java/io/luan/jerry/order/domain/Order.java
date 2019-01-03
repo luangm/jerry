@@ -1,12 +1,15 @@
 package io.luan.jerry.order.domain;
 
+import io.luan.jerry.common.domain.Entity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class Order implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class Order extends Entity {
 
     static final long serialVersionUID = 1L;
 
@@ -31,9 +34,9 @@ public class Order implements Serializable {
     private Long itemId;
 
     /**
-     * Amount of Item
+     * Quantity of Item
      */
-    private Integer amount;
+    private Integer quantity;
 
     /**
      * Total cost

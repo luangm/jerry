@@ -25,7 +25,7 @@ public interface OrderMapper {
             @Result(column = "buyer_id", property = "buyerId"),
             @Result(column = "seller_id", property = "sellerId"),
             @Result(column = "item_id", property = "itemId"),
-            @Result(column = "amount", property = "amount"),
+            @Result(column = "quantity", property = "quantity"),
             @Result(column = "total_fee", property = "totalFee"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
@@ -71,7 +71,7 @@ public interface OrderMapper {
                 VALUES("buyer_id", "#{buyerId}");
                 VALUES("seller_id", "#{sellerId}");
                 VALUES("item_id", "#{itemId}");
-                VALUES("amount", "#{amount}");
+                VALUES("quantity", "#{quantity}");
                 VALUES("total_fee", "#{totalFee}");
                 VALUES("gmt_create", "#{gmtCreate}");
                 VALUES("gmt_modified", "#{gmtModified}");

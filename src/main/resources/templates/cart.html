@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Cart Content</h1>
+
+<table>
+    <tr>
+        <th>CartItem ID</th>
+        <th>Item ID</th>
+        <th>User ID</th>
+        <th>Quantity</th>
+        <th>Operations</th>
+    </tr>
+    <th:block th:each="cartItem : ${cartItems}">
+        <tr>
+            <td th:text="${cartItem.id}"></td>
+            <td th:text="${cartItem.itemId}"></td>
+            <td th:text="${cartItem.userId}"></td>
+            <td th:text="${cartItem.quantity}"></td>
+            <td>
+                <form action="/cart/change" method="post" th:object="${cartRequest}">
+                    <input type="hidden" name="itemId" th:value="${cartItem.itemId}" />
+                    <input type="number" name="quantity" th:value="${cartItem.quantity}" />
+                    <input type="hidden" name="redirectUrl" value="/cart"/>
+                    <button type="submit">Update Quantity</button>
+                </form>
+                <form action="/cart/remove" method="post" th:object="${cartRequest}">
+                    <input type="hidden" name="itemId" th:value="${cartItem.itemId}" />
+                    <input type="hidden" name="redirectUrl" value="/cart"/>
+                    <button type="submit">Remove</button>
+                </form>
+            </td>
+        </tr>
+    </th:block>
+</table>
+
+</body>
+</html>

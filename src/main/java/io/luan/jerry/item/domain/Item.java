@@ -1,12 +1,15 @@
 package io.luan.jerry.item.domain;
 
+import io.luan.jerry.common.domain.Entity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class Item implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class Item extends Entity {
 
     static final long serialVersionUID = 1L;
 
@@ -50,4 +53,31 @@ public class Item implements Serializable {
      */
     private LocalDateTime gmtModified = LocalDateTime.now();
 
+    public Item() {
+
+    }
+
+    public void setImgUrl(String newValue) {
+        if (!newValue.equals(this.imgUrl)) {
+            firePropertyChange("imgUrl", imgUrl, newValue);
+            this.imgUrl = newValue;
+            this.gmtModified = LocalDateTime.now();
+        }
+    }
+
+    public void setPrice(Long newValue) {
+        if (!newValue.equals(this.price)) {
+            firePropertyChange("price", price, newValue);
+            this.price = newValue;
+            this.gmtModified = LocalDateTime.now();
+        }
+    }
+
+    public void setTitle(String newValue) {
+        if (!newValue.equals(this.title)) {
+            firePropertyChange("title", title, newValue);
+            this.title = newValue;
+            this.gmtModified = LocalDateTime.now();
+        }
+    }
 }

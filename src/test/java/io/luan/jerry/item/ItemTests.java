@@ -1,5 +1,6 @@
 package io.luan.jerry.item;
 
+import io.luan.jerry.common.domain.EntityState;
 import io.luan.jerry.item.data.ItemMapper;
 import io.luan.jerry.item.domain.Item;
 import io.luan.jerry.item.repository.ItemRepository;
@@ -23,6 +24,43 @@ public class ItemTests {
 
     @Autowired
     private ItemMapper itemMapper;
+
+    @Test
+    public void repoSave() {
+
+        var title = "Item" + System.currentTimeMillis();
+
+        var item = new Item();
+        item.setCategoryId(1L);
+        item.setTitle(title);
+        item.setImgUrl("http://www.baidu.com/logo.jpg");
+        item.setPrice(100L);
+        item.setUserId(1L);
+
+        Assert.assertEquals(EntityState.Detached, item.getState());
+
+        itemRepository.save(item);
+        System.out.println(item);
+        Assert.assertNotNull(item.getId());
+        Assert.assertEquals(EntityState.Unchanged, item.getState());
+
+        item.setTitle("New Item");
+        Assert.assertEquals(EntityState.Modified, item.getState());
+
+        itemRepository.save(item);
+        Assert.assertEquals(EntityState.Unchanged, item.getState());
+        System.out.println(item);
+
+        var itemFromDb = itemRepository.findById(item.getId());
+        Assert.assertNotNull(itemFromDb);
+        Assert.assertEquals(EntityState.Unchanged, itemFromDb.getState());
+
+        Assert.assertEquals(item.getUserId(), itemFromDb.getUserId());
+        Assert.assertEquals(item.getCategoryId(), itemFromDb.getCategoryId());
+        Assert.assertEquals(item.getTitle(), itemFromDb.getTitle());
+        Assert.assertEquals(item.getImgUrl(), itemFromDb.getImgUrl());
+        Assert.assertEquals(item.getPrice(), itemFromDb.getPrice());
+    }
 
     @Test
     public void createItemThenQueryThenDelete() {

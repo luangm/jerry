@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
         var user = new User();
         user.setUsername(request.getUsername());
         user.changePassword(request.getPassword());
-        return userRepository.save(user);
+        userRepository.save(user);
+        return user;
     }
 }

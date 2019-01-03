@@ -14,6 +14,8 @@
     <a href="/sell">Sell</a>
     <span>&nbsp;|&nbsp;</span>
     <a href="/category">Category</a>
+    <span>&nbsp;|&nbsp;</span>
+    <a href="/cart">Cart</a>
 </div>
 <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
     Logged in user: <span sec:authentication="name"></span> |
@@ -26,7 +28,7 @@
 </div>
 <br/>
 
-<div>Categories:</div>
+<h3>Categories</h3>
 <table>
     <tr>
         <th>Category ID</th>
@@ -49,7 +51,7 @@
 
 <br/>
 
-<div>Items:</div>
+<h3>Items</h3>
 <table>
     <tr>
         <th>Item ID</th>
@@ -65,8 +67,16 @@
             <td th:text="${item.userId}"></td>
             <td th:text="${item.title}"></td>
             <td th:text="${item.price}"></td>
+
             <td th:if="${#httpServletRequest.getRemoteUser() != null}">
                 <a th:href="@{/buy(itemId=${item.id})}">Buy Now</a>
+            </td>
+            <td th:if="${#httpServletRequest.getRemoteUser() != null}">
+                <form action="/cart" method="post" th:object="${cartRequest}">
+                    <input type="hidden" name="itemId" th:value="${item.id}" />
+                    <input type="hidden" name="quantity" th:value="1" />
+                    <button type="submit">Add to Cart</button>
+                </form>
             </td>
             <td th:if="${user != null && user.id == item.userId}">
                 <a th:href="@{/sell(itemId=${item.id})}">Edit</a>
@@ -76,15 +86,47 @@
 </table>
 
 <br/>
+<h3>Cart</h3>
+<table>
+    <tr>
+        <th>CartItem ID</th>
+        <th>Item ID</th>
+        <th>User ID</th>
+        <th>Quantity</th>
+        <th>Operations</th>
+    </tr>
+    <th:block th:each="cartItem : ${cartItems}">
+        <tr>
+            <td th:text="${cartItem.id}"></td>
+            <td th:text="${cartItem.itemId}"></td>
+            <td th:text="${cartItem.userId}"></td>
+            <td th:text="${cartItem.quantity}"></td>
+            <td>
+                <form action="/cart/change" method="post" th:object="${cartRequest}">
+                    <input type="hidden" name="itemId" th:value="${cartItem.itemId}" />
+                    <input type="number" name="quantity" th:value="${cartItem.quantity}" />
+                    <button type="submit">Update Quantity</button>
+                </form>
+                <form action="/cart/remove" method="post" th:object="${cartRequest}">
+                    <input type="hidden" name="itemId" th:value="${cartItem.itemId}" />
+                    <button type="submit">Remove</button>
+                </form>
+            </td>
+        </tr>
+    </th:block>
+</table>
 
-<div>Orders:</div>
+
+<br/>
+
+<h3>Orders</h3>
 <table>
     <tr>
         <th>Order ID</th>
         <th>Buyer ID</th>
         <th>Seller ID</th>
         <th>Item ID</th>
-        <th>Amount</th>
+        <th>Quantity</th>
         <th>Total Fee</th>
     </tr>
     <th:block th:each="order:${orders}">
@@ -93,7 +135,7 @@
             <td th:text="${order.buyerId}"></td>
             <td th:text="${order.sellerId}"></td>
             <td th:text="${order.itemId}"></td>
-            <td th:text="${order.amount}"></td>
+            <td th:text="${order.quantity}"></td>
             <td th:text="${order.totalFee}"></td>
         </tr>
     </th:block>

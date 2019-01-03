@@ -1,11 +1,14 @@
 package io.luan.jerry.item.repository.impl;
 
+import io.luan.jerry.common.domain.EntityState;
 import io.luan.jerry.item.data.ItemDO;
 import io.luan.jerry.item.data.ItemMapper;
 import io.luan.jerry.item.domain.Item;
+import io.luan.jerry.item.factory.ItemFactory;
 import io.luan.jerry.item.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +17,17 @@ import java.util.List;
 public class ItemRepositoryImpl implements ItemRepository {
 
     private final ItemMapper itemMapper;
+    private final ItemFactory itemFactory;
 
     @Autowired
-    public ItemRepositoryImpl(ItemMapper itemMapper) {
+    public ItemRepositoryImpl(ItemMapper itemMapper, ItemFactory itemFactory) {
         this.itemMapper = itemMapper;
+        this.itemFactory = itemFactory;
     }
 
     @Override
     public boolean delete(Item item) {
-        var itemDO = ItemDO.fromEntity(item);
+        var itemDO = new ItemDO(item);
         if (itemDO.getId() != null) {
             int count = itemMapper.delete(itemDO);
             return count > 0;
@@ -34,7 +39,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     public List<Item> findAll() {
         List<Item> items = new ArrayList<>();
         for (ItemDO itemDO : itemMapper.findAll()) {
-            Item item = itemDO.toEntity();
+            Item item = itemFactory.loadFromDataObject(itemDO);
             items.add(item);
         }
         return items;
@@ -44,21 +49,26 @@ public class ItemRepositoryImpl implements ItemRepository {
     public Item findById(Long id) {
         var itemDO = itemMapper.findById(id);
         if (itemDO != null) {
-            return itemDO.toEntity();
+            return itemFactory.loadFromDataObject(itemDO);
         }
         return null;
     }
 
     @Override
-    public Item save(Item item) {
-        var itemDO = ItemDO.fromEntity(item);
-        if (itemDO.getId() == null) {
-            itemMapper.insert(itemDO);
-            return findById(itemDO.getId());
-        } else {
-            itemMapper.update(itemDO);
-            return item;
+    @Transactional
+    public void save(Item item) {
+        var itemDO = new ItemDO(item);
+        switch (item.getState()) {
+            case Added:
+            case Detached:
+                itemMapper.insert(itemDO);
+                item.setId(itemDO.getId());
+                break;
+            case Modified:
+                itemMapper.update(itemDO);
+                break;
         }
+        item.setState(EntityState.Unchanged);
     }
 
 }

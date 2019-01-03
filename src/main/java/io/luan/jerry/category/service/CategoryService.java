@@ -15,6 +15,6 @@ public interface CategoryService {
 
     Category publish(PublishCategoryDTO request);
 
-    Category save(Category category);
+    void save(Category category);
 
 }

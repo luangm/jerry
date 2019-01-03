@@ -15,7 +15,7 @@ public interface Repository<T, TID> {
     T findById(@NotNull TID id);
 
     /**
-     * Save the entity inside db, then return the inserted entity (not the same as the input)
+     * Save the entity inside db
      */
-    T save(T entity);
+    void save(T entity);
 }
