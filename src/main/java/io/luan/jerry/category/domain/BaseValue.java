@@ -15,12 +15,12 @@ public class BaseValue implements Serializable {
     private String data;
 
     /**
-     * Time when the value is created
+     * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
 
     /**
-     * Time when the value is modified
+     * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now();
+    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 }

@@ -1,9 +1,10 @@
 package io.luan.jerry.buy.service.impl;
 
-import io.luan.jerry.buy.dto.CreateOrderDTO;
+import io.luan.jerry.buy.dto.OrderDTO;
 import io.luan.jerry.buy.service.BuyService;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.domain.Order;
+import io.luan.jerry.order.domain.SubOrder;
 import io.luan.jerry.order.service.OrderService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +25,30 @@ public class BuyServiceImpl implements BuyService {
     }
 
     @Override
-    public Order createOrder(CreateOrderDTO request) {
-        var item = itemService.findById(request.getItemId());
-
-        var order = new Order();
-        order.setItemId(request.getItemId());
-        order.setQuantity(request.getQuantity());
-        order.setBuyerId(request.getUserId());
-        order.setSellerId(item.getUserId());
-
-        var totalFee = item.getPrice() * request.getQuantity();
-        order.setTotalFee(totalFee);
-
+    public Order createOrder(OrderDTO request) {
+        var order = this.buildOrder(request);
         return orderService.createOrder(order);
+    }
+
+    @Override
+    public Order confirmOrder(OrderDTO request) {
+        return this.buildOrder(request);
+    }
+
+    private Order buildOrder(OrderDTO request) {
+        var order = new Order();
+        order.setBuyerId(request.getUserId());
+
+        for (var subOrderDTO : request.getSubOrders()) {
+            var item = itemService.findById(subOrderDTO.getItemId());
+            var subOrder = new SubOrder();
+            subOrder.setBuyerId(request.getUserId());
+            subOrder.setSellerId(item.getUserId());
+            subOrder.setItemId(subOrderDTO.getItemId());
+            subOrder.setQuantity(subOrderDTO.getQuantity());
+            subOrder.setTotalFee(item.getPrice() * subOrderDTO.getQuantity());
+            order.addSubOrder(subOrder);
+        }
+        return order;
     }
 }

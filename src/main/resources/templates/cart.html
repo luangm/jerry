@@ -3,41 +3,90 @@
 <head lang="en">
     <title>Jerry E-Commerce</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="application/javascript">
+        function updateQuantity(itemId, quantityId) {
+            console.log("Test: " + quantityId);
+            var ele = document.getElementById(quantityId);
+            var value = ele.value;
+            fetch("/cart/change", {
+                method: 'post',
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify({
+                    itemId: itemId,
+                    quantity: value
+                })
+            }).then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                console.log(text);
+                window.location.reload(false);
+            })
+
+        }
+
+        function remove(itemId) {
+            fetch("/cart/remove", {
+                method: 'post',
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify({
+                    itemId: itemId
+                })
+            }).then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                console.log(text);
+                window.location.reload(false);
+            })
+
+        }
+    </script>
 </head>
 <body>
 
 <h1>Cart Content</h1>
 
-<table>
-    <tr>
-        <th>CartItem ID</th>
-        <th>Item ID</th>
-        <th>User ID</th>
-        <th>Quantity</th>
-        <th>Operations</th>
-    </tr>
-    <th:block th:each="cartItem : ${cartItems}">
+<form action="#" th:action="@{/confirmOrder}" method="post" th:object="${order}">
+    <button type="submit" name="cart">Buy</button>
+    <table>
         <tr>
-            <td th:text="${cartItem.id}"></td>
-            <td th:text="${cartItem.itemId}"></td>
-            <td th:text="${cartItem.userId}"></td>
-            <td th:text="${cartItem.quantity}"></td>
-            <td>
-                <form action="/cart/change" method="post" th:object="${cartRequest}">
-                    <input type="hidden" name="itemId" th:value="${cartItem.itemId}" />
-                    <input type="number" name="quantity" th:value="${cartItem.quantity}" />
-                    <input type="hidden" name="redirectUrl" value="/cart"/>
-                    <button type="submit">Update Quantity</button>
-                </form>
-                <form action="/cart/remove" method="post" th:object="${cartRequest}">
-                    <input type="hidden" name="itemId" th:value="${cartItem.itemId}" />
-                    <input type="hidden" name="redirectUrl" value="/cart"/>
-                    <button type="submit">Remove</button>
-                </form>
-            </td>
+            <th></th>
+            <th>CartItem ID</th>
+            <th>Item ID</th>
+            <th>Quantity</th>
+            <th>Operations</th>
         </tr>
-    </th:block>
-</table>
+        <th:block th:each="cartItem, stat : ${cartItems}">
+            <tr>
+                <td>
+                    <input type="checkbox" th:field="*{cartItems[__${stat.index}__].selected}"/>
+                    <input type="hidden" th:field="*{cartItems[__${stat.index}__].cartItemId}"/>
+                    <input type="hidden" th:field="*{cartItems[__${stat.index}__].itemId}"/>
+                    <input type="hidden" th:field="*{cartItems[__${stat.index}__].quantity}"/>
+                </td>
+                <td th:text="${cartItem.cartItemId}"></td>
+                <td th:text="${cartItem.itemId}"></td>
+                <td th:text="${cartItem.quantity}"></td>
+                <td>
+                    <input type="number" th:id="|quantity${stat.index}|" th:value="${cartItem.quantity}"/>
+                    <button type="button" th:onclick="|updateQuantity('${cartItem.itemId}', 'quantity${stat.index}')|">
+                        Update Quantity
+                    </button>
+                </td>
+                <td>
+                    <button type="button" th:onclick="|remove('${cartItem.itemId}')|">
+                        Remove
+                    </button>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+</form>
 
 </body>
 </html>

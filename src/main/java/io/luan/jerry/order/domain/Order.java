@@ -4,8 +4,9 @@ import io.luan.jerry.common.domain.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -24,33 +25,43 @@ public class Order extends Entity {
     private Long buyerId;
 
     /**
-     * Seller ID
-     */
-    private Long sellerId;
-
-    /**
-     * Item ID
-     */
-    private Long itemId;
-
-    /**
-     * Quantity of Item
-     */
-    private Integer quantity;
-
-    /**
-     * Total cost
+     * Total fee
      */
     private Long totalFee;
 
     /**
      * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
 
     /**
      * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now();
+    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 
+    /**
+     * Sub Orders
+     */
+    private List<SubOrder> subOrders = new ArrayList<>();
+
+    public void addSubOrder(SubOrder subOrder) {
+        this.subOrders.add(subOrder);
+        this.calculateTotalFee();
+    }
+
+    public void calculateTotalFee() {
+        var totalFee = 0L;
+        for (var subOrder : subOrders) {
+            totalFee += subOrder.getTotalFee();
+        }
+        this.totalFee = totalFee;
+    }
+
+    public int getTotalQuantity() {
+        var count = 0;
+        for (var subOrder : subOrders) {
+            count += subOrder.getQuantity();
+        }
+        return count;
+    }
 }

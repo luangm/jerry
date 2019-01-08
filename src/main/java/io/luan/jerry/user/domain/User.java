@@ -18,13 +18,20 @@ public class User extends Entity {
     private Long id;
     private String username;
     private String password;
-    private LocalDateTime gmtCreate = LocalDateTime.now();
-    private LocalDateTime gmtModified = LocalDateTime.now();
+    /**
+     * Create Time
+     */
+    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
+
+    /**
+     * Modify Time
+     */
+    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 
     public void changePassword(String cipher) {
         var encoder = new BCryptPasswordEncoder();
         this.password = encoder.encode(cipher);
-        this.gmtModified = LocalDateTime.now();
+        this.gmtModified = LocalDateTime.now().withNano(0);
     }
 
     public boolean verifyPassword(String cipher) {

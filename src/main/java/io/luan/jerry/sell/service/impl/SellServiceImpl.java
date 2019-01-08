@@ -50,7 +50,7 @@ public class SellServiceImpl implements SellService {
         item.setTitle(request.getTitle());
         item.setImgUrl(request.getImgUrl());
         item.setPrice(request.getPrice());
-        item.setGmtModified(LocalDateTime.now());
+        item.setGmtModified(LocalDateTime.now().withNano(0));
 
         return itemService.publish(item);
     }

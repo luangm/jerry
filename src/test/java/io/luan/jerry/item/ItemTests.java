@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ItemTests {
@@ -26,6 +29,17 @@ public class ItemTests {
     private ItemMapper itemMapper;
 
     @Test
+    public void testGet() {
+
+        var formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD hh:mm:ss");
+
+        var item = itemRepository.findById(76L);
+        System.out.println(item);
+        System.out.println(item.getGmtCreate().format(formatter));
+
+        System.out.println(LocalDateTime.now().format(formatter));
+    }
+    @Test
     public void repoSave() {
 
         var title = "Item" + System.currentTimeMillis();
@@ -37,6 +51,7 @@ public class ItemTests {
         item.setPrice(100L);
         item.setUserId(1L);
 
+        System.out.println(item);
         Assert.assertEquals(EntityState.Detached, item.getState());
 
         itemRepository.save(item);
@@ -60,6 +75,8 @@ public class ItemTests {
         Assert.assertEquals(item.getTitle(), itemFromDb.getTitle());
         Assert.assertEquals(item.getImgUrl(), itemFromDb.getImgUrl());
         Assert.assertEquals(item.getPrice(), itemFromDb.getPrice());
+//        Assert.assertEquals(item.getGmtCreate(), itemFromDb.getGmtCreate());
+//        Assert.assertEquals(item.getGmtModified(), itemFromDb.getGmtModified());
     }
 
     @Test

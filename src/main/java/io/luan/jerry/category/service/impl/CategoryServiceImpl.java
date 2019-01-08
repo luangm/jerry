@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         category.setName(request.getName());
         category.setIsLeaf(request.getIsLeaf());
-        category.setGmtModified(LocalDateTime.now());
+        category.setGmtModified(LocalDateTime.now().withNano(0));
 
         categoryRepository.save(category);
         return category;

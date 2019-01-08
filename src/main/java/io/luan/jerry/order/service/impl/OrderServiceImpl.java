@@ -1,6 +1,5 @@
 package io.luan.jerry.order.service.impl;
 
-import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.domain.Order;
 import io.luan.jerry.order.repository.OrderRepository;
 import io.luan.jerry.order.service.OrderService;
@@ -16,12 +15,9 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final ItemService itemService;
-
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ItemService itemService) {
+    public OrderServiceImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.itemService = itemService;
     }
 
     @Override

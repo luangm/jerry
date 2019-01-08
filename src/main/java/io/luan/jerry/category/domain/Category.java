@@ -45,13 +45,13 @@ public class Category extends Entity {
     private List<CategoryProperty> properties = new ArrayList<>();
 
     /**
-     * Time when the category is created
+     * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
 
     /**
-     * Time when the category is modified
+     * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now();
+    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 
 }

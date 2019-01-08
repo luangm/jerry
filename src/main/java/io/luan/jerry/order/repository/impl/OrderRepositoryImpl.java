@@ -3,6 +3,7 @@ package io.luan.jerry.order.repository.impl;
 import io.luan.jerry.order.data.OrderDO;
 import io.luan.jerry.order.data.OrderMapper;
 import io.luan.jerry.order.domain.Order;
+import io.luan.jerry.order.domain.SubOrder;
 import io.luan.jerry.order.factory.OrderFactory;
 import io.luan.jerry.order.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class OrderRepositoryImpl implements OrderRepository {
@@ -45,19 +47,55 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order findById(Long id) {
-        var orderDO = orderMapper.findById(id);
-        if (orderDO != null) {
-            return orderFactory.loadFromDataObject(orderDO);
+        var orderDOList = orderMapper.findAllByParentId(id);
+        Optional<OrderDO> first = orderDOList.stream().filter(orderDO -> orderDO.getId().equals(id)).findFirst();
+        if (first.isEmpty()) {
+            return null;
         }
-        return null;
+
+        OrderDO mainOrderDO = first.get();
+        if (orderDOList.size() == 1) {
+            mainOrderDO.getSubOrders().add(mainOrderDO);
+        } else {
+            for (var orderDO : orderDOList) {
+                if (!orderDO.getId().equals(id)) {
+                    mainOrderDO.getSubOrders().add(orderDO);
+                }
+            }
+        }
+        return orderFactory.loadFromDataObject(mainOrderDO);
+
     }
 
     @Override
     public void save(Order order) {
         var orderDO = new OrderDO(order);
         if (orderDO.getId() == null) {
+
+            // insert main order
             orderMapper.insert(orderDO);
             order.setId(orderDO.getId());
+
+            if (order.getSubOrders().size() == 1) {
+                var sub = order.getSubOrders().get(0);
+                sub.setId(orderDO.getId());
+                sub.setParentId(orderDO.getId());
+            } else {
+                List<OrderDO> subOrders = orderDO.getSubOrders();
+                for (int i = 0; i < subOrders.size(); i++) {
+                    OrderDO subOrderDO = subOrders.get(i);
+                    subOrderDO.setParentId(order.getId());
+                    orderMapper.insert(subOrderDO);
+
+                    SubOrder subOrder = order.getSubOrders().get(i);
+                    subOrder.setId(subOrderDO.getId());
+                    subOrder.setParentId(order.getId());
+                }
+            }
+
+            // update main parentId
+            orderDO.setParentId(orderDO.getId());
+            orderMapper.update(orderDO);
         }
     }
 }

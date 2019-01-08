@@ -40,12 +40,12 @@ public class CategoryProperty implements Serializable {
     private List<CategoryPropertyValue> values;
 
     /**
-     * Time when the CP is created
+     * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
 
     /**
-     * Time when the CP is modified
+     * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now();
+    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 }

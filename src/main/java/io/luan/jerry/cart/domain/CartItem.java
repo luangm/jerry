@@ -32,14 +32,14 @@ public class CartItem extends Entity {
     private Integer quantity;
 
     /**
-     * Time when the item is created
+     * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
 
     /**
-     * Time when the item is modified
+     * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now();
+    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 
     /**
      * Status
@@ -54,7 +54,7 @@ public class CartItem extends Entity {
         if (!newValue.equals(quantity)) {
             firePropertyChange("quantity", quantity, newValue);
             this.quantity = newValue;
-            this.gmtModified = LocalDateTime.now();
+            this.gmtModified = LocalDateTime.now().withNano(0);
         }
     }
 
@@ -62,7 +62,7 @@ public class CartItem extends Entity {
         if (newState != this.status) {
             firePropertyChange("status", status, newState);
             this.status = newState;
-            this.gmtModified = LocalDateTime.now();
+            this.gmtModified = LocalDateTime.now().withNano(0);
         }
     }
 }

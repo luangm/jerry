@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Data
 public class CartItemDTO implements Serializable {
 
+    private Boolean selected = false;
     private Long userId;
     private Long itemId;
     private Integer quantity;

@@ -44,14 +44,14 @@ public class Item extends Entity {
     private Long categoryId;
 
     /**
-     * Time when the item is created
+     * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now();
+    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
 
     /**
-     * Time when the item is modified
+     * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now();
+    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 
     public Item() {
 
@@ -61,7 +61,7 @@ public class Item extends Entity {
         if (!newValue.equals(this.imgUrl)) {
             firePropertyChange("imgUrl", imgUrl, newValue);
             this.imgUrl = newValue;
-            this.gmtModified = LocalDateTime.now();
+            this.gmtModified = LocalDateTime.now().withNano(0);
         }
     }
 
@@ -69,7 +69,7 @@ public class Item extends Entity {
         if (!newValue.equals(this.price)) {
             firePropertyChange("price", price, newValue);
             this.price = newValue;
-            this.gmtModified = LocalDateTime.now();
+            this.gmtModified = LocalDateTime.now().withNano(0);
         }
     }
 
@@ -77,7 +77,7 @@ public class Item extends Entity {
         if (!newValue.equals(this.title)) {
             firePropertyChange("title", title, newValue);
             this.title = newValue;
-            this.gmtModified = LocalDateTime.now();
+            this.gmtModified = LocalDateTime.now().withNano(0);
         }
     }
 }

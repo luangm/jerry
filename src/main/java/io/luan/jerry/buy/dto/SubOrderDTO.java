@@ -6,11 +6,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
-public class CreateOrderDTO implements Serializable {
+public class SubOrderDTO implements Serializable {
 
     static final long serialVersionUID = 1L;
-
-    private Long userId;
 
     @NotNull
     private Long itemId;
@@ -18,4 +16,8 @@ public class CreateOrderDTO implements Serializable {
     @NotNull
     private Integer quantity;
 
+    public SubOrderDTO(Long itemId, Integer quantity) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+    }
 }
