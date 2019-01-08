@@ -31,8 +31,12 @@ public interface OrderMapper {
             @Result(column = "buyer_id", property = "buyerId"),
             @Result(column = "seller_id", property = "sellerId"),
             @Result(column = "item_id", property = "itemId"),
+            @Result(column = "item_price", property = "itemPrice"),
+            @Result(column = "item_title", property = "itemTitle"),
+            @Result(column = "item_img_url", property = "itemImgUrl"),
             @Result(column = "quantity", property = "quantity"),
             @Result(column = "total_fee", property = "totalFee"),
+            @Result(column = "discount_fee", property = "discountFee"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
     })
@@ -91,7 +95,11 @@ public interface OrderMapper {
                 VALUES("buyer_id", "#{buyerId}");
                 VALUES("seller_id", "#{sellerId}");
                 VALUES("item_id", "#{itemId}");
+                VALUES("item_price", "#{itemPrice}");
+                VALUES("item_title", "#{itemTitle}");
+                VALUES("item_img_url", "#{itemImgUrl}");
                 VALUES("quantity", "#{quantity}");
+                VALUES("discount_fee", "#{discountFee}");
                 VALUES("total_fee", "#{totalFee}");
                 VALUES("gmt_create", "#{gmtCreate}");
                 VALUES("gmt_modified", "#{gmtModified}");
@@ -113,7 +121,11 @@ public interface OrderMapper {
                 SET("buyer_id = #{buyerId}");
                 SET("seller_id = #{sellerId}");
                 SET("item_id = #{itemId}");
+                SET("item_price = #{itemPrice}");
+                SET("item_title = #{itemTitle}");
+                SET("item_img_url = #{itemImgUrl}");
                 SET("quantity = #{quantity}");
+                SET("discount_fee = #{discountFee}");
                 SET("total_fee = #{totalFee}");
                 SET("gmt_modified = #{gmtModified}");
                 WHERE("id = #{id}");

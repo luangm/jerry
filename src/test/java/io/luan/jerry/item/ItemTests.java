@@ -29,16 +29,74 @@ public class ItemTests {
     private ItemMapper itemMapper;
 
     @Test
-    public void testGet() {
+    public void createItemThenQueryThenDelete() {
 
-        var formatter = DateTimeFormatter.ofPattern("YYYY-MM-DD hh:mm:ss");
+        var title = "Item" + System.currentTimeMillis();
 
-        var item = itemRepository.findById(76L);
-        System.out.println(item);
-        System.out.println(item.getGmtCreate().format(formatter));
+        var item = new Item();
+        item.setCategoryId(1L);
+        item.setTitle(title);
+        item.setImgUrl("http://www.baidu.com/logo.jpg");
+        item.setPrice(100L);
+        item.setUserId(1L);
 
-        System.out.println(LocalDateTime.now().format(formatter));
+        item = itemService.publish(item);
+        Assert.assertNotNull(item);
+
+        Long itemId = item.getId();
+        Assert.assertNotNull(itemId);
+
+        var itemById = itemService.findById(itemId);
+        Assert.assertNotNull(itemById);
+        Assert.assertEquals(title, itemById.getTitle());
+
+        var success = itemRepository.delete(item);
+        Assert.assertTrue(success);
+
+        var itemByIdAfterDelete = itemService.findById(itemId);
+        Assert.assertNull(itemByIdAfterDelete);
     }
+
+    @Test
+    public void findAll() {
+        var oldCount = itemService.findAll().size();
+
+        var title = "Item" + System.currentTimeMillis();
+        var item = new Item();
+        item.setCategoryId(1L);
+        item.setTitle(title);
+        item.setImgUrl("http://www.baidu.com/logo.jpg");
+        item.setPrice(100L);
+        item.setUserId(1L);
+        item = itemService.publish(item);
+
+        var title2 = "Item" + System.currentTimeMillis();
+        var item2 = new Item();
+        item2.setCategoryId(1L);
+        item2.setTitle(title2);
+        item2.setImgUrl("http://www.baidu.com/logo.jpg");
+        item2.setPrice(100L);
+        item2.setUserId(1L);
+        item2 = itemService.publish(item2);
+
+        var title3 = "Item" + System.currentTimeMillis();
+        var item3 = new Item();
+        item3.setCategoryId(1L);
+        item3.setTitle(title3);
+        item3.setImgUrl("http://www.baidu.com/logo.jpg");
+        item3.setPrice(100L);
+        item3.setUserId(1L);
+        item3 = itemService.publish(item3);
+
+        var items = itemService.findAll();
+        Assert.assertNotNull(items);
+        Assert.assertEquals(3 + oldCount, items.size());
+
+        itemRepository.delete(item);
+        itemRepository.delete(item2);
+        itemRepository.delete(item3);
+    }
+
     @Test
     public void repoSave() {
 
@@ -77,75 +135,6 @@ public class ItemTests {
         Assert.assertEquals(item.getPrice(), itemFromDb.getPrice());
 //        Assert.assertEquals(item.getGmtCreate(), itemFromDb.getGmtCreate());
 //        Assert.assertEquals(item.getGmtModified(), itemFromDb.getGmtModified());
-    }
-
-    @Test
-    public void createItemThenQueryThenDelete() {
-
-        var title = "Item" + System.currentTimeMillis();
-
-        var item = new Item();
-        item.setCategoryId(1L);
-        item.setTitle(title);
-        item.setImgUrl("http://www.baidu.com/logo.jpg");
-        item.setPrice(100L);
-        item.setUserId(1L);
-
-        item = itemService.publish(item);
-        Assert.assertNotNull(item);
-
-        Long itemId = item.getId();
-        Assert.assertNotNull(itemId);
-
-        var itemById = itemService.findById(itemId);
-        Assert.assertNotNull(itemById);
-        Assert.assertEquals(title, itemById.getTitle());
-
-        var success = itemRepository.delete(item);
-        Assert.assertTrue(success);
-
-        var itemByIdAfterDelete = itemService.findById(itemId);
-        Assert.assertNull(itemByIdAfterDelete);
-    }
-
-    @Test
-    public void findAll() {
-        itemMapper.unsafeDeleteAll();
-
-        var title = "Item" + System.currentTimeMillis();
-        var item = new Item();
-        item.setCategoryId(1L);
-        item.setTitle(title);
-        item.setImgUrl("http://www.baidu.com/logo.jpg");
-        item.setPrice(100L);
-        item.setUserId(1L);
-        item = itemService.publish(item);
-
-        var title2 = "Item" + System.currentTimeMillis();
-        var item2 = new Item();
-        item2.setCategoryId(1L);
-        item2.setTitle(title2);
-        item2.setImgUrl("http://www.baidu.com/logo.jpg");
-        item2.setPrice(100L);
-        item2.setUserId(1L);
-        item2 = itemService.publish(item2);
-
-        var title3 = "Item" + System.currentTimeMillis();
-        var item3 = new Item();
-        item3.setCategoryId(1L);
-        item3.setTitle(title3);
-        item3.setImgUrl("http://www.baidu.com/logo.jpg");
-        item3.setPrice(100L);
-        item3.setUserId(1L);
-        item3 = itemService.publish(item3);
-
-        var items = itemService.findAll();
-        Assert.assertNotNull(items);
-        Assert.assertEquals(3, items.size());
-
-        itemRepository.delete(item);
-        itemRepository.delete(item2);
-        itemRepository.delete(item3);
     }
 
 

@@ -36,14 +36,29 @@ public class SubOrder extends Entity {
     private Long itemId;
 
     /**
+     * Original Price for Item, redundant field
+     */
+    private Long itemPrice;
+
+    /**
+     * Item's title, redundant field
+     */
+    private String itemTitle;
+
+    /**
+     * Item's image, redundant field
+     */
+    private String itemImgUrl;
+
+    /**
      * Quantity of Item
      */
     private Integer quantity;
 
     /**
-     * Total cost
+     * Total Discounts (calculated by buy)
      */
-    private Long totalFee;
+    private Long discountFee = 0L;
 
     /**
      * Create Time
@@ -55,4 +70,7 @@ public class SubOrder extends Entity {
      */
     private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 
+    public Long getTotalFee() {
+        return this.getItemPrice() * this.getQuantity() - this.getDiscountFee();
+    }
 }

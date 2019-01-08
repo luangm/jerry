@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1 th:if="${promotion.id != null}">Edit Promotion</h1>
+<h1 th:if="${promotion.id == null}">Publish Promotion</h1>
+
+<form method="post" action="#" th:action="@{/promotion}" th:object="${promotion}">
+    <input type="hidden" th:field="*{itemId}"/>
+    <table>
+        <tr>
+            <td>ItemId:</td>
+            <td th:text="*{itemId}"></td>
+        </tr>
+        <tr>
+            <td>New Price:</td>
+            <td>
+                <input type="number" th:field="*{newPrice}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Start Time:</td>
+            <td>
+                <input type="datetime-local" th:field="*{startTime}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>End Time:</td>
+            <td>
+                <input type="datetime-local" th:field="*{endTime}"/>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

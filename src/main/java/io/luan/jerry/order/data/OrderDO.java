@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class OrderDO implements Serializable {
@@ -20,9 +21,13 @@ public class OrderDO implements Serializable {
     private Boolean isSub;
     private Long buyerId;
     private Long sellerId;
-    private Long itemId;
-    private Integer quantity;
-    private Long totalFee;
+    private Long itemId; // sub
+    private Long itemPrice; // sub
+    private String itemTitle; // sub, nullable
+    private String itemImgUrl; // sub, nullable
+    private Integer quantity; // sub + main
+    private Long discountFee; // sub
+    private Long totalFee; // main
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
     private List<OrderDO> subOrders = new ArrayList<>();
@@ -36,11 +41,18 @@ public class OrderDO implements Serializable {
         this.isMain = false;
         this.isSub = true;
         this.parentId = 0L;
-        this.itemId = subOrder.getItemId();
         this.buyerId = subOrder.getBuyerId();
         this.sellerId = subOrder.getSellerId();
+
+        this.itemId = subOrder.getItemId();
+        this.itemPrice = subOrder.getItemPrice();
+        this.itemTitle = subOrder.getItemTitle();
+        this.itemImgUrl = subOrder.getItemImgUrl();
+
         this.quantity = subOrder.getQuantity();
-        this.totalFee = subOrder.getTotalFee();
+        this.discountFee = subOrder.getDiscountFee();
+        this.totalFee = 0L;
+
         this.gmtCreate = subOrder.getGmtCreate();
         this.gmtModified = subOrder.getGmtModified();
     }
@@ -57,26 +69,30 @@ public class OrderDO implements Serializable {
             this.isMain = true;
             this.isSub = true;
             this.itemId = subOrder.getItemId();
+            this.itemPrice = subOrder.getItemPrice();
+            this.itemTitle = subOrder.getItemTitle();
+            this.itemImgUrl = subOrder.getItemImgUrl();
             this.sellerId = subOrder.getSellerId();
-            this.quantity = subOrder.getQuantity();
-            this.totalFee = subOrder.getTotalFee();
-            this.gmtCreate = subOrder.getGmtCreate();
-            this.gmtModified = subOrder.getGmtModified();
+            this.discountFee = subOrder.getDiscountFee();
+            this.quantity = order.getQuantity();
+            this.totalFee = order.getTotalFee();
+            this.gmtCreate = order.getGmtCreate();
+            this.gmtModified = order.getGmtModified();
         } else {
             // Main only
             this.isMain = true;
             this.isSub = false;
             this.itemId = 0L;
+            this.itemPrice = 0L;
+            this.itemTitle = null;
+            this.itemImgUrl = null;
             this.sellerId = 0L;
             this.quantity = 0;
+            this.discountFee = 0L;
             this.totalFee = order.getTotalFee();
-            this.subOrders = new ArrayList<>();
             this.gmtCreate = order.getGmtCreate();
             this.gmtModified = order.getGmtModified();
-            for (var subOrder : order.getSubOrders()) {
-                var subOrderDO = new OrderDO(subOrder);
-                this.subOrders.add(subOrderDO);
-            }
+            this.subOrders = order.getSubOrders().stream().map(OrderDO::new).collect(Collectors.toList());
         }
 
     }

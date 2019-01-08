@@ -55,8 +55,7 @@ public class CategoryTests {
 
     @Test
     public void findAll() {
-
-        categoryMapper.unsafeDeleteAll();
+        var oldCount = categoryService.findAll().size();
 
         var name = "Category" + System.currentTimeMillis();
         var cat1 = new Category();
@@ -78,7 +77,7 @@ public class CategoryTests {
 
         var categories = categoryService.findAll();
         Assert.assertNotNull(categories);
-        Assert.assertEquals(3, categories.size());
+        Assert.assertEquals(3 + oldCount, categories.size());
 
         categoryRepository.delete(cat1);
         categoryRepository.delete(cat2);

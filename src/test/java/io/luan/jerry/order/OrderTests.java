@@ -47,7 +47,10 @@ public class OrderTests {
         subOrder.setSellerId(sellerId);
         subOrder.setItemId(itemId);
         subOrder.setQuantity(5);
-        subOrder.setTotalFee(500L);
+        subOrder.setItemPrice(100L);
+        subOrder.setItemTitle("A");
+        subOrder.setItemImgUrl("B");
+        subOrder.setDiscountFee(0L);
 
         order.addSubOrder(subOrder);
 
@@ -81,7 +84,7 @@ public class OrderTests {
         subOrder.setSellerId(555L);
         subOrder.setItemId(321L);
         subOrder.setQuantity(5);
-        subOrder.setTotalFee(500L);
+        subOrder.setItemPrice(100L);
         order.addSubOrder(subOrder);
 
         var subOrder2 = new SubOrder();
@@ -89,7 +92,7 @@ public class OrderTests {
         subOrder2.setSellerId(555L);
         subOrder2.setItemId(444L);
         subOrder2.setQuantity(3);
-        subOrder2.setTotalFee(300L);
+        subOrder2.setItemPrice(100L);
         order.addSubOrder(subOrder2);
 
         orderRepository.save(order);

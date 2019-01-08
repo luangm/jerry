@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Promotion Publish Successful</h1>
+
+<table th:object="${promotion}">
+    <tr>
+        <td>Promotion Id:</td>
+        <td th:text="${promotion.id}"></td>
+    </tr>
+    <tr>
+        <td>Item Id:</td>
+        <td th:text="${promotion.itemId}"></td>
+    </tr>
+    <tr>
+        <td>New Price:</td>
+        <td th:text="${promotion.newPrice}"></td>
+    </tr>
+    <tr>
+        <td>Start Time:</td>
+        <td th:text="${promotion.startTime}"></td>
+    </tr>
+    <tr>
+        <td>End Time:</td>
+        <td th:text="${promotion.endTime}"></td>
+    </tr>
+</table>
+
+<a href="/">Go home</a>
+</body>
+</html>

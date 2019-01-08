@@ -25,10 +25,9 @@ public class Order extends Entity {
     private Long buyerId;
 
     /**
-     * Total fee
+     * Total Fee
      */
     private Long totalFee;
-
     /**
      * Create Time
      */
@@ -49,19 +48,11 @@ public class Order extends Entity {
         this.calculateTotalFee();
     }
 
-    public void calculateTotalFee() {
-        var totalFee = 0L;
-        for (var subOrder : subOrders) {
-            totalFee += subOrder.getTotalFee();
-        }
-        this.totalFee = totalFee;
+    public int getQuantity() {
+        return subOrders.stream().mapToInt(SubOrder::getQuantity).sum();
     }
 
-    public int getTotalQuantity() {
-        var count = 0;
-        for (var subOrder : subOrders) {
-            count += subOrder.getQuantity();
-        }
-        return count;
+    private void calculateTotalFee() {
+        this.totalFee = subOrders.stream().mapToLong(SubOrder::getTotalFee).sum();
     }
 }

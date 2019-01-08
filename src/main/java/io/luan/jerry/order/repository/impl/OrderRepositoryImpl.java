@@ -38,9 +38,10 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public List<Order> findAll() {
+        // FIXME: orderMapper.findAll shouldn't load all suborders.
         List<Order> orders = new ArrayList<>();
         for (OrderDO orderDO : orderMapper.findAll()) {
-            orders.add(orderFactory.loadFromDataObject(orderDO));
+            orders.add(orderFactory.load(orderDO));
         }
         return orders;
     }
@@ -63,7 +64,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                 }
             }
         }
-        return orderFactory.loadFromDataObject(mainOrderDO);
+        return orderFactory.load(mainOrderDO);
 
     }
 
