@@ -38,7 +38,9 @@ public interface OrderMapper {
             @Result(column = "total_fee", property = "totalFee"),
             @Result(column = "discount_fee", property = "discountFee"),
             @Result(column = "gmt_create", property = "gmtCreate"),
-            @Result(column = "gmt_modified", property = "gmtModified")
+            @Result(column = "gmt_modified", property = "gmtModified"),
+            @Result(column = "status", property = "status"),
+            @Result(column = "pay_status", property = "payStatus")
     })
     OrderDO findById(Long id);
 
@@ -65,16 +67,19 @@ public interface OrderMapper {
 
         public static String findAll() {
             return new SQL() {{
-                SELECT("*");
-                FROM(TABLE_ORDER);
+                SELECT("t2.*");
+                FROM("(" + findMainOrderIds() + ") AS t1");
+                LEFT_OUTER_JOIN(TABLE_ORDER + " AS t2 ON t2.parent_id = t1.id");
+                ORDER_BY("id");
             }}.toString();
         }
 
-        public static String findById(final Long id) {
+        public static String findMainOrderIds() {
             return new SQL() {{
-                SELECT("*");
+                SELECT("id");
                 FROM(TABLE_ORDER);
-                WHERE("id = #{id}");
+                WHERE("is_main = 1");
+                ORDER_BY("gmt_create DESC");
             }}.toString();
         }
 
@@ -83,6 +88,14 @@ public interface OrderMapper {
                 SELECT("*");
                 FROM(TABLE_ORDER);
                 WHERE("parent_id = #{parentId}");
+            }}.toString();
+        }
+
+        public static String findById(final Long id) {
+            return new SQL() {{
+                SELECT("*");
+                FROM(TABLE_ORDER);
+                WHERE("id = #{id}");
             }}.toString();
         }
 
@@ -103,6 +116,8 @@ public interface OrderMapper {
                 VALUES("total_fee", "#{totalFee}");
                 VALUES("gmt_create", "#{gmtCreate}");
                 VALUES("gmt_modified", "#{gmtModified}");
+                VALUES("status", "#{status}");
+                VALUES("pay_status", "#{payStatus}");
             }}.toString();
         }
 
@@ -128,6 +143,8 @@ public interface OrderMapper {
                 SET("discount_fee = #{discountFee}");
                 SET("total_fee = #{totalFee}");
                 SET("gmt_modified = #{gmtModified}");
+                SET("status = #{status}");
+                SET("pay_status = #{payStatus}");
                 WHERE("id = #{id}");
             }}.toString();
         }

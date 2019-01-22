@@ -34,6 +34,15 @@ public class OrderTests {
     private BuyService buyService;
 
     @Test
+    public void testSelectAll() {
+
+        var orders = orderRepository.findAll();
+        System.out.println(orders);
+
+    }
+
+
+    @Test
     public void orderRepoTestMain() {
 
         Long userId = 999L;
@@ -42,6 +51,7 @@ public class OrderTests {
 
         var order = new Order();
         order.setBuyerId(userId);
+        order.setSellerId(sellerId);
 
         var subOrder = new SubOrder();
         subOrder.setSellerId(sellerId);
@@ -78,6 +88,7 @@ public class OrderTests {
 
         var order = new Order();
         order.setBuyerId(userId);
+        order.setSellerId(555L);
 
         var subOrder = new SubOrder();
         subOrder.setBuyerId(999L);

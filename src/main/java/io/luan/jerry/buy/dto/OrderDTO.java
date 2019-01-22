@@ -16,9 +16,9 @@ public class OrderDTO implements Serializable {
 
     private String source;
 
-    private List<SubOrderDTO> subOrders = new ArrayList<>();
+    private List<OrderLineDTO> orderLines = new ArrayList<>();
 
     public List<Long> getItemIds() {
-        return subOrders.stream().map(SubOrderDTO::getItemId).distinct().collect(Collectors.toList());
+        return orderLines.stream().map(OrderLineDTO::getItemId).distinct().collect(Collectors.toList());
     }
 }

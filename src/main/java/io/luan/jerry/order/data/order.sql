@@ -9,3 +9,18 @@ CREATE TABLE `order` (
   `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+SELECT
+    *
+FROM
+    (SELECT
+        id
+    FROM
+        `order`
+    WHERE
+        is_main = 1
+        order by gmt_create desc
+    LIMIT 1, 3) t1
+
+    LEFT JOIN `order` t2
+    ON t2.parent_id = t1.id;

@@ -1,25 +1,22 @@
 package io.luan.jerry.buy;
 
 import io.luan.jerry.buy.dto.OrderDTO;
-import io.luan.jerry.buy.dto.SubOrderDTO;
+import io.luan.jerry.buy.dto.OrderLineDTO;
 import io.luan.jerry.buy.service.BuyService;
-import io.luan.jerry.common.domain.EntityState;
 import io.luan.jerry.item.domain.Item;
 import io.luan.jerry.item.repository.ItemRepository;
 import io.luan.jerry.item.service.ItemService;
-import io.luan.jerry.order.domain.Order;
-import io.luan.jerry.order.domain.SubOrder;
 import io.luan.jerry.order.repository.OrderRepository;
 import io.luan.jerry.order.service.OrderService;
+import io.luan.jerry.payment.domain.PaymentStatus;
+import io.luan.jerry.payment.service.PaymentService;
+import io.luan.jerry.payment.vm.PayVM;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,6 +37,9 @@ public class BuyTests {
     @Autowired
     private BuyService buyService;
 
+    @Autowired
+    private PaymentService paymentService;
+
     @Test
     public void testMain() {
 
@@ -57,7 +57,7 @@ public class BuyTests {
 
         var request = new OrderDTO();
         request.setUserId(userId);
-        request.getSubOrders().add(new SubOrderDTO(item.getId(), 5));
+        request.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
 
         var order = buyService.createOrder(request);
 
@@ -80,7 +80,7 @@ public class BuyTests {
         item.setTitle(title);
         item.setImgUrl("http://www.baidu.com/logo.jpg");
         item.setPrice(100L);
-        item.setUserId(1L);
+        item.setUserId(5L);
         itemRepository.save(item);
 
         var title2 = "Item22" + System.currentTimeMillis();
@@ -97,8 +97,8 @@ public class BuyTests {
 
         var request = new OrderDTO();
         request.setUserId(userId);
-        request.getSubOrders().add(new SubOrderDTO(item.getId(), 5));
-        request.getSubOrders().add(new SubOrderDTO(item2.getId(), 3));
+        request.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
+        request.getOrderLines().add(new OrderLineDTO(item2.getId(), 3));
 
         Long totalFee = 5 * 100L + 3 * 10L;
         var order = buyService.createOrder(request);
@@ -119,6 +119,7 @@ public class BuyTests {
         var orderFromDb = orderRepository.findById(order.getId());
         Assert.assertNotNull(orderFromDb);
         Assert.assertEquals(order.getBuyerId(), orderFromDb.getBuyerId());
+        Assert.assertEquals(order.getSellerId(), orderFromDb.getSellerId());
         Assert.assertEquals(2, orderFromDb.getSubOrders().size());
         Assert.assertEquals(order.getSubOrders().get(0).getId(), orderFromDb.getSubOrders().get(0).getId());
         Assert.assertEquals(totalFee, orderFromDb.getTotalFee());
@@ -129,5 +130,28 @@ public class BuyTests {
 
         System.out.println(order);
         System.out.println(orderFromDb);
+
+
+        var payment = paymentService.findByOrderId(order.getId());
+        Assert.assertNotNull(payment);
+        Assert.assertEquals(payment.getOrderId(), order.getId());
+        Assert.assertEquals(payment.getPayerId(), order.getBuyerId());
+        Assert.assertEquals(payment.getPayeeId(), order.getSellerId());
+        Assert.assertEquals(payment.getTotalFee(), order.getTotalFee());
+        Assert.assertEquals(payment.getStatus(), order.getPayStatus());
+
+        System.out.println(payment);
+
+        Assert.assertEquals(PaymentStatus.Created, orderFromDb.getPayStatus());
+
+        var payVM = new PayVM();
+        payVM.setPaymentId(payment.getId());
+        payVM.setPassword("111");
+        var paidOrder = buyService.payOrder(payVM);
+        Assert.assertNotNull(paidOrder);
+        Assert.assertEquals(paidOrder.getPayStatus(), PaymentStatus.Paid);
+
+        var paidOrderFromDb = orderService.findById(paidOrder.getId());
+        Assert.assertEquals(PaymentStatus.Paid, paidOrderFromDb.getPayStatus());
     }
 }

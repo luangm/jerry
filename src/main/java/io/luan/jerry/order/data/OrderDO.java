@@ -31,6 +31,8 @@ public class OrderDO implements Serializable {
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
     private List<OrderDO> subOrders = new ArrayList<>();
+    private Integer status;
+    private Integer payStatus;
 
     public OrderDO() {
         //
@@ -55,13 +57,19 @@ public class OrderDO implements Serializable {
 
         this.gmtCreate = subOrder.getGmtCreate();
         this.gmtModified = subOrder.getGmtModified();
+
+        this.status = subOrder.getStatus().getValue();
+        this.payStatus = subOrder.getPayStatus().getValue();
     }
 
     public OrderDO(Order order) {
 
         this.id = order.getId();
-        this.parentId = 0L;
+        this.parentId = order.getId() != null ? order.getId() : 0L;
         this.buyerId = order.getBuyerId();
+        this.sellerId = order.getSellerId();
+        this.status = order.getStatus().getValue();
+        this.payStatus = order.getPayStatus().getValue();
 
         if (order.getSubOrders().size() == 1) {
             // Main + Sub
@@ -72,7 +80,6 @@ public class OrderDO implements Serializable {
             this.itemPrice = subOrder.getItemPrice();
             this.itemTitle = subOrder.getItemTitle();
             this.itemImgUrl = subOrder.getItemImgUrl();
-            this.sellerId = subOrder.getSellerId();
             this.discountFee = subOrder.getDiscountFee();
             this.quantity = order.getQuantity();
             this.totalFee = order.getTotalFee();
@@ -86,7 +93,6 @@ public class OrderDO implements Serializable {
             this.itemPrice = 0L;
             this.itemTitle = null;
             this.itemImgUrl = null;
-            this.sellerId = 0L;
             this.quantity = 0;
             this.discountFee = 0L;
             this.totalFee = order.getTotalFee();

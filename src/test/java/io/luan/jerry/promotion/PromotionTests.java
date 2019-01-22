@@ -1,7 +1,7 @@
 package io.luan.jerry.promotion;
 
 import io.luan.jerry.buy.dto.OrderDTO;
-import io.luan.jerry.buy.dto.SubOrderDTO;
+import io.luan.jerry.buy.dto.OrderLineDTO;
 import io.luan.jerry.buy.service.BuyService;
 import io.luan.jerry.common.domain.EntityState;
 import io.luan.jerry.item.domain.Item;
@@ -105,7 +105,7 @@ public class PromotionTests {
 
         var buyRequest = new OrderDTO();
         buyRequest.setUserId(1L);
-        buyRequest.getSubOrders().add(new SubOrderDTO(item.getId(), 5));
+        buyRequest.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
 
         var order = buyService.createOrder(buyRequest);
         Assert.assertNotNull(order);

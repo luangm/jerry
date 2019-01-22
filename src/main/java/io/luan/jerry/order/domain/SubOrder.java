@@ -1,6 +1,7 @@
 package io.luan.jerry.order.domain;
 
 import io.luan.jerry.common.domain.Entity;
+import io.luan.jerry.payment.domain.PaymentStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -61,6 +62,11 @@ public class SubOrder extends Entity {
     private Long discountFee = 0L;
 
     /**
+     * Status of the sub order
+     */
+    private OrderStatus status = OrderStatus.Created;
+
+    /**
      * Create Time
      */
     private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
@@ -70,7 +76,17 @@ public class SubOrder extends Entity {
      */
     private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
 
+    private PaymentStatus payStatus = PaymentStatus.Created;
+
     public Long getTotalFee() {
         return this.getItemPrice() * this.getQuantity() - this.getDiscountFee();
+    }
+
+    public void setPayStatus(PaymentStatus newValue) {
+        if (!newValue.equals(this.payStatus)) {
+            firePropertyChange("payStatus", this.payStatus, newValue);
+            this.payStatus = newValue;
+            this.gmtModified = LocalDateTime.now().withNano(0);
+        }
     }
 }

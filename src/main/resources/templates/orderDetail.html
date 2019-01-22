@@ -6,21 +6,21 @@
 </head>
 <body>
 
-<h1>Order Successful</h1>
+<h1>Order Detail: </h1>
 
-
-<table>
+<table th:object="${order}">
     <tr>
-        <td>Order Id:</td>
-        <td th:text="${order.id}"></td>
+        <td>Order ID:</td>
+        <td th:text="*{id}"></td>
     </tr>
+
     <tr>
         <td>Pay Status:</td>
-        <td th:text="${order.payStatus}"></td>
+        <td th:text="*{payStatus}"></td>
     </tr>
+
     <tr>
         <td>
-
             <table>
                 <tr>
                     <th>sellerId</th>
@@ -32,7 +32,7 @@
                     <th>discountFee</th>
                     <th>totalFee</th>
                 </tr>
-                <th:block th:each="subOrder: ${order.subOrders}">
+                <th:block th:each="subOrder: *{subOrders}">
                     <tr>
                         <td th:text="${subOrder.sellerId}"></td>
                         <td th:text="${subOrder.itemId}"></td>
@@ -49,18 +49,21 @@
     </tr>
     <tr>
         <td>Total Quantity:</td>
-        <td th:text="${order.quantity}"></td>
+        <td th:text="*{quantity}"></td>
     </tr>
     <tr>
         <td>Total Fee:</td>
-        <td th:text="${order.totalFee}"></td>
+        <td th:text="*{totalFee}"></td>
     </tr>
-    <tr>
-        <td>Created:</td>
-        <td th:text="${order.gmtCreate}"></td>
-    </tr>
+
+
 </table>
 
-<a href="/">Go home</a>
+
+<form action="/pay" method="post" th:if="${shouldPay}">
+    <input type="hidden" name="orderId" th:value="${order.id}"/>
+    <button type="submit" name="action" value="pay">Pay Now</button>
+</form>
+
 </body>
 </html>

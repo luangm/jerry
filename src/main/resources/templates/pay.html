@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Pay Order: </h1>
+<form action="/payProcess" method="post" th:object="${request}">
+    <input type="hidden" name="paymentId" th:value="${payment.id}"/>
+    <input type="hidden" name="orderId" th:value="${order.id}"/>
+    <table>
+        <tr>
+            <td>Order ID:</td>
+            <td th:text="${order.id}"></td>
+        </tr>
+        <tr>
+            <td>Payment ID:</td>
+            <td th:text="${payment.id}"></td>
+        </tr>
+        <tr>
+            <td>Total Fee:</td>
+            <td th:text="${payment.totalFee}"></td>
+        </tr>
+        <tr>
+            <td>Enter Password:</td>
+            <td>
+                <input type="number" name="password" id="password"/>
+            </td>
+        </tr>
+        <tr>
+            <td><button type="submit" name="action" value="pay">Pay Now</button></td>
+            <td><button type="submit" name="action" value="cancel">Cancel</button></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

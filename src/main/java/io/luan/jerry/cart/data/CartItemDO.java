@@ -20,17 +20,17 @@ public class CartItemDO implements Serializable {
     private Integer status;
 
     public CartItemDO() {
-
+        //
     }
 
     public CartItemDO(CartItem cartItem) {
-        this.setId(cartItem.getId());
-        this.setItemId(cartItem.getItemId());
-        this.setUserId(cartItem.getUserId());
-        this.setQuantity(cartItem.getQuantity());
-        this.setGmtCreate(cartItem.getGmtCreate());
-        this.setGmtModified(cartItem.getGmtModified());
-        this.setStatus(cartItem.getStatus().getValue());
+        this.id = cartItem.getId();
+        this.itemId = cartItem.getItemId();
+        this.userId = cartItem.getUserId();
+        this.quantity = cartItem.getQuantity();
+        this.gmtCreate = cartItem.getGmtCreate();
+        this.gmtModified = cartItem.getGmtModified();
+        this.status = cartItem.getStatus().getValue();
     }
 
 }

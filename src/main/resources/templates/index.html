@@ -114,15 +114,24 @@
     <tr>
         <th>Order ID</th>
         <th>Buyer ID</th>
+        <th>Seller ID</th>
         <th>Quantity</th>
         <th>Total Fee</th>
+        <th>Status</th>
+        <th>Pay Status</th>
     </tr>
     <th:block th:each="order:${orders}">
         <tr>
             <td th:text="${order.id}"></td>
             <td th:text="${order.buyerId}"></td>
+            <td th:text="${order.sellerId}"></td>
             <td th:text="${order.quantity}"></td>
             <td th:text="${order.totalFee}"></td>
+            <td th:text="${order.status}"></td>
+            <td th:text="${order.payStatus}"></td>
+            <td th:if="${user != null && user.id == order.buyerId}">
+                <a th:href="@{/order(orderId=${order.id})}">Detail</a>
+            </td>
         </tr>
     </th:block>
 </table>
