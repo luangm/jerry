@@ -16,6 +16,8 @@ public class OrderDTO implements Serializable {
 
     private String source;
 
+    private String address;
+
     private List<OrderLineDTO> orderLines = new ArrayList<>();
 
     public List<Long> getItemIds() {

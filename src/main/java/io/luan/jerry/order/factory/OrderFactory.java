@@ -6,6 +6,7 @@ import io.luan.jerry.order.domain.Order;
 import io.luan.jerry.order.domain.OrderStatus;
 import io.luan.jerry.order.domain.SubOrder;
 import io.luan.jerry.payment.domain.PaymentStatus;
+import io.luan.jerry.shipment.domain.ShipmentStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class OrderFactory {
         order.setGmtModified(orderDO.getGmtModified());
         order.setStatus(OrderStatus.fromValue(orderDO.getStatus()));
         order.setPayStatus(PaymentStatus.fromValue(orderDO.getPayStatus()));
+        order.setShipStatus(ShipmentStatus.fromValue(orderDO.getShipStatus()));
         order.setSubOrders(orderDO.getSubOrders().stream().map(this::loadSubOrder).collect(Collectors.toList()));
         order.setState(EntityState.Unchanged);
         return order;
@@ -45,6 +47,7 @@ public class OrderFactory {
         subOrder.setGmtModified(subOrderDO.getGmtModified());
         subOrder.setStatus(OrderStatus.fromValue(subOrderDO.getStatus()));
         subOrder.setPayStatus(PaymentStatus.fromValue(subOrderDO.getPayStatus()));
+        subOrder.setShipStatus(ShipmentStatus.fromValue(subOrderDO.getShipStatus()));
         subOrder.setState(EntityState.Unchanged);
         return subOrder;
     }

@@ -104,6 +104,7 @@ public class PromotionTests {
         Assert.assertEquals(1, list.size());
 
         var buyRequest = new OrderDTO();
+        buyRequest.setAddress("Address123");
         buyRequest.setUserId(1L);
         buyRequest.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
 

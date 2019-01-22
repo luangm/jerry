@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Ship Order: </h1>
+<form action="/shipProcess" method="post" th:object="${request}">
+    <input type="hidden" name="shipmentId" th:value="${shipment.id}"/>
+    <input type="hidden" name="orderId" th:value="${order.id}"/>
+    <table>
+        <tr>
+            <td>Order ID:</td>
+            <td th:text="${order.id}"></td>
+        </tr>
+        <tr>
+            <td>Shipment ID:</td>
+            <td th:text="${shipment.id}"></td>
+        </tr>
+        <tr>
+            <td>Courier:</td>
+            <td>
+                <select name="courier">
+                    <option value="1">Shun Feng</option>
+                    <option value="2">Fedex</option>
+                    <option value="3">Yuan Tong</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Enter Tracking #:</td>
+            <td>
+                <input type="text" name="trackingNo"/>
+            </td>
+        </tr>
+        <tr>
+            <td><button type="submit" name="action" value="ship">Ship</button></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

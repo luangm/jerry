@@ -40,6 +40,7 @@ public class BuyController {
         var orderDTO = new OrderDTO();
         orderDTO.setUserId(user.getId());
         orderDTO.setSource("cart");
+        orderDTO.setAddress(confirmOrderVM.getAddress());
         for (var subOrder : confirmOrderVM.getSubOrders()) {
             var subOrderDTO = new OrderLineDTO(subOrder.getItemId(), subOrder.getQuantity());
             orderDTO.getOrderLines().add(subOrderDTO);

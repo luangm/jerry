@@ -10,6 +10,10 @@ import io.luan.jerry.payment.domain.Payment;
 import io.luan.jerry.payment.service.PaymentService;
 import io.luan.jerry.payment.vm.PayVM;
 import io.luan.jerry.promotion.service.PromotionService;
+import io.luan.jerry.shipment.domain.Shipment;
+import io.luan.jerry.shipment.domain.ShipmentMethod;
+import io.luan.jerry.shipment.service.ShipmentService;
+import io.luan.jerry.shipment.vm.ShipVM;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,12 +32,15 @@ public class BuyServiceImpl implements BuyService {
 
     private final PaymentService paymentService;
 
+    private final ShipmentService shipmentService;
+
     @Autowired
-    public BuyServiceImpl(ItemService itemService, OrderService orderService, PromotionService promotionService, PaymentService paymentService) {
+    public BuyServiceImpl(ItemService itemService, OrderService orderService, PromotionService promotionService, PaymentService paymentService, ShipmentService shipmentService) {
         this.itemService = itemService;
         this.orderService = orderService;
         this.promotionService = promotionService;
         this.paymentService = paymentService;
+        this.shipmentService = shipmentService;
     }
 
     @Override
@@ -43,6 +50,9 @@ public class BuyServiceImpl implements BuyService {
 
         var payment = buildPayment(order);
         payment = paymentService.save(payment);
+
+        var shipment = buildShipment(order, request.getAddress());
+        shipment = shipmentService.save(shipment);
 
         return order;
     }
@@ -59,6 +69,32 @@ public class BuyServiceImpl implements BuyService {
 
         var order = orderService.findById(payment.getOrderId());
         order.setPayStatus(payment.getStatus());
+        order = orderService.save(order);
+
+        return order;
+    }
+
+    @Override
+    public Order receiveOrder(ShipVM request) {
+        var shipment = shipmentService.findById(request.getShipmentId());
+        shipment.receive();
+        shipment = shipmentService.save(shipment);
+
+        var order = orderService.findById(request.getOrderId());
+        order.setShipStatus(shipment.getStatus());
+        order = orderService.save(order);
+
+        return order;
+    }
+
+    @Override
+    public Order shipOrder(ShipVM request) {
+        var shipment = shipmentService.findById(request.getShipmentId());
+        shipment.ship();
+        shipment = shipmentService.save(shipment);
+
+        var order = orderService.findById(request.getOrderId());
+        order.setShipStatus(shipment.getStatus());
         order = orderService.save(order);
 
         return order;
@@ -108,5 +144,15 @@ public class BuyServiceImpl implements BuyService {
         payment.setPayeeId(order.getSellerId());
         payment.setChannelId(1L);
         return payment;
+    }
+
+    private Shipment buildShipment(Order order, String address) {
+        var shipment = new Shipment();
+        shipment.setOrderId(order.getId());
+        shipment.setBuyerId(order.getBuyerId());
+        shipment.setSellerId(order.getSellerId());
+        shipment.setMethod(ShipmentMethod.Courier);
+        shipment.setAddress(address);
+        return shipment;
     }
 }

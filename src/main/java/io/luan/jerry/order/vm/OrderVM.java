@@ -3,6 +3,7 @@ package io.luan.jerry.order.vm;
 import io.luan.jerry.order.domain.Order;
 import io.luan.jerry.order.domain.OrderStatus;
 import io.luan.jerry.payment.domain.PaymentStatus;
+import io.luan.jerry.shipment.domain.ShipmentStatus;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -26,9 +27,11 @@ public class OrderVM implements Serializable {
 
     private LocalDateTime gmtModified;
 
-    private OrderStatus status;
+    private String status;
 
-    private PaymentStatus payStatus;
+    private String payStatus;
+
+    private String shipStatus;
 
     private List<SubOrderVM> subOrders = new ArrayList<>();
 
@@ -45,8 +48,9 @@ public class OrderVM implements Serializable {
         this.totalFee = order.getTotalFee();
         this.gmtCreate = order.getGmtCreate();
         this.gmtModified = order.getGmtModified();
-        this.status = order.getStatus();
-        this.payStatus = order.getPayStatus();
+        this.status = order.getStatus().name();
+        this.payStatus = order.getPayStatus().name();
+        this.shipStatus = order.getShipStatus().name();
         this.quantity = order.getQuantity();
         this.subOrders = order.getSubOrders().stream().map(SubOrderVM::new).collect(Collectors.toList());
     }

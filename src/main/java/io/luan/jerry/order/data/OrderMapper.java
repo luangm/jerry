@@ -40,7 +40,8 @@ public interface OrderMapper {
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified"),
             @Result(column = "status", property = "status"),
-            @Result(column = "pay_status", property = "payStatus")
+            @Result(column = "pay_status", property = "payStatus"),
+            @Result(column = "ship_status", property = "shipStatus")
     })
     OrderDO findById(Long id);
 
@@ -118,6 +119,7 @@ public interface OrderMapper {
                 VALUES("gmt_modified", "#{gmtModified}");
                 VALUES("status", "#{status}");
                 VALUES("pay_status", "#{payStatus}");
+                VALUES("ship_status", "#{shipStatus}");
             }}.toString();
         }
 
@@ -145,6 +147,7 @@ public interface OrderMapper {
                 SET("gmt_modified = #{gmtModified}");
                 SET("status = #{status}");
                 SET("pay_status = #{payStatus}");
+                SET("ship_status = #{shipStatus}");
                 WHERE("id = #{id}");
             }}.toString();
         }

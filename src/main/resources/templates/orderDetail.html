@@ -20,10 +20,20 @@
     </tr>
 
     <tr>
+        <td>Shipment Status:</td>
+        <td th:text="*{shipStatus}"></td>
+    </tr>
+
+    <tr>
+        <td>Address:</td>
+        <td th:text="${shipment.address}"></td>
+    </tr>
+
+    <tr>
+        <td>Items:</td>
         <td>
             <table>
                 <tr>
-                    <th>sellerId</th>
                     <th>itemId</th>
                     <th>itemTitle</th>
                     <th>itemImgUrl</th>
@@ -34,7 +44,6 @@
                 </tr>
                 <th:block th:each="subOrder: *{subOrders}">
                     <tr>
-                        <td th:text="${subOrder.sellerId}"></td>
                         <td th:text="${subOrder.itemId}"></td>
                         <td th:text="${subOrder.itemTitle}"></td>
                         <td th:text="${subOrder.itemImgUrl}"></td>
@@ -56,13 +65,23 @@
         <td th:text="*{totalFee}"></td>
     </tr>
 
-
 </table>
 
 
-<form action="/pay" method="post" th:if="${shouldPay}">
+<form action="/pay" method="post" th:if="${order.payStatus == 'Created'}">
     <input type="hidden" name="orderId" th:value="${order.id}"/>
     <button type="submit" name="action" value="pay">Pay Now</button>
+</form>
+
+<form action="/ship" method="post" th:if="${order.shipStatus == 'Created'}">
+    <input type="hidden" name="orderId" th:value="${order.id}"/>
+    <button type="submit" name="action" value="Ship">Ship Now</button>
+</form>
+
+<form action="/receive" method="post" th:if="${order.shipStatus == 'Shipped'}">
+    <input type="hidden" name="orderId" th:value="${order.id}"/>
+    <input type="hidden" name="shipmentId" th:value="${shipment.id}"/>
+    <button type="submit" name="action" value="Receive">Receive Package</button>
 </form>
 
 </body>

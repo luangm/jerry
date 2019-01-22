@@ -19,6 +19,8 @@ public class ConfirmOrderVM implements Serializable {
 
     private Integer quantity;
 
+    private String address;
+
     private List<SubOrderVM> subOrders = new ArrayList<>();
 
     public ConfirmOrderVM() {

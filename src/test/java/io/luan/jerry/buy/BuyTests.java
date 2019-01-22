@@ -57,6 +57,7 @@ public class BuyTests {
 
         var request = new OrderDTO();
         request.setUserId(userId);
+        request.setAddress("Address123");
         request.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
 
         var order = buyService.createOrder(request);
@@ -97,6 +98,7 @@ public class BuyTests {
 
         var request = new OrderDTO();
         request.setUserId(userId);
+        request.setAddress("Address123");
         request.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
         request.getOrderLines().add(new OrderLineDTO(item2.getId(), 3));
 

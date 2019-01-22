@@ -33,6 +33,7 @@ public class OrderDO implements Serializable {
     private List<OrderDO> subOrders = new ArrayList<>();
     private Integer status;
     private Integer payStatus;
+    private Integer shipStatus;
 
     public OrderDO() {
         //
@@ -60,6 +61,7 @@ public class OrderDO implements Serializable {
 
         this.status = subOrder.getStatus().getValue();
         this.payStatus = subOrder.getPayStatus().getValue();
+        this.shipStatus = subOrder.getShipStatus().getValue();
     }
 
     public OrderDO(Order order) {
@@ -70,6 +72,7 @@ public class OrderDO implements Serializable {
         this.sellerId = order.getSellerId();
         this.status = order.getStatus().getValue();
         this.payStatus = order.getPayStatus().getValue();
+        this.shipStatus = order.getShipStatus().getValue();
 
         if (order.getSubOrders().size() == 1) {
             // Main + Sub

@@ -19,8 +19,8 @@ public class PaymentFactory {
         payment.setTotalFee(paymentDO.getTotalFee());
         payment.setGmtCreate(paymentDO.getGmtCreate());
         payment.setGmtModified(paymentDO.getGmtModified());
-        payment.setState(EntityState.Unchanged);
         payment.setStatus(PaymentStatus.fromValue(paymentDO.getStatus()));
+        payment.setState(EntityState.Unchanged);
         return payment;
     }
 }
