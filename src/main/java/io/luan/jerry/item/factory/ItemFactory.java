@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ItemFactory {
 
-    public Item loadFromDataObject(ItemDO itemDO) {
+    public Item load(ItemDO itemDO) {
         var item = new Item();
         item.setId(itemDO.getId());
         item.setUserId(itemDO.getUserId());
@@ -17,6 +17,8 @@ public class ItemFactory {
         item.setPrice(itemDO.getPrice());
         item.setCategoryId(itemDO.getCategoryId());
         item.setGmtCreate(itemDO.getGmtCreate());
+
+        // Note: GmtModified and State should ALWAYS be set last in that order
         item.setGmtModified(itemDO.getGmtModified());
         item.setState(EntityState.Unchanged);
         return item;

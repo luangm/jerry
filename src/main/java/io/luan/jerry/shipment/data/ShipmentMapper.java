@@ -24,7 +24,7 @@ public interface ShipmentMapper {
             @Result(column = "buyer_id", property = "buyerId"),
             @Result(column = "seller_id", property = "sellerId"),
             @Result(column = "method", property = "method"),
-            @Result(column = "address", property = "address"),
+            @Result(column = "address_address", property = "addressAddress"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified"),
             @Result(column = "status", property = "status")
@@ -86,7 +86,7 @@ public interface ShipmentMapper {
                 VALUES("buyer_id", "#{buyerId}");
                 VALUES("seller_id", "#{sellerId}");
                 VALUES("method", "#{method}");
-                VALUES("address", "#{address}");
+                VALUES("address_address", "#{addressAddress}");
                 VALUES("gmt_create", "#{gmtCreate}");
                 VALUES("gmt_modified", "#{gmtModified}");
                 VALUES("status", "#{status}");

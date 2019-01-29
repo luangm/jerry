@@ -8,6 +8,14 @@
 
 <h1>Confirm Order: </h1>
 <form action="#" th:action="@{/buy}" method="post" th:object="${order}">
+
+    <table>
+        <tr>
+            <td>Delivery Address: </td>
+            <td th:text="${order.address}"></td>
+        </tr>
+    </table>
+
     <input type="hidden" th:field="*{buyerId}"/>
     <th:block th:each="subOrder, stat: *{subOrders}">
         <input type="hidden" th:field="*{subOrders[__${stat.index}__].itemId}" />
@@ -17,11 +25,6 @@
         <tr>
             <td>Username:</td>
             <td th:text="${user.username}"></td>
-        </tr>
-
-        <tr>
-            <td>Address:</td>
-            <td><input type="text" name="address" /></td>
         </tr>
         <tr>
             <td>buyerId:</td>

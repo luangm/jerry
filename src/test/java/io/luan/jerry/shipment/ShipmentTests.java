@@ -1,5 +1,6 @@
 package io.luan.jerry.shipment;
 
+import io.luan.jerry.address.domain.Address;
 import io.luan.jerry.shipment.data.ShipmentMapper;
 import io.luan.jerry.shipment.domain.Shipment;
 import io.luan.jerry.shipment.domain.ShipmentMethod;
@@ -31,7 +32,7 @@ public class ShipmentTests {
         shipment.setOrderId(orderId);
         shipment.setBuyerId(222L);
         shipment.setSellerId(333L);
-        shipment.setAddress("Address 123");
+        shipment.setAddress(new Address("Address 123"));
         shipment.setMethod(ShipmentMethod.Courier);
 
         shipmentService.save(shipment);

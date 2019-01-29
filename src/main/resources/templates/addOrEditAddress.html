@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>Add Address: </h1>
+
+<form action="#" th:action="${action}" method="post" th:object="${request}">
+    <input type="hidden" th:if="${request.id != null}" th:field="*{id}" />
+    <table>
+        <tr>
+            <td>Receiver:</td>
+            <td>
+                <input type="text" th:field="*{receiver}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Phone:</td>
+            <td>
+                <input type="text" th:field="*{phone}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Address:</td>
+            <td>
+                <input type="text" th:field="*{address}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Is Default:</td>
+            <td>
+                <input type="checkbox" th:field="*{isDefault}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

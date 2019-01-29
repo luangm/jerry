@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PromotionFactory {
 
-    public Promotion loadFromData(PromotionDO promotionDO) {
+    public Promotion load(PromotionDO promotionDO) {
         var promotion = new Promotion();
         promotion.setId(promotionDO.getId());
         promotion.setType(PromotionType.fromValue(promotionDO.getType()));
@@ -18,6 +18,8 @@ public class PromotionFactory {
         promotion.setStartTime(promotionDO.getStartTime());
         promotion.setEndTime(promotionDO.getEndTime());
         promotion.setGmtCreate(promotionDO.getGmtCreate());
+
+        // Note: GmtModified and State should ALWAYS be set last in that order
         promotion.setGmtModified(promotionDO.getGmtModified());
         promotion.setState(EntityState.Unchanged);
         return promotion;

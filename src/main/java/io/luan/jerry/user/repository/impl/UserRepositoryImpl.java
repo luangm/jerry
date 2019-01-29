@@ -42,7 +42,7 @@ public class UserRepositoryImpl implements UserRepository {
     public User findById(Long id) {
         var userDO = userMapper.findById(id);
         if (userDO != null) {
-            return userFactory.loadFromDataObject(userDO);
+            return userFactory.load(userDO);
         }
         return null;
     }
@@ -60,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository {
     public User findByUsername(String username) {
         var userDO = userMapper.findByUsername(username);
         if (userDO != null) {
-            return userFactory.loadFromDataObject(userDO);
+            return userFactory.load(userDO);
         }
         return null;
     }

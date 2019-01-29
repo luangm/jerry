@@ -9,15 +9,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class CartItemFactory {
 
-    public CartItem loadFromDataObject(CartItemDO cartItemDO) {
+    public CartItem load(CartItemDO cartItemDO) {
         var cartItem = new CartItem();
         cartItem.setId(cartItemDO.getId());
         cartItem.setUserId(cartItemDO.getUserId());
         cartItem.setItemId(cartItemDO.getItemId());
         cartItem.setQuantity(cartItemDO.getQuantity());
         cartItem.setGmtCreate(cartItemDO.getGmtCreate());
-        cartItem.setGmtModified(cartItemDO.getGmtModified());
         cartItem.setStatus(CartItemState.fromValue(cartItemDO.getStatus()));
+
+        // Note: GmtModified and State should ALWAYS be set last in that order
+        cartItem.setGmtModified(cartItemDO.getGmtModified());
         cartItem.setState(EntityState.Unchanged);
         return cartItem;
     }

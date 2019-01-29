@@ -44,7 +44,7 @@ public class CartRepositoryImpl implements CartRepository {
     public Cart findById(@NotNull Long userId) {
         List<CartItem> cartItems = new ArrayList<>();
         for (var cartItemDO : cartItemMapper.findAllByUserId(userId)) {
-            var cartItem = cartItemFactory.loadFromDataObject(cartItemDO);
+            var cartItem = cartItemFactory.load(cartItemDO);
             cartItems.add(cartItem);
         }
 

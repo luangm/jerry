@@ -75,8 +75,8 @@ public class BuyController {
         var subOrderDTO = new OrderLineDTO(itemId, 1);
         orderDTO.getOrderLines().add(subOrderDTO);
 
-        var order = buyService.confirmOrder(orderDTO);
-        var confirmOrderVM = new ConfirmOrderVM(order);
+        var confirmOrderResult = buyService.confirmOrder(orderDTO);
+        var confirmOrderVM = new ConfirmOrderVM(confirmOrderResult);
 
         var mav = new ModelAndView("confirmOrder");
         mav.addObject("user", user);

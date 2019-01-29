@@ -18,8 +18,10 @@ public class PaymentFactory {
         payment.setChannelId(paymentDO.getChannelId());
         payment.setTotalFee(paymentDO.getTotalFee());
         payment.setGmtCreate(paymentDO.getGmtCreate());
-        payment.setGmtModified(paymentDO.getGmtModified());
         payment.setStatus(PaymentStatus.fromValue(paymentDO.getStatus()));
+
+        // Note: GmtModified and State should ALWAYS be set last in that order
+        payment.setGmtModified(paymentDO.getGmtModified());
         payment.setState(EntityState.Unchanged);
         return payment;
     }

@@ -38,7 +38,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     public List<Category> findAll() {
         List<Category> categories = new ArrayList<>();
         for (CategoryDO categoryDO : categoryMapper.findAll()) {
-            var category = categoryFactory.loadFromDataObject(categoryDO);
+            var category = categoryFactory.load(categoryDO);
             categories.add(category);
         }
         return categories;
@@ -48,7 +48,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     public Category findById(Long id) {
         var categoryDO = categoryMapper.findById(id);
         if (categoryDO != null) {
-            return categoryFactory.loadFromDataObject(categoryDO);
+            return categoryFactory.load(categoryDO);
         }
         return null;
     }

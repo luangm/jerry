@@ -39,7 +39,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     public List<Item> findAll() {
         List<Item> items = new ArrayList<>();
         for (ItemDO itemDO : itemMapper.findAll()) {
-            Item item = itemFactory.loadFromDataObject(itemDO);
+            Item item = itemFactory.load(itemDO);
             items.add(item);
         }
         return items;
@@ -49,7 +49,7 @@ public class ItemRepositoryImpl implements ItemRepository {
     public Item findById(Long id) {
         var itemDO = itemMapper.findById(id);
         if (itemDO != null) {
-            return itemFactory.loadFromDataObject(itemDO);
+            return itemFactory.load(itemDO);
         }
         return null;
     }

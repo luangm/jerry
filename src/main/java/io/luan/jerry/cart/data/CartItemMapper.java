@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public interface CartItemMapper {
 
-    //    @DeleteProvider(type = CartSqlProvider.class, method = "delete")
+    //    @DeleteProvider(type = DeliveryAddressSqlProvider.class, method = "delete")
 //    int delete(ItemDO item);
 //
     @SelectProvider(type = CartSqlProvider.class, method = "findAllByUserId")

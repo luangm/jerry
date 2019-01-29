@@ -21,12 +21,14 @@ public class OrderFactory {
         order.setBuyerId(orderDO.getBuyerId());
         order.setSellerId(orderDO.getSellerId());
         order.setTotalFee(orderDO.getTotalFee());
-        order.setGmtCreate(orderDO.getGmtCreate());
-        order.setGmtModified(orderDO.getGmtModified());
         order.setStatus(OrderStatus.fromValue(orderDO.getStatus()));
         order.setPayStatus(PaymentStatus.fromValue(orderDO.getPayStatus()));
         order.setShipStatus(ShipmentStatus.fromValue(orderDO.getShipStatus()));
         order.setSubOrders(orderDO.getSubOrders().stream().map(this::loadSubOrder).collect(Collectors.toList()));
+        order.setGmtCreate(orderDO.getGmtCreate());
+
+        // Note: GmtModified and State should ALWAYS be set last in that order
+        order.setGmtModified(orderDO.getGmtModified());
         order.setState(EntityState.Unchanged);
         return order;
     }
@@ -44,10 +46,12 @@ public class OrderFactory {
         subOrder.setQuantity(subOrderDO.getQuantity());
         subOrder.setDiscountFee(subOrderDO.getDiscountFee());
         subOrder.setGmtCreate(subOrderDO.getGmtCreate());
-        subOrder.setGmtModified(subOrderDO.getGmtModified());
         subOrder.setStatus(OrderStatus.fromValue(subOrderDO.getStatus()));
         subOrder.setPayStatus(PaymentStatus.fromValue(subOrderDO.getPayStatus()));
         subOrder.setShipStatus(ShipmentStatus.fromValue(subOrderDO.getShipStatus()));
+
+        // Note: GmtModified and State should ALWAYS be set last in that order
+        subOrder.setGmtModified(subOrderDO.getGmtModified());
         subOrder.setState(EntityState.Unchanged);
         return subOrder;
     }

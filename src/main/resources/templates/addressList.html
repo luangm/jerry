@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="application/javascript">
+        function updateQuantity(itemId, quantityId) {
+            console.log("Test: " + quantityId);
+            var ele = document.getElementById(quantityId);
+            var value = ele.value;
+            fetch("/cart/change", {
+                method: 'post',
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify({
+                    itemId: itemId,
+                    quantity: value
+                })
+            }).then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                console.log(text);
+                window.location.reload(false);
+            })
+
+        }
+
+        function remove(itemId) {
+            fetch("/cart/remove", {
+                method: 'post',
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify({
+                    itemId: itemId
+                })
+            }).then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                console.log(text);
+                window.location.reload(false);
+            })
+
+        }
+    </script>
+</head>
+<body>
+
+<h1>DeliveryAddress List:</h1>
+
+<div>
+    <a href="#" th:href="@{/address/new}">Add Address</a>
+</div>
+
+<form action="#" th:action="@{/address/delete}">
+<table>
+    <tr>
+        <th>Address ID</th>
+        <th>Receiver</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Is Default</th>
+        <th>Operations</th>
+    </tr>
+    <th:block th:each="address, stat : ${addresses}">
+        <tr>
+            <td th:text="${address.id}"></td>
+            <td th:text="${address.receiver}"></td>
+            <td th:text="${address.phone}"></td>
+            <td th:text="${address.address}"></td>
+            <td th:text="${address.isDefault}"></td>
+            <td>
+                <a href="#" th:href="@{/address/edit(id=${address.id})}">Edit</a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</form>
+</body>
+</html>

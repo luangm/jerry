@@ -1,5 +1,6 @@
 package io.luan.jerry.shipment.factory;
 
+import io.luan.jerry.address.domain.Address;
 import io.luan.jerry.common.domain.EntityState;
 import io.luan.jerry.shipment.data.ShipmentDO;
 import io.luan.jerry.shipment.domain.Shipment;
@@ -17,10 +18,12 @@ public class ShipmentFactory {
         shipment.setSellerId(shipmentDO.getSellerId());
         shipment.setBuyerId(shipmentDO.getBuyerId());
         shipment.setMethod(ShipmentMethod.fromValue(shipmentDO.getMethod()));
-        shipment.setAddress(shipmentDO.getAddress());
+        shipment.setAddress(new Address(shipmentDO.getAddressAddress()));
         shipment.setGmtCreate(shipmentDO.getGmtCreate());
-        shipment.setGmtModified(shipmentDO.getGmtModified());
         shipment.setStatus(ShipmentStatus.fromValue(shipmentDO.getStatus()));
+
+        // Note: GmtModified and State should ALWAYS be set last in that order
+        shipment.setGmtModified(shipmentDO.getGmtModified());
         shipment.setState(EntityState.Unchanged);
         return shipment;
     }

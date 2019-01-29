@@ -16,7 +16,7 @@ public class ShipmentDO implements Serializable {
     private Long buyerId;
     private Long sellerId;
     private Integer method;
-    private String address;
+    private String addressAddress;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
     private Integer status;
@@ -31,7 +31,7 @@ public class ShipmentDO implements Serializable {
         this.buyerId = shipment.getBuyerId();
         this.sellerId = shipment.getSellerId();
         this.method = shipment.getMethod().getValue();
-        this.address = shipment.getAddress();
+        this.addressAddress = shipment.getAddress().getAddress();
         this.gmtCreate = shipment.getGmtCreate();
         this.gmtModified = shipment.getGmtModified();
         this.status = shipment.getStatus().getValue();

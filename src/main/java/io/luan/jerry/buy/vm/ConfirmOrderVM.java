@@ -1,6 +1,6 @@
 package io.luan.jerry.buy.vm;
 
-import io.luan.jerry.order.domain.Order;
+import io.luan.jerry.buy.dto.ConfirmOrderResult;
 import io.luan.jerry.order.vm.SubOrderVM;
 import lombok.Data;
 
@@ -27,13 +27,20 @@ public class ConfirmOrderVM implements Serializable {
         //
     }
 
-    public ConfirmOrderVM(Order entity) {
-        this.orderId = entity.getId();
-        this.buyerId = entity.getBuyerId();
-        for (var subOrder : entity.getSubOrders()) {
+    public ConfirmOrderVM(ConfirmOrderResult result) {
+        var order = result.getOrder();
+
+        this.orderId = order.getId();
+        this.buyerId = order.getBuyerId();
+        for (var subOrder : order.getSubOrders()) {
             subOrders.add(new SubOrderVM(subOrder));
         }
-        this.totalFee = entity.getTotalFee();
-        this.quantity = entity.getQuantity();
+        this.totalFee = order.getTotalFee();
+        this.quantity = order.getQuantity();
+
+        var address = result.getShipment().getAddress();
+        if (address != null) {
+            this.address = address.getAddress();
+        }
     }
 }

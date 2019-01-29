@@ -1,5 +1,8 @@
 package io.luan.jerry.buy.service.impl;
 
+import io.luan.jerry.address.domain.Address;
+import io.luan.jerry.address.service.DeliveryAddressService;
+import io.luan.jerry.buy.dto.ConfirmOrderResult;
 import io.luan.jerry.buy.dto.OrderDTO;
 import io.luan.jerry.buy.service.BuyService;
 import io.luan.jerry.item.service.ItemService;
@@ -34,13 +37,16 @@ public class BuyServiceImpl implements BuyService {
 
     private final ShipmentService shipmentService;
 
+    private final DeliveryAddressService deliveryAddressService;
+
     @Autowired
-    public BuyServiceImpl(ItemService itemService, OrderService orderService, PromotionService promotionService, PaymentService paymentService, ShipmentService shipmentService) {
+    public BuyServiceImpl(ItemService itemService, OrderService orderService, PromotionService promotionService, PaymentService paymentService, ShipmentService shipmentService, DeliveryAddressService deliveryAddressService) {
         this.itemService = itemService;
         this.orderService = orderService;
         this.promotionService = promotionService;
         this.paymentService = paymentService;
         this.shipmentService = shipmentService;
+        this.deliveryAddressService = deliveryAddressService;
     }
 
     @Override
@@ -51,15 +57,34 @@ public class BuyServiceImpl implements BuyService {
         var payment = buildPayment(order);
         payment = paymentService.save(payment);
 
-        var shipment = buildShipment(order, request.getAddress());
-        shipment = shipmentService.save(shipment);
+        var buyerId = request.getUserId();
+        var defaultAddress = deliveryAddressService.findDefaultByUserId(buyerId);
+        if (defaultAddress != null) {
+            var shipment = buildShipment(order, defaultAddress.getAddress());
+            shipment = shipmentService.save(shipment);
+        }
 
         return order;
     }
 
     @Override
-    public Order confirmOrder(OrderDTO request) {
-        return this.buildOrder(request);
+    public ConfirmOrderResult confirmOrder(OrderDTO request) {
+        var result = new ConfirmOrderResult();
+
+        var order = this.buildOrder(request);
+        result.setOrder(order);
+
+        var payment = this.buildPayment(order);
+        result.setPayment(payment);
+
+        var buyerId = request.getUserId();
+        var defaultAddress = deliveryAddressService.findDefaultByUserId(buyerId);
+        if (defaultAddress != null) {
+            var shipment = buildShipment(order, defaultAddress.getAddress());
+            result.setShipment(shipment);
+        }
+
+        return result;
     }
 
     @Override
@@ -101,6 +126,7 @@ public class BuyServiceImpl implements BuyService {
     }
 
     private Order buildOrder(OrderDTO request) {
+
         var order = new Order();
         order.setBuyerId(request.getUserId());
 
@@ -146,7 +172,7 @@ public class BuyServiceImpl implements BuyService {
         return payment;
     }
 
-    private Shipment buildShipment(Order order, String address) {
+    private Shipment buildShipment(Order order, Address address) {
         var shipment = new Shipment();
         shipment.setOrderId(order.getId());
         shipment.setBuyerId(order.getBuyerId());

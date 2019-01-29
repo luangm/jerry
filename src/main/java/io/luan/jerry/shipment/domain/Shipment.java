@@ -1,5 +1,6 @@
 package io.luan.jerry.shipment.domain;
 
+import io.luan.jerry.address.domain.Address;
 import io.luan.jerry.common.domain.Entity;
 import io.luan.jerry.common.domain.EntityState;
 import lombok.Data;
@@ -41,7 +42,7 @@ public class Shipment extends Entity {
     /**
      * Address
      */
-    private String address;
+    private Address address;
 
     /**
      * Create Time
@@ -70,6 +71,14 @@ public class Shipment extends Entity {
         if (!newValue.equals(this.status)) {
             firePropertyChange("status", this.status, newValue);
             this.status = newValue;
+            this.gmtModified = LocalDateTime.now().withNano(0);
+        }
+    }
+
+    public void setAddress(Address newValue) {
+        if (!newValue.equals(this.address)) {
+            firePropertyChange("address", this.address, newValue);
+            this.address = newValue;
             this.gmtModified = LocalDateTime.now().withNano(0);
         }
     }

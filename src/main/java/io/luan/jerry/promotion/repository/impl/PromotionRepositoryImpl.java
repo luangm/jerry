@@ -6,9 +6,6 @@ import io.luan.jerry.promotion.data.PromotionMapper;
 import io.luan.jerry.promotion.domain.Promotion;
 import io.luan.jerry.promotion.factory.PromotionFactory;
 import io.luan.jerry.promotion.repository.PromotionRepository;
-import io.luan.jerry.promotion.data.PromotionMapper;
-import io.luan.jerry.promotion.factory.PromotionFactory;
-import io.luan.jerry.promotion.repository.PromotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +41,7 @@ public class PromotionRepositoryImpl implements PromotionRepository {
     public List<Promotion> findAll() {
         List<Promotion> list = new ArrayList<>();
         for (PromotionDO promotionDO : promotionMapper.findAll()) {
-            Promotion promotion = promotionFactory.loadFromData(promotionDO);
+            Promotion promotion = promotionFactory.load(promotionDO);
             list.add(promotion);
         }
         return list;
@@ -54,7 +51,7 @@ public class PromotionRepositoryImpl implements PromotionRepository {
     public Promotion findById(Long id) {
         var promotionDO = promotionMapper.findById(id);
         if (promotionDO != null) {
-            return promotionFactory.loadFromData(promotionDO);
+            return promotionFactory.load(promotionDO);
         }
         return null;
     }
@@ -63,7 +60,7 @@ public class PromotionRepositoryImpl implements PromotionRepository {
     public List<Promotion> findByItemId(Long itemId) {
         List<Promotion> list = new ArrayList<>();
         for (PromotionDO promotionDO : promotionMapper.findAllByItemIdAndTime(itemId, LocalDateTime.now())) {
-            Promotion promotion = promotionFactory.loadFromData(promotionDO);
+            Promotion promotion = promotionFactory.load(promotionDO);
             list.add(promotion);
         }
         return list;
@@ -73,7 +70,7 @@ public class PromotionRepositoryImpl implements PromotionRepository {
     public List<Promotion> findByItemIds(List<Long> itemIds) {
         List<Promotion> list = new ArrayList<>();
         for (PromotionDO promotionDO : promotionMapper.findByItemIds(itemIds, LocalDateTime.now())) {
-            Promotion promotion = promotionFactory.loadFromData(promotionDO);
+            Promotion promotion = promotionFactory.load(promotionDO);
             list.add(promotion);
         }
         return list;
