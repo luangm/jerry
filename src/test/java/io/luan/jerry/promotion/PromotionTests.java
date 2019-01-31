@@ -52,7 +52,7 @@ public class PromotionTests {
         item.setPrice(100L);
         item.setUserId(1L);
 
-        item = itemService.publish(item);
+        item = itemService.save(item);
 
         var itemId = item.getId();
         var newPrice = 95L;
@@ -84,7 +84,7 @@ public class PromotionTests {
         item.setPrice(100L);
         item.setUserId(1L);
 
-        item = itemService.publish(item);
+        item = itemService.save(item);
 
         var itemId = item.getId();
         var newPrice = 95L;

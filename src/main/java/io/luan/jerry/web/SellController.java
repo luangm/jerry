@@ -1,6 +1,7 @@
 package io.luan.jerry.web;
 
 import io.luan.jerry.category.service.CategoryService;
+import io.luan.jerry.inventory.service.InventoryService;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.security.SecurityUtils;
 import io.luan.jerry.sell.dto.PublishItemDTO;
@@ -22,11 +23,14 @@ public class SellController {
 
     private final CategoryService categoryService;
 
+    private final InventoryService inventoryService;
+
     @Autowired
-    public SellController(SellService sellService, ItemService itemService, CategoryService categoryService) {
+    public SellController(SellService sellService, ItemService itemService, CategoryService categoryService, InventoryService inventoryService) {
         this.sellService = sellService;
         this.itemService = itemService;
         this.categoryService = categoryService;
+        this.inventoryService = inventoryService;
     }
 
     @PostMapping("/sell")
@@ -54,12 +58,16 @@ public class SellController {
         if (itemId != null) {
             var existing = itemService.findById(itemId);
             if (existing != null && existing.getUserId() == user.getId()) {
+
+                var inventory = inventoryService.findById(existing.getInventoryId());
+
                 var dto = new PublishItemDTO();
                 dto.setCategoryId(existing.getCategoryId());
                 dto.setTitle(existing.getTitle());
                 dto.setImgUrl(existing.getImgUrl());
                 dto.setPrice(existing.getPrice());
                 dto.setItemId(itemId);
+                dto.setInventory(inventory.getAvailable());
                 mav.addObject("item", dto);
                 mav.addObject("categories", categories);
             }

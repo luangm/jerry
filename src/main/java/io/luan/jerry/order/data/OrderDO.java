@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,8 +29,8 @@ public class OrderDO implements Serializable {
     private Integer quantity; // sub + main
     private Long discountFee; // sub
     private Long totalFee; // main
-    private LocalDateTime gmtCreate;
-    private LocalDateTime gmtModified;
+    private OffsetDateTime gmtCreate;
+    private OffsetDateTime gmtModified;
     private List<OrderDO> subOrders = new ArrayList<>();
     private Integer status;
     private Integer payStatus;

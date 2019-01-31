@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +40,12 @@ public class Order extends Entity {
     /**
      * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtCreate = OffsetDateTime.now().withNano(0);
 
     /**
      * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtModified = OffsetDateTime.now().withNano(0);
 
     /**
      * Status of the entire order
@@ -83,7 +84,7 @@ public class Order extends Entity {
         if (!newValue.equals(this.payStatus)) {
             firePropertyChange("payStatus", this.payStatus, newValue);
             this.payStatus = newValue;
-            this.gmtModified = LocalDateTime.now().withNano(0);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
         }
     }
 
@@ -91,7 +92,15 @@ public class Order extends Entity {
         if (!newValue.equals(this.shipStatus)) {
             firePropertyChange("shipStatus", this.shipStatus, newValue);
             this.shipStatus = newValue;
-            this.gmtModified = LocalDateTime.now().withNano(0);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
+    public void enable() {
+        if (this.status == OrderStatus.Created) {
+            firePropertyChange("status", this.status, OrderStatus.Enabled);
+            this.status = OrderStatus.Enabled;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
         }
     }
 }

@@ -22,6 +22,7 @@ public interface ItemMapper {
             @Result(column = "id", property = "id"),
             @Result(column = "user_id", property = "userId"),
             @Result(column = "category_id", property = "categoryId"),
+            @Result(column = "inventory_id", property = "inventoryId"),
             @Result(column = "title", property = "title"),
             @Result(column = "img_url", property = "imgUrl"),
             @Result(column = "price", property = "price"),
@@ -71,6 +72,7 @@ public interface ItemMapper {
                 INSERT_INTO(TABLE_ITEM);
                 VALUES("user_id", "#{userId}");
                 VALUES("category_id", "#{categoryId}");
+                VALUES("inventory_id", "#{inventoryId}");
                 VALUES("title", "#{title}");
                 VALUES("img_url", "#{imgUrl}");
                 VALUES("price", "#{price}");
@@ -88,6 +90,7 @@ public interface ItemMapper {
         public static String update(final ItemDO item) {
             return new SQL() {{
                 UPDATE(TABLE_ITEM);
+                SET("inventory_id = #{inventoryId}");
                 SET("title = #{title}");
                 SET("img_url = #{imgUrl}");
                 SET("price = #{price}");

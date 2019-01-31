@@ -17,6 +17,7 @@ public class ItemFactory {
         item.setPrice(itemDO.getPrice());
         item.setCategoryId(itemDO.getCategoryId());
         item.setGmtCreate(itemDO.getGmtCreate());
+        item.setInventoryId(itemDO.getInventoryId());
 
         // Note: GmtModified and State should ALWAYS be set last in that order
         item.setGmtModified(itemDO.getGmtModified());

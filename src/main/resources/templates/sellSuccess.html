@@ -8,7 +8,7 @@
 
 <h1>Item Publish Successful</h1>
 
-<table  th:object="${item}" >
+<table th:object="${item}">
     <tr>
         <td>Item Id:</td>
         <td th:text="${item.getId()}"></td>
@@ -30,11 +30,11 @@
         <td th:text="${item.getImgUrl()}"></td>
     </tr>
     <tr>
-        <td>Price: </td>
+        <td>Price:</td>
         <td th:text="${item.getPrice()}"></td>
     </tr>
     <tr>
-        <td>Created: </td>
+        <td>Created:</td>
         <td th:text="${item.getGmtCreate()}"></td>
     </tr>
 </table>

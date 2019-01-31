@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,9 +24,9 @@ public class OrderVM implements Serializable {
 
     private Long totalFee;
 
-    private LocalDateTime gmtCreate;
+    private OffsetDateTime gmtCreate;
 
-    private LocalDateTime gmtModified;
+    private OffsetDateTime gmtModified;
 
     private String status;
 

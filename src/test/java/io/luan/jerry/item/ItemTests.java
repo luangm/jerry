@@ -12,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ItemTests {
@@ -40,7 +37,7 @@ public class ItemTests {
         item.setPrice(100L);
         item.setUserId(1L);
 
-        item = itemService.publish(item);
+        item = itemService.save(item);
         Assert.assertNotNull(item);
 
         Long itemId = item.getId();
@@ -68,7 +65,7 @@ public class ItemTests {
         item.setImgUrl("http://www.baidu.com/logo.jpg");
         item.setPrice(100L);
         item.setUserId(1L);
-        item = itemService.publish(item);
+        item = itemService.save(item);
 
         var title2 = "Item" + System.currentTimeMillis();
         var item2 = new Item();
@@ -77,7 +74,7 @@ public class ItemTests {
         item2.setImgUrl("http://www.baidu.com/logo.jpg");
         item2.setPrice(100L);
         item2.setUserId(1L);
-        item2 = itemService.publish(item2);
+        item2 = itemService.save(item2);
 
         var title3 = "Item" + System.currentTimeMillis();
         var item3 = new Item();
@@ -86,7 +83,7 @@ public class ItemTests {
         item3.setImgUrl("http://www.baidu.com/logo.jpg");
         item3.setPrice(100L);
         item3.setUserId(1L);
-        item3 = itemService.publish(item3);
+        item3 = itemService.save(item3);
 
         var items = itemService.findAll();
         Assert.assertNotNull(items);

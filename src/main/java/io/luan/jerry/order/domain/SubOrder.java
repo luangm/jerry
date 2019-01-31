@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -70,12 +71,12 @@ public class SubOrder extends Entity {
     /**
      * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtCreate = OffsetDateTime.now().withNano(0);
 
     /**
      * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtModified = OffsetDateTime.now().withNano(0);
 
     /**
      * Status of payment for this order. Duplicated from Payment
@@ -95,7 +96,7 @@ public class SubOrder extends Entity {
         if (!newValue.equals(this.payStatus)) {
             firePropertyChange("payStatus", this.payStatus, newValue);
             this.payStatus = newValue;
-            this.gmtModified = LocalDateTime.now().withNano(0);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
         }
     }
 
@@ -103,7 +104,7 @@ public class SubOrder extends Entity {
         if (!newValue.equals(this.shipStatus)) {
             firePropertyChange("shipStatus", this.shipStatus, newValue);
             this.shipStatus = newValue;
-            this.gmtModified = LocalDateTime.now().withNano(0);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
         }
     }
 }

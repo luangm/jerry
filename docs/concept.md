@@ -35,6 +35,8 @@ Chapter 2 - Ecommerce Business Logic
 
 2.10 - Logistics
 
+2.11 - Finance (结算、对账、分账、分佣、分润、核算、账单、计税)
+
 
 2.x - Supporting multiple types of business models, using plugins
 

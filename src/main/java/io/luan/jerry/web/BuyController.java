@@ -75,13 +75,20 @@ public class BuyController {
         var subOrderDTO = new OrderLineDTO(itemId, 1);
         orderDTO.getOrderLines().add(subOrderDTO);
 
-        var confirmOrderResult = buyService.confirmOrder(orderDTO);
-        var confirmOrderVM = new ConfirmOrderVM(confirmOrderResult);
+        try {
+            var order = buyService.confirmOrder(orderDTO);
+            var confirmOrderVM = new ConfirmOrderVM(order);
 
-        var mav = new ModelAndView("confirmOrder");
-        mav.addObject("user", user);
-        mav.addObject("order", confirmOrderVM);
-        return mav;
+            var mav = new ModelAndView("confirmOrder");
+            mav.addObject("user", user);
+            mav.addObject("order", confirmOrderVM);
+
+            return mav;
+        } catch (IllegalArgumentException e) {
+            var mav = new ModelAndView("confirmOrderError");
+            mav.addObject("error", e.getMessage());
+            return mav;
+        }
     }
 
     @PostMapping(value = "/confirmOrder", params = "cart")

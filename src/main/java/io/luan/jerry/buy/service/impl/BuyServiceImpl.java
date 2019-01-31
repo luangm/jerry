@@ -5,6 +5,7 @@ import io.luan.jerry.address.service.DeliveryAddressService;
 import io.luan.jerry.buy.dto.ConfirmOrderResult;
 import io.luan.jerry.buy.dto.OrderDTO;
 import io.luan.jerry.buy.service.BuyService;
+import io.luan.jerry.inventory.service.InventoryService;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.domain.Order;
 import io.luan.jerry.order.domain.SubOrder;
@@ -21,6 +22,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,14 +41,17 @@ public class BuyServiceImpl implements BuyService {
 
     private final DeliveryAddressService deliveryAddressService;
 
+    private final InventoryService inventoryService;
+
     @Autowired
-    public BuyServiceImpl(ItemService itemService, OrderService orderService, PromotionService promotionService, PaymentService paymentService, ShipmentService shipmentService, DeliveryAddressService deliveryAddressService) {
+    public BuyServiceImpl(ItemService itemService, OrderService orderService, PromotionService promotionService, PaymentService paymentService, ShipmentService shipmentService, DeliveryAddressService deliveryAddressService, InventoryService inventoryService) {
         this.itemService = itemService;
         this.orderService = orderService;
         this.promotionService = promotionService;
         this.paymentService = paymentService;
         this.shipmentService = shipmentService;
         this.deliveryAddressService = deliveryAddressService;
+        this.inventoryService = inventoryService;
     }
 
     @Override
@@ -62,6 +67,13 @@ public class BuyServiceImpl implements BuyService {
         if (defaultAddress != null) {
             var shipment = buildShipment(order, defaultAddress.getAddress());
             shipment = shipmentService.save(shipment);
+        }
+
+        var reduceSuccess = reduceInventory(request);
+
+        if (reduceSuccess) {
+            order.enable();
+            orderService.save(order);
         }
 
         return order;
@@ -95,6 +107,16 @@ public class BuyServiceImpl implements BuyService {
         var order = orderService.findById(payment.getOrderId());
         order.setPayStatus(payment.getStatus());
         order = orderService.save(order);
+
+        List<Long> invIds = new ArrayList<>();
+        List<Integer> quantities = new ArrayList<>();
+        for (var subOrder: order.getSubOrders()) {
+            var item = itemService.findById(subOrder.getItemId());
+            invIds.add(item.getInventoryId());
+            quantities.add(subOrder.getQuantity());
+        }
+
+        inventoryService.reduceBatch(invIds, quantities);
 
         return order;
     }
@@ -135,6 +157,12 @@ public class BuyServiceImpl implements BuyService {
 
         for (var subOrderDTO : request.getOrderLines()) {
             var item = itemService.findById(subOrderDTO.getItemId());
+            var inventory = inventoryService.findById(item.getInventoryId());
+
+            if (inventory.getAvailable() < subOrderDTO.getQuantity()) {
+                throw new IllegalArgumentException("Insufficient Inventory");
+            }
+
             var promo = promoMap.get(item.getId());
             var price = item.getPrice();
             if (promo != null) {
@@ -180,5 +208,16 @@ public class BuyServiceImpl implements BuyService {
         shipment.setMethod(ShipmentMethod.Courier);
         shipment.setAddress(address);
         return shipment;
+    }
+
+    private boolean reduceInventory(OrderDTO request) {
+        List<Long> invIds = new ArrayList<>();
+        List<Integer> quantities = new ArrayList<>();
+        for (var subOrderDTO : request.getOrderLines()) {
+            var item = itemService.findById(subOrderDTO.getItemId());
+            invIds.add(item.getInventoryId());
+            quantities.add(subOrderDTO.getQuantity());
+        }
+        return inventoryService.freezeBatch(invIds, quantities);
     }
 }

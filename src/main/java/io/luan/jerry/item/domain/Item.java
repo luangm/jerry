@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -44,14 +45,19 @@ public class Item extends Entity {
     private Long categoryId;
 
     /**
+     * Inventory ID
+     */
+    private Long inventoryId = 0L;
+
+    /**
      * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtCreate = OffsetDateTime.now().withNano(0);
 
     /**
      * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtModified = OffsetDateTime.now().withNano(0);
 
     public Item() {
 
@@ -61,7 +67,7 @@ public class Item extends Entity {
         if (!newValue.equals(this.imgUrl)) {
             firePropertyChange("imgUrl", imgUrl, newValue);
             this.imgUrl = newValue;
-            this.gmtModified = LocalDateTime.now().withNano(0);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
         }
     }
 
@@ -69,7 +75,7 @@ public class Item extends Entity {
         if (!newValue.equals(this.price)) {
             firePropertyChange("price", price, newValue);
             this.price = newValue;
-            this.gmtModified = LocalDateTime.now().withNano(0);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
         }
     }
 
@@ -77,7 +83,15 @@ public class Item extends Entity {
         if (!newValue.equals(this.title)) {
             firePropertyChange("title", title, newValue);
             this.title = newValue;
-            this.gmtModified = LocalDateTime.now().withNano(0);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
+    public void setInventoryId(Long newValue) {
+        if (!newValue.equals(this.inventoryId)) {
+            firePropertyChange("inventoryId", inventoryId, newValue);
+            this.inventoryId = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
         }
     }
 }

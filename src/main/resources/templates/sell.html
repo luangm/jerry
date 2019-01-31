@@ -15,7 +15,7 @@
         <tr>
             <td>Category:</td>
             <td>
-                <select id="categoryId" name="categoryId">
+                <select id="categoryId" th:field="*{categoryId}">
                     <option th:each="cat : ${categories}"
                             th:value="${cat.getId()}"
                             th:text="${cat.getName()}"
@@ -25,15 +25,19 @@
         </tr>
         <tr>
             <td>Title:</td>
-            <td><input type="text" id="title" name="title" th:value="${item.title}"/></td>
+            <td><input type="text" th:field="*{title}"/></td>
         </tr>
         <tr>
             <td>Image Url:</td>
-            <td><input type="text" name="imgUrl" th:value="${item.getImgUrl()}"/></td>
+            <td><input type="text" th:field="*{imgUrl}"/></td>
         </tr>
         <tr>
             <td>Price:</td>
-            <td><input type="text" name="price" th:value="${item.getPrice()}"/></td>
+            <td><input type="text" th:field="*{price}"/></td>
+        </tr>
+        <tr>
+            <td>Inventory:</td>
+            <td><input type="text" th:field="*{inventory}"/></td>
         </tr>
         <tr>
             <td><input type="submit"/></td>
