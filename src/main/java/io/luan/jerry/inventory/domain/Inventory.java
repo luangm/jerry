@@ -14,9 +14,9 @@ public class Inventory extends Entity {
 
     private Long itemId;
 
-    private Integer available = 0;
+    private Long available = 0L;
 
-    private Integer withheld = 0;
+    private Long withheld = 0L;
 
     /**
      * Create Time
@@ -38,7 +38,7 @@ public class Inventory extends Entity {
     /**
      * Additional Quantity
      */
-    public boolean allocate(int quantity) {
+    public boolean allocate(long quantity) {
         assertPositive(quantity);
         this.setAvailable(this.available + quantity);
         return true;
@@ -47,7 +47,7 @@ public class Inventory extends Entity {
     /**
      * Freeze inventory
      */
-    public boolean freeze(int quantity) {
+    public boolean freeze(long quantity) {
         assertPositive(quantity);
         if (this.available >= quantity) {
             this.setAvailable(this.available - quantity);
@@ -60,7 +60,7 @@ public class Inventory extends Entity {
     /**
      * Available + Withheld
      */
-    public Integer getTotal() {
+    public Long getTotal() {
         return available + withheld;
     }
 
@@ -69,7 +69,7 @@ public class Inventory extends Entity {
      * 如果是预扣库存，则走release + reduce
      * 否则直接reduce
      */
-    public boolean reduce(int quantity) {
+    public boolean reduce(long quantity) {
         assertPositive(quantity);
         if (this.withheld > 0) {
             if (this.withheld >= quantity) {
@@ -88,7 +88,7 @@ public class Inventory extends Entity {
     /**
      * Unfreeze withheld inventory
      */
-    public boolean release(int quantity) {
+    public boolean release(long quantity) {
         assertPositive(quantity);
         if (this.withheld >= quantity) {
             this.setWithheld(this.withheld - quantity);
@@ -98,13 +98,13 @@ public class Inventory extends Entity {
         return false;
     }
 
-    public boolean replenish(int quantity) {
+    public boolean replenish(long quantity) {
         assertPositive(quantity);
         this.setAvailable(this.available + quantity);
         return true;
     }
 
-    public void setAvailable(Integer newValue) {
+    public void setAvailable(Long newValue) {
         if (!newValue.equals(this.available)) {
             firePropertyChange("available", available, newValue);
             this.available = newValue;
@@ -112,7 +112,7 @@ public class Inventory extends Entity {
         }
     }
 
-    public void setWithheld(Integer newValue) {
+    public void setWithheld(Long newValue) {
         if (!newValue.equals(this.withheld)) {
             firePropertyChange("withheld", withheld, newValue);
             this.withheld = newValue;
@@ -120,7 +120,7 @@ public class Inventory extends Entity {
         }
     }
 
-    private static void assertPositive(int value) {
+    private static void assertPositive(long value) {
         if (value <= 0) {
             throw new IllegalArgumentException("must be positive");
         }

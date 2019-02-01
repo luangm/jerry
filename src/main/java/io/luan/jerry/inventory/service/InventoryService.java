@@ -10,7 +10,7 @@ public interface InventoryService {
 
     Inventory save(Inventory inventory);
 
-    boolean freezeBatch(List<Long> ids, List<Integer> quantities);
+    boolean freezeBatch(List<Long> ids, List<Long> quantities);
 
-    boolean reduceBatch(List<Long> ids, List<Integer> quantities);
+    boolean reduceBatch(List<Long> ids, List<Long> quantities);
 }

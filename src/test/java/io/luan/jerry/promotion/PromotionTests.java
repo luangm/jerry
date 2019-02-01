@@ -106,7 +106,7 @@ public class PromotionTests {
         var buyRequest = new OrderDTO();
         buyRequest.setAddress("Address123");
         buyRequest.setUserId(1L);
-        buyRequest.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
+        buyRequest.getOrderLines().add(new OrderLineDTO(item.getId(), 5L));
 
         var order = buyService.createOrder(buyRequest);
         Assert.assertNotNull(order);

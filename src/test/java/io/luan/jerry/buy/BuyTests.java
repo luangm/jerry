@@ -58,7 +58,7 @@ public class BuyTests {
         var request = new OrderDTO();
         request.setUserId(userId);
         request.setAddress("Address123");
-        request.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
+        request.getOrderLines().add(new OrderLineDTO(item.getId(), 5L));
 
         var order = buyService.createOrder(request);
 
@@ -99,8 +99,8 @@ public class BuyTests {
         var request = new OrderDTO();
         request.setUserId(userId);
         request.setAddress("Address123");
-        request.getOrderLines().add(new OrderLineDTO(item.getId(), 5));
-        request.getOrderLines().add(new OrderLineDTO(item2.getId(), 3));
+        request.getOrderLines().add(new OrderLineDTO(item.getId(), 5L));
+        request.getOrderLines().add(new OrderLineDTO(item2.getId(), 3L));
 
         Long totalFee = 5 * 100L + 3 * 10L;
         var order = buyService.createOrder(request);

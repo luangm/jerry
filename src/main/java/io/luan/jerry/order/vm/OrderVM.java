@@ -36,7 +36,7 @@ public class OrderVM implements Serializable {
 
     private List<SubOrderVM> subOrders = new ArrayList<>();
 
-    private Integer quantity;
+    private Long quantity;
 
     public OrderVM() {
         //

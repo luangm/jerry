@@ -17,7 +17,7 @@ public class ConfirmOrderVM implements Serializable {
 
     private Long totalFee;
 
-    private Integer quantity;
+    private Long quantity;
 
     private String address;
 

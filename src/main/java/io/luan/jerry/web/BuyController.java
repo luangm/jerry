@@ -66,13 +66,16 @@ public class BuyController {
     }
 
     @GetMapping(value = "/confirmOrder", params = "buyNow")
-    public ModelAndView confirmOrder(@RequestParam("itemId") Long itemId) {
+    public ModelAndView confirmOrder(@RequestParam("itemId") Long itemId, @RequestParam(value = "quantity", required = false) Long quantity) {
         var user = SecurityUtils.getCurrentUser();
 
         var orderDTO = new OrderDTO();
         orderDTO.setUserId(user.getId());
         orderDTO.setSource("buyNow");
-        var subOrderDTO = new OrderLineDTO(itemId, 1);
+        if (quantity == null) {
+            quantity = 1L;
+        }
+        var subOrderDTO = new OrderLineDTO(itemId, quantity);
         orderDTO.getOrderLines().add(subOrderDTO);
 
         try {

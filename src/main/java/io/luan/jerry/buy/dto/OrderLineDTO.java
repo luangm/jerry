@@ -14,9 +14,9 @@ public class OrderLineDTO implements Serializable {
     private Long itemId;
 
     @NotNull
-    private Integer quantity;
+    private Long quantity;
 
-    public OrderLineDTO(Long itemId, Integer quantity) {
+    public OrderLineDTO(Long itemId, Long quantity) {
         this.itemId = itemId;
         this.quantity = quantity;
     }

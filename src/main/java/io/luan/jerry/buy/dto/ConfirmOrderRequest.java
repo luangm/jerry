@@ -18,7 +18,7 @@ public class ConfirmOrderRequest implements Serializable {
 
     private List<OrderLineDTO> orderLines = new ArrayList<>();
 
-    public void addOrderLine(Long itemId, Integer quantity) {
+    public void addOrderLine(Long itemId, Long quantity) {
         var orderLine = new OrderLineDTO(itemId, quantity);
         this.orderLines.add(orderLine);
     }

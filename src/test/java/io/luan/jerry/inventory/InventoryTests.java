@@ -39,7 +39,7 @@ class InventoryTests {
     void freezeThenReduce() {
         var inventory = new Inventory();
         inventory.setItemId(123L);
-        inventory.setAvailable(24);
+        inventory.setAvailable(24L);
         System.out.println(inventory);
 
         repository.save(inventory); // initial
@@ -63,7 +63,7 @@ class InventoryTests {
     void freezeThenRelease() {
         var inventory = new Inventory();
         inventory.setItemId(123L);
-        inventory.setAvailable(24);
+        inventory.setAvailable(24L);
         System.out.println(inventory);
 
         repository.save(inventory); // initial
@@ -86,7 +86,7 @@ class InventoryTests {
     void mapperSave() {
         var inventory = new Inventory();
         inventory.setItemId(123L);
-        inventory.setAvailable(33);
+        inventory.setAvailable(33L);
 
         var inventoryDO = new InventoryDO(inventory);
         mapper.insert(inventoryDO);
@@ -97,7 +97,7 @@ class InventoryTests {
     void repoSave() {
         var inventory = new Inventory();
         inventory.setItemId(123L);
-        inventory.setAvailable(33);
+        inventory.setAvailable(33L);
 
         repository.save(inventory);
 
@@ -109,7 +109,7 @@ class InventoryTests {
     void updateVersion() {
         var inventory = new Inventory();
         inventory.setItemId(123L);
-        inventory.setAvailable(33);
+        inventory.setAvailable(33L);
 
         System.out.println(inventory);
         assertEquals(Integer.valueOf(0), inventory.getVersion()); // Unsaved
@@ -126,8 +126,8 @@ class InventoryTests {
         assertEquals(Integer.valueOf(2), inventory.getVersion()); // Updated
 
         // Try failed update
-        inventory.setWithheld(10);
-        inventory.setVersion(1);
+        inventory.setWithheld(10L);
+        inventory.setVersion(1L);
 
         assertThrows(VersionConflictException.class, () -> {
             repository.save(inventory); // Should throw exception

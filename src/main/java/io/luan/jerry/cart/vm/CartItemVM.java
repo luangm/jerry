@@ -12,7 +12,7 @@ public class CartItemVM implements Serializable {
     private Long cartItemId;
     private Long itemId;
     private Long userId;
-    private Integer quantity;
+    private Long quantity;
 
     public CartItemVM() {
         // Required by framework

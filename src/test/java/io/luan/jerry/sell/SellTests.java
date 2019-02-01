@@ -35,7 +35,7 @@ class SellTests {
         request.setTitle(title);
         request.setImgUrl("1.jpg");
         request.setPrice(99L);
-        request.setInventory(33);
+        request.setInventory(33L);
 
         var user = new User();
         user.setId(1L);

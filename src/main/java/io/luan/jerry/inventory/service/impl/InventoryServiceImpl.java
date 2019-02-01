@@ -32,7 +32,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public boolean freezeBatch(List<Long> ids, List<Integer> quantities) {
+    public boolean freezeBatch(List<Long> ids, List<Long> quantities) {
         var inventories = inventoryRepository.findBatch(ids);
         for (int i = 0; i < inventories.size(); i++) {
             var inv = inventories.get(i);
@@ -49,7 +49,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public boolean reduceBatch(List<Long> ids, List<Integer> quantities) {
+    public boolean reduceBatch(List<Long> ids, List<Long> quantities) {
         var inventories = inventoryRepository.findBatch(ids);
         for (int i = 0; i < inventories.size(); i++) {
             var inv = inventories.get(i);

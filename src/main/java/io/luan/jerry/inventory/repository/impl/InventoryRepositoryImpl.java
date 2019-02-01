@@ -52,7 +52,10 @@ public class InventoryRepositoryImpl implements InventoryRepository {
     @Override
     public Inventory findById(Long id) {
         var inventoryDO = mapper.findById(id);
-        return factory.load(inventoryDO);
+        if (inventoryDO != null) {
+            return factory.load(inventoryDO);
+        }
+        return null;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class InventoryRepositoryImpl implements InventoryRepository {
             case Detached:
                 mapper.insert(inventoryDO);
                 inventory.setId(inventoryDO.getId());
-                inventory.setVersion(1);
+                inventory.setVersion(1L);
                 break;
             case Modified:
                 int success = mapper.update(inventoryDO);

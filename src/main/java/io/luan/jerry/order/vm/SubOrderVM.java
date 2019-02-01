@@ -18,7 +18,7 @@ public class SubOrderVM implements Serializable {
 
     private String itemImgUrl;
 
-    private Integer quantity;
+    private Long quantity;
 
     private Long discountFee;
 

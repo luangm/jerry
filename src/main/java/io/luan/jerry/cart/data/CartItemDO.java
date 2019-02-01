@@ -14,7 +14,7 @@ public class CartItemDO implements Serializable {
     private Long id;
     private Long userId;
     private Long itemId;
-    private Integer quantity;
+    private Long quantity;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
     private Integer status;

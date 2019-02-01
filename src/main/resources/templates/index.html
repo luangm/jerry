@@ -3,27 +3,9 @@
 <head lang="en">
     <title>Jerry E-Commerce</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <script type="application/javascript">
-        function addToCart(itemId) {
-            fetch("/cart/add", {
-                method: 'post',
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify({
-                    itemId: itemId,
-                    quantity: 1
-                })
-            }).then(function (response) {
-                return response.json();
-            }).then(function (text) {
-                console.log(text);
-            })
-        }
-    </script>
 </head>
 <body>
+
 <h1>Welcome <span th:if="${user != null}" th:text="${user.getUsername()}"></span></h1>
 <div>
     <a href="/login">Login</a>
@@ -84,7 +66,9 @@
     </tr>
     <th:block th:each="item:${items}">
         <tr>
-            <td th:text="${item.id}"></td>
+            <td>
+                <a th:href="@{/detail(itemId=${item.id})}" th:text="${item.id}"></a>
+            </td>
             <td th:text="${item.categoryId}"></td>
             <td th:text="${item.userId}"></td>
             <td th:text="${item.title}"></td>
@@ -92,12 +76,6 @@
             <td th:if="${promotions.get(item.id) == null}" th:text="${item.price}"></td>
             <td th:if="${promotions.get(item.id) != null}" th:text="${promotions.get(item.id).newPrice}"></td>
 
-            <td th:if="${#httpServletRequest.getRemoteUser() != null}">
-                <a th:href="@{/confirmOrder(itemId=${item.id}, buyNow=1)}">Buy Now</a>
-            </td>
-            <td th:if="${#httpServletRequest.getRemoteUser() != null}">
-                <button type="button" th:onclick="|addToCart('${item.id}')|">Add to Cart</button>
-            </td>
             <td th:if="${user != null && user.id == item.userId}">
                 <a th:href="@{/sell(itemId=${item.id})}">Edit</a>
             </td>

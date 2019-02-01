@@ -14,8 +14,8 @@ public class InventoryDO implements Serializable {
 
     private Long id;
     private Long itemId;
-    private Integer available;
-    private Integer withheld;
+    private Long available;
+    private Long withheld;
     private OffsetDateTime gmtCreate;
     private OffsetDateTime gmtModified;
     private Long version;

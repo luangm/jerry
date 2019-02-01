@@ -109,7 +109,7 @@ public class BuyServiceImpl implements BuyService {
         order = orderService.save(order);
 
         List<Long> invIds = new ArrayList<>();
-        List<Integer> quantities = new ArrayList<>();
+        List<Long> quantities = new ArrayList<>();
         for (var subOrder: order.getSubOrders()) {
             var item = itemService.findById(subOrder.getItemId());
             invIds.add(item.getInventoryId());
@@ -212,7 +212,7 @@ public class BuyServiceImpl implements BuyService {
 
     private boolean reduceInventory(OrderDTO request) {
         List<Long> invIds = new ArrayList<>();
-        List<Integer> quantities = new ArrayList<>();
+        List<Long> quantities = new ArrayList<>();
         for (var subOrderDTO : request.getOrderLines()) {
             var item = itemService.findById(subOrderDTO.getItemId());
             invIds.add(item.getInventoryId());

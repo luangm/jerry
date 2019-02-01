@@ -26,7 +26,7 @@ public class OrderDO implements Serializable {
     private Long itemPrice; // sub
     private String itemTitle; // sub, nullable
     private String itemImgUrl; // sub, nullable
-    private Integer quantity; // sub + main
+    private Long quantity; // sub + main
     private Long discountFee; // sub
     private Long totalFee; // main
     private OffsetDateTime gmtCreate;
@@ -97,7 +97,7 @@ public class OrderDO implements Serializable {
             this.itemPrice = 0L;
             this.itemTitle = null;
             this.itemImgUrl = null;
-            this.quantity = 0;
+            this.quantity = 0L;
             this.discountFee = 0L;
             this.totalFee = order.getTotalFee();
             this.gmtCreate = order.getGmtCreate();

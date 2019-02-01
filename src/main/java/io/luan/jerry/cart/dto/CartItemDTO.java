@@ -10,13 +10,13 @@ public class CartItemDTO implements Serializable {
     private Boolean selected = false;
     private Long userId;
     private Long itemId;
-    private Integer quantity;
+    private Long quantity;
 
     public CartItemDTO() {
 
     }
 
-    public CartItemDTO(Long userId, Long itemId, Integer quantity) {
+    public CartItemDTO(Long userId, Long itemId, Long quantity) {
         this.userId = userId;
         this.itemId = itemId;
         this.quantity = quantity;

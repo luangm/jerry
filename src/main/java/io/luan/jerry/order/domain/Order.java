@@ -72,8 +72,8 @@ public class Order extends Entity {
         this.calculateTotalFee();
     }
 
-    public int getQuantity() {
-        return subOrders.stream().mapToInt(SubOrder::getQuantity).sum();
+    public long getQuantity() {
+        return subOrders.stream().mapToLong(SubOrder::getQuantity).sum();
     }
 
     private void calculateTotalFee() {

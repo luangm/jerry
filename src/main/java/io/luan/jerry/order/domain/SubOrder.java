@@ -56,7 +56,7 @@ public class SubOrder extends Entity {
     /**
      * Quantity of Item
      */
-    private Integer quantity;
+    private Long quantity;
 
     /**
      * Total Discounts (calculated by buy)

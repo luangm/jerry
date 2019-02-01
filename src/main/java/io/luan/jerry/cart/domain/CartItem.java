@@ -29,7 +29,7 @@ public class CartItem extends Entity {
     /**
      * Quantity of Item
      */
-    private Integer quantity;
+    private Long quantity;
 
     /**
      * Create Time
@@ -50,7 +50,7 @@ public class CartItem extends Entity {
         this.setState(EntityState.Added);
     }
 
-    public void setQuantity(Integer newValue) {
+    public void setQuantity(Long newValue) {
         if (!newValue.equals(quantity)) {
             firePropertyChange("quantity", quantity, newValue);
             this.quantity = newValue;

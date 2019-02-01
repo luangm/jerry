@@ -14,6 +14,6 @@ public class PublishItemDTO implements Serializable {
     private String title;
     private String imgUrl;
     private Long price;
-    private Integer inventory;
+    private Long inventory;
 
 }

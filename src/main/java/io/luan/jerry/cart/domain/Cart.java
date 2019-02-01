@@ -36,7 +36,7 @@ public class Cart extends Entity {
         this.setState(EntityState.Unchanged);
     }
 
-    public CartItem addItem(Long itemId, Integer quantity) {
+    public CartItem addItem(Long itemId, Long quantity) {
         for (var cartItem : this.getItems()) {
             if (cartItem.getItemId().equals(itemId)) {
                 cartItem.setQuantity(cartItem.getQuantity() + quantity);
@@ -59,11 +59,11 @@ public class Cart extends Entity {
     }
 
     public void removeItem(CartItem cartItem) {
-        cartItem.setQuantity(0);
+        cartItem.setQuantity(0L);
         cartItem.setStatus(CartItemState.Deleted);
     }
 
-    public void updateItem(CartItem cartItem, Integer newQuantity) {
+    public void updateItem(CartItem cartItem, Long newQuantity) {
         cartItem.setQuantity(newQuantity);
     }
 

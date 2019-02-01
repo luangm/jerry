@@ -69,6 +69,9 @@ public class PromotionRepositoryImpl implements PromotionRepository {
     @Override
     public List<Promotion> findByItemIds(List<Long> itemIds) {
         List<Promotion> list = new ArrayList<>();
+        if (itemIds.size() == 0) {
+            return list;
+        }
         for (PromotionDO promotionDO : promotionMapper.findByItemIds(itemIds, LocalDateTime.now())) {
             Promotion promotion = promotionFactory.load(promotionDO);
             list.add(promotion);
