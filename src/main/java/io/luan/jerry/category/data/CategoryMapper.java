@@ -23,6 +23,7 @@ public interface CategoryMapper {
             @Result(column = "parent_id", property = "parentId"),
             @Result(column = "name", property = "name"),
             @Result(column = "is_leaf", property = "isLeaf"),
+            @Result(column = "status", property = "status"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
     })
@@ -70,6 +71,7 @@ public interface CategoryMapper {
                 VALUES("parent_id", "#{parentId}");
                 VALUES("name", "#{name}");
                 VALUES("is_leaf", "#{isLeaf}");
+                VALUES("status", "#{status}");
                 VALUES("gmt_create", "#{gmtCreate}");
                 VALUES("gmt_modified", "#{gmtModified}");
             }}.toString();
@@ -87,6 +89,7 @@ public interface CategoryMapper {
                 SET("parent_id = #{parentId}");
                 SET("name = #{name}");
                 SET("is_leaf = #{isLeaf}");
+                SET("status = #{status}");
                 SET("gmt_modified = #{gmtModified}");
                 WHERE("id = #{id}");
             }}.toString();

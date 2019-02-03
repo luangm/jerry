@@ -1,12 +1,11 @@
 package io.luan.jerry.web;
 
-import io.luan.jerry.category.domain.Category;
 import io.luan.jerry.category.dto.PublishCategoryDTO;
+import io.luan.jerry.category.service.BasePropertyService;
+import io.luan.jerry.category.service.BaseValueService;
 import io.luan.jerry.category.service.CategoryService;
-import io.luan.jerry.item.service.ItemService;
+import io.luan.jerry.category.vm.CategoryVM;
 import io.luan.jerry.security.SecurityUtils;
-import io.luan.jerry.sell.dto.PublishItemDTO;
-import io.luan.jerry.sell.service.SellService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,54 +14,100 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.stream.Collectors;
+
 @Controller
 public class CategoryController {
 
     private final CategoryService categoryService;
 
+    private final BasePropertyService propertyService;
+
+    private final BaseValueService valueService;
+
     @Autowired
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, BasePropertyService propertyService, BaseValueService valueService) {
         this.categoryService = categoryService;
+        this.propertyService = propertyService;
+        this.valueService = valueService;
     }
-//
-    @PostMapping("/category")
-    public ModelAndView publish(@ModelAttribute PublishCategoryDTO request) {
+
+    @GetMapping("/category/new")
+    public ModelAndView category(@RequestParam(value = "parentId", required = false) Long parentId) {
+        var user = SecurityUtils.getCurrentUser();
+        var categories = categoryService.findAll();
+        var catVMs = categories.stream().map(CategoryVM::new).collect(Collectors.toList());
+
+        var vm = new CategoryVM();
+        vm.setParentId(parentId != null ? parentId : Long.valueOf(0L));
+
+        var mav = new ModelAndView("category");
+        mav.addObject("category", vm);
+        mav.addObject("categories", catVMs);
+
+        return mav;
+    }
+
+    @GetMapping("/category/disable")
+    public ModelAndView categoryDisable(@RequestParam(value = "id") Long id) {
         var user = SecurityUtils.getCurrentUser();
 
-        var mav = new ModelAndView("categorySuccess");
-        if (request.getCategoryId() == null) {
-            var category = categoryService.publish(request);
-            mav.addObject("category", category);
-        } else {
-            var category = categoryService.edit(request);
-            mav.addObject("category", category);
-        }
+        categoryService.disableById(id);
+        var mav = new ModelAndView("redirect:/category");
+        return mav;
+    }
+
+    @GetMapping("/category/edit")
+    public ModelAndView categoryEdit(@RequestParam("id") Long id) {
+        var user = SecurityUtils.getCurrentUser();
+        var categories = categoryService.findAll();
+        var catVMs = categories.stream().map(CategoryVM::new).collect(Collectors.toList());
+
+        var mav = new ModelAndView("category");
+
+        var existing = categoryService.findById(id);
+        mav.addObject("category", new CategoryVM(existing));
+        mav.addObject("categories", catVMs);
+        return mav;
+    }
+
+    @GetMapping("/category/enable")
+    public ModelAndView categoryEnable(@RequestParam(value = "id") Long id) {
+        var user = SecurityUtils.getCurrentUser();
+        categoryService.enableById(id);
+        var mav = new ModelAndView("redirect:/category");
         return mav;
     }
 
     @GetMapping("/category")
-    public ModelAndView category(@RequestParam(value = "categoryId", required = false) Long categoryId) {
+    public ModelAndView categoryList() {
         var user = SecurityUtils.getCurrentUser();
         var categories = categoryService.findAll();
+        var catVMs = categories.stream().map(CategoryVM::new).collect(Collectors.toList());
+        var mav = new ModelAndView("categoryList");
+        mav.addObject("categories", catVMs);
+        return mav;
+    }
 
-        var mav = new ModelAndView("category");
 
-        if (categoryId != null) {
-            var existing = categoryService.findById(categoryId);
-            if (existing != null) {
-                var dto = new PublishCategoryDTO();
-                dto.setCategoryId(existing.getId());
-                dto.setParentId(existing.getParentId());
-                dto.setName(existing.getName());
-                dto.setIsLeaf(existing.getIsLeaf());
-                mav.addObject("category", dto);
-                mav.addObject("categories", categories);
-            }
+    @PostMapping("/category")
+    public ModelAndView publish(@ModelAttribute CategoryVM vm) {
+        var user = SecurityUtils.getCurrentUser();
+
+        var mav = new ModelAndView("redirect:/category");
+        if (vm.getId() == null) {
+            var request = new PublishCategoryDTO();
+            request.setParentId(vm.getParentId());
+            request.setName(vm.getName());
+            categoryService.publish(request);
         } else {
-            mav.addObject("category", new PublishCategoryDTO());
-            mav.addObject("categories", categories);
+            var request = new PublishCategoryDTO();
+            request.setCategoryId(vm.getId());
+            request.setParentId(vm.getParentId());
+            request.setName(vm.getName());
+            request.setIsLeaf(vm.getIsLeaf());
+            categoryService.edit(request);
         }
-
         return mav;
     }
 

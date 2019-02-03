@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1 th:if="${property.id != null}">Edit Property</h1>
+<h1 th:if="${property.id == null}">New Property</h1>
+
+<form th:action="@{/property}" th:object="${property}" method="post">
+    <input th:if="${property.id != null}" type="hidden" th:field="*{id}"/>
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td>
+                <input type="text" th:field="*{name}"/>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

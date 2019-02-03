@@ -1,38 +1,64 @@
 package io.luan.jerry.category.domain;
 
+import io.luan.jerry.common.domain.Entity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
-public class CategoryPropertyValue implements Serializable {
+@EqualsAndHashCode(callSuper = false)
+public class CategoryPropertyValue extends Entity {
 
     static final long serialVersionUID = 1L;
 
     /**
-     * Category ID
+     * Owner CP
      */
-    private Long categoryId;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private CategoryProperty categoryProperty;
 
     /**
-     * BaseProperty ID
+     * BaseValue ID
      */
-    private Long propertyId;
+    private Long valueId;
 
     /**
-     * Sort order of CPs
+     * Alias of the value
      */
-    private Integer sortOrder;
+    private String alias;
+
+    /**
+     * Sort order of CPVs
+     */
+    private Long sortOrder;
 
     /**
      * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtCreate = OffsetDateTime.now().withNano(0);
 
     /**
      * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtModified = OffsetDateTime.now().withNano(0);
 
+    public void setAlias(String newValue) {
+        if (!newValue.equals(this.alias)) {
+            firePropertyChange("alias", alias, newValue);
+            this.alias = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
+    public void setSortOrder(Long newValue) {
+        if (!newValue.equals(this.sortOrder)) {
+            firePropertyChange("sortOrder", sortOrder, newValue);
+            this.sortOrder = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
 }

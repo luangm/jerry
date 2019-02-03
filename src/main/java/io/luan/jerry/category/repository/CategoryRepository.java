@@ -5,4 +5,5 @@ import io.luan.jerry.common.repository.Repository;
 
 public interface CategoryRepository extends Repository<Category, Long> {
 
+    Category findById(Long id, boolean withPV);
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div>
+    <a th:href="@{/category}">Back</a>
+</div>
+
+<h1>Property List:</h1>
+
+<div>
+    <a href="#" th:href="@{/property/new}">Add Property</a>
+</div>
+
+<table>
+    <tr>
+        <th>Property ID</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Create</th>
+        <th>Modified</th>
+        <th>Operations</th>
+    </tr>
+    <th:block th:each="property, stat : ${properties}">
+        <tr>
+            <td th:text="${property.id}"></td>
+            <td th:text="${property.name}"></td>
+            <td th:text="${property.status}"></td>
+            <td th:text="${property.gmtCreate.toLocalDateTime()}"></td>
+            <td th:text="${property.gmtModified.toLocalDateTime()}"></td>
+            <td>
+                <a href="#" th:href="@{/property/edit(id=${property.id})}">Edit</a>
+                <span>&nbsp;|&nbsp;</span>
+                <a th:if="${property.status == 'Normal'}"
+                   th:href="@{/property/disable(id=${property.id})}">Disable</a>
+                <a th:if="${property.status == 'Disabled'}"
+                   th:href="@{/property/enable(id=${property.id})}">Enable</a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

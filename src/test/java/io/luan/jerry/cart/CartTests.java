@@ -71,8 +71,8 @@ public class CartTests {
 
         var cart = cartService.getCart(userId);
         Assert.assertEquals(2, cart.getItems().size());
-        Assert.assertEquals(Integer.valueOf(5), cart.getItems().get(0).getQuantity());
-        Assert.assertEquals(Integer.valueOf(4), cart.getItems().get(1).getQuantity());
+        Assert.assertEquals(Long.valueOf(5), cart.getItems().get(0).getQuantity());
+        Assert.assertEquals(Long.valueOf(4), cart.getItems().get(1).getQuantity());
     }
 
     @Test

@@ -4,7 +4,10 @@ import io.luan.jerry.category.domain.Category;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class CategoryDO implements Serializable {
@@ -15,8 +18,9 @@ public class CategoryDO implements Serializable {
     private Long parentId;
     private String name;
     private Boolean isLeaf;
-    private LocalDateTime gmtCreate;
-    private LocalDateTime gmtModified;
+    private Integer status;
+    private OffsetDateTime gmtCreate;
+    private OffsetDateTime gmtModified;
 
     public CategoryDO() {
         //
@@ -27,6 +31,7 @@ public class CategoryDO implements Serializable {
         this.parentId = category.getParentId();
         this.name = category.getName();
         this.isLeaf = category.getIsLeaf() != null ? category.getIsLeaf() : false;
+        this.status = category.getStatus().getValue();
         this.gmtCreate = category.getGmtCreate();
         this.gmtModified = category.getGmtModified();
     }

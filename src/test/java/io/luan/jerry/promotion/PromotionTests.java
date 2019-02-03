@@ -11,6 +11,9 @@ import io.luan.jerry.promotion.domain.Promotion;
 import io.luan.jerry.promotion.dto.PublishPromotionDTO;
 import io.luan.jerry.promotion.repository.PromotionRepository;
 import io.luan.jerry.promotion.service.PromotionService;
+import io.luan.jerry.sell.dto.PublishItemDTO;
+import io.luan.jerry.sell.service.SellService;
+import io.luan.jerry.user.domain.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +43,9 @@ public class PromotionTests {
 
     @Autowired
     private BuyService buyService;
+
+    @Autowired
+    private SellService sellService;
 
     @Test
     public void publishTest() {
@@ -75,43 +81,48 @@ public class PromotionTests {
 
     @Test
     public void publishTestBuy() {
-        var title = "BuyPromoItem" + System.currentTimeMillis();
 
-        var item = new Item();
-        item.setCategoryId(1L);
-        item.setTitle(title);
-        item.setImgUrl("http://www.baidu.com/logo.jpg");
-        item.setPrice(100L);
-        item.setUserId(1L);
+        // build item
+        var user = new User();
+        user.setId(1L);
 
-        item = itemService.save(item);
+        var title = "Item" + System.currentTimeMillis();
+        var request = new PublishItemDTO();
+        request.setCategoryId(1L);
+        request.setTitle(title);
+        request.setImgUrl("1.jpg");
+        request.setPrice(99L);
+        request.setInventory(33L);
+        var item1 = sellService.publish(user, request);
 
-        var itemId = item.getId();
+
+        // Build promo
+        var itemId = item1.getId();
         var newPrice = 95L;
         var startTime = LocalDateTime.of(2019, 1, 1, 0, 0, 0);
         var endTime = LocalDateTime.of(2019, 12, 31, 23, 59, 59);
+        var promoRequest = new PublishPromotionDTO();
+        promoRequest.setItemId(itemId);
+        promoRequest.setNewPrice(newPrice);
+        promoRequest.setStartTime(startTime);
+        promoRequest.setEndTime(endTime);
 
-        var request = new PublishPromotionDTO();
-        request.setItemId(itemId);
-        request.setNewPrice(newPrice);
-        request.setStartTime(startTime);
-        request.setEndTime(endTime);
-
-        var promotion = promotionService.publish(request);
+        var promotion = promotionService.publish(promoRequest);
         System.out.println(promotion);
 
-        var list = promotionService.findByItemId(item.getId());
+        var list = promotionService.findByItemId(item1.getId());
         Assert.assertEquals(1, list.size());
 
         var buyRequest = new OrderDTO();
         buyRequest.setAddress("Address123");
         buyRequest.setUserId(1L);
-        buyRequest.getOrderLines().add(new OrderLineDTO(item.getId(), 5L));
+        buyRequest.getOrderLines().add(new OrderLineDTO(item1.getId(), 5L));
+
 
         var order = buyService.createOrder(buyRequest);
         Assert.assertNotNull(order);
         Assert.assertEquals(Long.valueOf(95L * 5), order.getTotalFee());
-        Assert.assertEquals(Long.valueOf(5L * 5), order.getSubOrders().get(0).getDiscountFee());
+        Assert.assertEquals(Long.valueOf(4L * 5), order.getSubOrders().get(0).getDiscountFee());
     }
 
     @Test

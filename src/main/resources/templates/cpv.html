@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1 th:if="${cpv.valueId != null}">Edit CPV</h1>
+<h1 th:if="${cpv.valueId == null}">New CPV</h1>
+
+<form th:action="@{/category/property/value}" th:object="${cpv}" method="post">
+    <input type="hidden" th:if="${cpv.categoryId != null}" th:field="*{categoryId}"/>
+    <input type="hidden" th:if="${cpv.propertyId != null}" th:field="*{propertyId}"/>
+    <input type="hidden" th:if="${cpv.valueId != null}" th:field="*{valueId}"/>
+
+    <table>
+        <tr>
+            <td>CategoryId:</td>
+            <td th:text="*{categoryId}"></td>
+        </tr>
+
+        <tr>
+            <td>PropertyId:</td>
+            <td th:text="*{propertyId}"></td>
+        </tr>
+        <tr>
+            <td>Value:</td>
+            <td>
+                <select th:field="*{valueId}" th:disabled="${cpv.valueId != null}">
+                    <option th:each="value : ${values}" th:value="${value.id}" th:text="${value.value}"
+                            th:selected="${value.id == cpv.valueId}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Alias:</td>
+            <td><input type="text" th:field="*{alias}"/></td>
+        </tr>
+        <tr>
+            <td>Sort Order:</td>
+            <td><input type="number" th:field="*{sortOrder}"/></td>
+        </tr>
+
+        <!--<tr th:if="${category.id != null}">-->
+        <!--<td>IsLeaf:</td>-->
+        <!--<td><input type="checkbox" disabled th:value="*{isLeaf}"/></td>-->
+        <!--</tr>-->
+        <tr>
+            <td><input type="submit"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

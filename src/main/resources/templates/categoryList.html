@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div>
+    <a href="/index">Home</a>
+    <span>&nbsp;|&nbsp;</span>
+    <a href="/property">Property</a>
+    <span>&nbsp;|&nbsp;</span>
+    <a href="/value">Value</a>
+</div>
+
+<h1>Category List:</h1>
+
+
+<div>
+    <a href="#" th:href="@{/category/new}">Add Root Category</a>
+</div>
+
+<form action="#" th:action="@{/category/delete}">
+
+    <table>
+        <tr>
+            <th>Category ID</th>
+            <th>Parent ID</th>
+            <th>Name</th>
+            <th>IsLeaf</th>
+            <th>Status</th>
+            <th>Create</th>
+            <th>Modified</th>
+            <th>Operations</th>
+        </tr>
+        <th:block th:each="category : ${categories}">
+            <tr>
+                <td th:text="${category.id}"></td>
+                <td th:text="${category.parentId}"></td>
+                <td th:text="${category.name}"></td>
+                <td th:text="${category.isLeaf}"></td>
+                <td th:text="${category.status}"></td>
+                <td th:text="${category.gmtCreate.toLocalDateTime()}"></td>
+                <td th:text="${category.gmtModified.toLocalDateTime()}"></td>
+                <td>
+                    <a href="#" th:href="@{/category/edit(id=${category.id})}">Edit</a>
+                    <span>&nbsp;|&nbsp;</span>
+                    <a href="#" th:href="@{/category/new(parentId=${category.id})}">Add Child</a>
+                    <span>&nbsp;|&nbsp;</span>
+                    <a th:if="${category.status == 'Normal'}"
+                       th:href="@{/category/disable(id=${category.id})}">Disable</a>
+                    <a th:if="${category.status == 'Disabled'}"
+                       th:href="@{/category/enable(id=${category.id})}">Enable</a>
+                    <span>&nbsp;|&nbsp;</span>
+                    <a th:href="@{/category/property(categoryId=${category.id})}">Manage Properties</a>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+</form>
+</body>
+</html>

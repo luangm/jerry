@@ -1,9 +1,11 @@
 package io.luan.jerry.common.repository;
 
+import io.luan.jerry.common.domain.Entity;
+
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public interface Repository<T, TID> {
+public interface Repository<T extends Entity, TID> {
 
     /**
      * Return if the operation is successful

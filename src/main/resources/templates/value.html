@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1 th:if="${value.id == null}">New Value</h1>
+
+<form th:action="@{/value}" th:object="${value}" method="post">
+    <input th:if="${value.id != null}" type="hidden" th:field="*{id}"/>
+    <table>
+        <tr>
+            <td>Value:</td>
+            <td>
+                <input type="text" th:field="*{value}"/>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

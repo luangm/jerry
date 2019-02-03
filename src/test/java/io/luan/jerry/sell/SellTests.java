@@ -44,15 +44,15 @@ class SellTests {
 
         var inventory = inventoryService.findById(item.getInventoryId());
 
-        assertEquals(Integer.valueOf(33), inventory.getAvailable());
+        assertEquals(Long.valueOf(33), inventory.getAvailable());
 
         inventory.allocate(500);
 
-        assertEquals(Integer.valueOf(533), inventory.getAvailable());
+        assertEquals(Long.valueOf(533), inventory.getAvailable());
 
         inventoryService.save(inventory);
 
-        assertEquals(Integer.valueOf(2), inventory.getVersion());
+        assertEquals(Long.valueOf(2), inventory.getVersion());
     }
 
 }

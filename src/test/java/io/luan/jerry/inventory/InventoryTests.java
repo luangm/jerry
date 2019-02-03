@@ -46,15 +46,15 @@ class InventoryTests {
 
         var success = inventory.freeze(5); // at create order
         assertTrue(success);
-        assertEquals(Integer.valueOf(24 - 5), inventory.getAvailable());
-        assertEquals(Integer.valueOf(5), inventory.getWithheld());
+        assertEquals(Long.valueOf(24 - 5), inventory.getAvailable());
+        assertEquals(Long.valueOf(5), inventory.getWithheld());
 
         repository.save(inventory);
 
         success = inventory.reduce(5);
         assertTrue(success);
-        assertEquals(Integer.valueOf(24 - 5), inventory.getAvailable());
-        assertEquals(Integer.valueOf(0), inventory.getWithheld());
+        assertEquals(Long.valueOf(24 - 5), inventory.getAvailable());
+        assertEquals(Long.valueOf(0), inventory.getWithheld());
         repository.save(inventory);
 
     }
@@ -70,15 +70,15 @@ class InventoryTests {
 
         var success = inventory.freeze(5); // at create order
         assertTrue(success);
-        assertEquals(Integer.valueOf(24 - 5), inventory.getAvailable());
-        assertEquals(Integer.valueOf(5), inventory.getWithheld());
+        assertEquals(Long.valueOf(24 - 5), inventory.getAvailable());
+        assertEquals(Long.valueOf(5), inventory.getWithheld());
 
         repository.save(inventory);
 
         success = inventory.release(5);
         assertTrue(success);
-        assertEquals(Integer.valueOf(24), inventory.getAvailable());
-        assertEquals(Integer.valueOf(0), inventory.getWithheld());
+        assertEquals(Long.valueOf(24), inventory.getAvailable());
+        assertEquals(Long.valueOf(0), inventory.getWithheld());
         repository.save(inventory);
     }
 
@@ -112,18 +112,18 @@ class InventoryTests {
         inventory.setAvailable(33L);
 
         System.out.println(inventory);
-        assertEquals(Integer.valueOf(0), inventory.getVersion()); // Unsaved
+        assertEquals(Long.valueOf(0), inventory.getVersion()); // Unsaved
 
         repository.save(inventory);
 
         assertNotNull(inventory.getId());
-        assertEquals(Integer.valueOf(1), inventory.getVersion()); // Just saved
+        assertEquals(Long.valueOf(1), inventory.getVersion()); // Just saved
 
         inventory.allocate(10);
-        assertEquals(Integer.valueOf(33 + 10), inventory.getAvailable()); // Added
+        assertEquals(Long.valueOf(33 + 10), inventory.getAvailable()); // Added
         repository.save(inventory);
 
-        assertEquals(Integer.valueOf(2), inventory.getVersion()); // Updated
+        assertEquals(Long.valueOf(2), inventory.getVersion()); // Updated
 
         // Try failed update
         inventory.setWithheld(10L);
@@ -134,7 +134,7 @@ class InventoryTests {
         });
 
         var fromDb = repository.findById(inventory.getId());
-        assertEquals(Integer.valueOf(2), fromDb.getVersion());
+        assertEquals(Long.valueOf(2), fromDb.getVersion());
     }
 
 }

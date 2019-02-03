@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div>
+    <a th:href="@{/category}">Back</a>
+</div>
+
+<h1>Value List:</h1>
+
+<div>
+    <a href="#" th:href="@{/value/new}">Add Value</a>
+</div>
+
+<table>
+    <tr>
+        <th>Value ID</th>
+        <th>Value</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Modified</th>
+        <th>Operations</th>
+    </tr>
+    <th:block th:each="value, stat : ${values}">
+        <tr>
+            <td th:text="${value.id}"></td>
+            <td th:text="${value.value}"></td>
+            <td th:text="${value.status}"></td>
+            <td th:text="${value.gmtCreate.toLocalDateTime()}"></td>
+            <td th:text="${value.gmtModified.toLocalDateTime()}"></td>
+            <td>
+                <a th:if="${value.status == 'Normal'}"
+                   th:href="@{/value/disable(id=${value.id})}">Disable</a>
+                <a th:if="${value.status == 'Disabled'}"
+                   th:href="@{/value/enable(id=${value.id})}">Enable</a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

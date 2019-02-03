@@ -35,7 +35,15 @@ Chapter 2 - Ecommerce Business Logic
 
 2.10 - Logistics
 
-2.11 - Finance (结算、对账、分账、分佣、分润、核算、账单、计税)
+15 - PV
+16 - SKU
+
+2.11 - Finance (结算、对账、分佣、分润、核算、账单、计税)
+结算 - Settlement
+对账 - Reconciliation
+分佣 - Commission
+账单 - Bill
+计税 - Tax
 
 
 2.x - Supporting multiple types of business models, using plugins

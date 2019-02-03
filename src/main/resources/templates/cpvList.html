@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div>
+    <a th:href="@{/category/property(categoryId=${cp.categoryId})}">Back</a>
+</div>
+
+<h1>Category Property Value List for <span th:text="${cp.alias}"></span>:</h1>
+
+<div>
+    <a href="#" th:href="@{/category/property/value/new(categoryId=${cp.categoryId}, propertyId=${cp.propertyId})}">Add
+        Value</a>
+</div>
+
+<table>
+    <tr>
+        <th>Category ID</th>
+        <th>Property ID</th>
+        <th>Value ID</th>
+        <th>Alias</th>
+        <th>SortOrder</th>
+        <th>Create</th>
+        <th>Modified</th>
+        <th>Operations</th>
+    </tr>
+    <th:block th:each="cpv : ${values}">
+        <tr>
+            <td th:text="${cpv.categoryId}"></td>
+            <td th:text="${cpv.propertyId}"></td>
+            <td th:text="${cpv.valueId}"></td>
+            <td th:text="${cpv.alias}"></td>
+            <td th:text="${cpv.sortOrder}"></td>
+            <td th:text="${cpv.gmtCreate.toLocalDateTime()}"></td>
+            <td th:text="${cpv.gmtModified.toLocalDateTime()}"></td>
+            <td>
+                <a th:href="@{/category/property/value/edit(categoryId=${cpv.categoryId}, propertyId=${cpv.propertyId}, valueId=${cpv.valueId})}">Edit</a>
+
+                <!--<a href="#" th:href="@{/category/new(parentId=${category.id})}">Add Child</a>-->
+                <!--<span>&nbsp;|&nbsp;</span>-->
+                <!--<a th:if="${category.status == 'Normal'}"-->
+                <!--th:href="@{/category/disable(id=${category.id})}">Disable</a>-->
+                <!--<a th:if="${category.status == 'Disabled'}"-->
+                <!--th:href="@{/category/enable(id=${category.id})}">Enable</a>-->
+            </td>
+        </tr>
+    </th:block>
+</table>
+
+</body>
+</html>

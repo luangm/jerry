@@ -31,29 +31,6 @@
 </div>
 <br/>
 
-<h3>Categories</h3>
-<table>
-    <tr>
-        <th>Category ID</th>
-        <th>Parent ID</th>
-        <th>Name</th>
-        <th>IsLeaf</th>
-    </tr>
-    <th:block th:each="category : ${categories}">
-        <tr>
-            <td th:text="${category.id}"></td>
-            <td th:text="${category.parentId}"></td>
-            <td th:text="${category.name}"></td>
-            <td th:text="${category.isLeaf}"></td>
-            <td>
-                <a th:href="@{/category(categoryId=${category.id})}">Edit</a>
-            </td>
-        </tr>
-    </th:block>
-</table>
-
-<br/>
-
 <h3>Items</h3>
 <table>
     <tr>

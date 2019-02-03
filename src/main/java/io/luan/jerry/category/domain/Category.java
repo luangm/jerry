@@ -4,8 +4,7 @@ import io.luan.jerry.common.domain.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,13 +44,60 @@ public class Category extends Entity {
     private List<CategoryProperty> properties = new ArrayList<>();
 
     /**
+     * When a category is disabled, it cannot be selected
+     */
+    private CategoryState status = CategoryState.Normal;
+
+    /**
      * Create Time
      */
-    private LocalDateTime gmtCreate = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtCreate = OffsetDateTime.now().withNano(0);
 
     /**
      * Modify Time
      */
-    private LocalDateTime gmtModified = LocalDateTime.now().withNano(0);
+    private OffsetDateTime gmtModified = OffsetDateTime.now().withNano(0);
+
+    public CategoryProperty addProperty(Long propId, String alias) {
+        var cp = new CategoryProperty();
+        cp.setCategory(this);
+        cp.setPropertyId(propId);
+        cp.setAlias(alias);
+        cp.setSortOrder(1L);
+        this.properties.add(cp);
+        return cp;
+    }
+
+    public void setStatus(CategoryState newValue) {
+        if (!newValue.equals(this.status)) {
+            firePropertyChange("status", status, newValue);
+            this.status = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
+    public void setName(String newValue) {
+        if (!newValue.equals(this.name)) {
+            firePropertyChange("name", name, newValue);
+            this.name = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
+    public void setParentId(Long newValue) {
+        if (!newValue.equals(this.parentId)) {
+            firePropertyChange("parentId", parentId, newValue);
+            this.parentId = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
+    public void setIsLeaf(Boolean newValue) {
+        if (!newValue.equals(this.isLeaf)) {
+            firePropertyChange("isLeaf", isLeaf, newValue);
+            this.isLeaf = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
 
 }

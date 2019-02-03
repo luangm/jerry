@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1 th:if="${cp.propertyId != null}">Edit CategoryProperty</h1>
+<h1 th:if="${cp.propertyId == null}">New CategoryProperty</h1>
+
+<form th:action="@{/category/property}" th:object="${cp}" method="post">
+    <input type="hidden" th:if="${cp.categoryId != null}" th:field="*{categoryId}"/>
+    <input type="hidden" th:if="${cp.propertyId != null}" th:field="*{propertyId}"/>
+    <table>
+        <tr>
+            <td>CategoryId:</td>
+            <td th:text="*{categoryId}"></td>
+        </tr>
+
+        <tr>
+            <td>PropertyId:</td>
+            <td>
+                <select th:field="*{propertyId}" th:disabled="${cp.propertyId != null}">
+                    <option th:each="prop : ${properties}" th:value="${prop.id}" th:text="${prop.name}"
+                            th:selected="${prop.id == cp.propertyId}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Alias:</td>
+            <td><input type="text" th:field="*{alias}"/></td>
+        </tr>
+        <tr>
+            <td>Sort Order:</td>
+            <td><input type="number" th:field="*{sortOrder}"/></td>
+        </tr>
+
+        <!--<tr th:if="${category.id != null}">-->
+        <!--<td>IsLeaf:</td>-->
+        <!--<td><input type="checkbox" disabled th:value="*{isLeaf}"/></td>-->
+        <!--</tr>-->
+        <tr>
+            <td><input type="submit"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>
