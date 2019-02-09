@@ -57,3 +57,19 @@ Chapter 3 - Microservices
 Chapter 4 - Event-Driven Architecture
 
 Chapter 5 - Big Data and ML
+
+
+
+Three stages of implementation
+--
+
+* Stage 1: Features
+    * This stage considers proper implementation of features, without too much consideration of performance, 
+storage, memory and other requirements.
+
+* Stage 2: Distributed for extensibility
+    * This stage considers extensibility, assuming infinite budget
+    
+* Stage 3: Optimized Performance
+    * Both inter-module and intra-module performance optimizations, always considers
+    trade off between different resources.

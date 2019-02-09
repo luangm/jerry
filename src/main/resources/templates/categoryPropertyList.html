@@ -22,6 +22,8 @@
         <th>Property ID</th>
         <th>Alias</th>
         <th>SortOrder</th>
+        <th>Type</th>
+        <th>Options</th>
         <th>Create</th>
         <th>Modified</th>
         <th>Operations</th>
@@ -32,6 +34,8 @@
             <td th:text="${cp.propertyId}"></td>
             <td th:text="${cp.alias}"></td>
             <td th:text="${cp.sortOrder}"></td>
+            <td th:text="${cp.type}"></td>
+            <td th:text="${cp.options}"></td>
             <td th:text="${cp.gmtCreate.toLocalDateTime()}"></td>
             <td th:text="${cp.gmtModified.toLocalDateTime()}"></td>
             <td>

@@ -17,8 +17,10 @@ public interface CategoryPropertyMapper {
     @Results(id = "cpResult", value = {
             @Result(column = "category_id", property = "categoryId"),
             @Result(column = "property_id", property = "propertyId"),
-            @Result(column = "sort_order", property = "sortOrder"),
             @Result(column = "alias", property = "alias"),
+            @Result(column = "sort_order", property = "sortOrder"),
+            @Result(column = "type", property = "type"),
+            @Result(column = "options", property = "options"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified")
     })
@@ -60,6 +62,8 @@ public interface CategoryPropertyMapper {
                 VALUES("property_id", "#{propertyId}");
                 VALUES("alias", "#{alias}");
                 VALUES("sort_order", "#{sortOrder}");
+                VALUES("type", "#{type}");
+                VALUES("options", "#{options}");
                 VALUES("gmt_create", "#{gmtCreate}");
                 VALUES("gmt_modified", "#{gmtModified}");
             }}.toString();
@@ -76,6 +80,8 @@ public interface CategoryPropertyMapper {
                 UPDATE(TABLE_CATEGORY_PROPERTY);
                 SET("alias = #{alias}");
                 SET("sort_order = #{sortOrder}");
+                SET("type = #{type}");
+                SET("options = #{options}");
                 SET("gmt_modified = #{gmtModified}");
                 WHERE("category_id = #{categoryId}");
                 WHERE("property_id = #{propertyId}");

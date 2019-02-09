@@ -58,6 +58,11 @@ public class Category extends Entity {
      */
     private OffsetDateTime gmtModified = OffsetDateTime.now().withNano(0);
 
+    public CategoryProperty getPropertyById(Long propId) {
+        var result = this.properties.stream().filter(item -> item.getPropertyId().equals(propId)).findFirst();
+        return result.orElse(null);
+    }
+
     public CategoryProperty addProperty(Long propId, String alias) {
         var cp = new CategoryProperty();
         cp.setCategory(this);

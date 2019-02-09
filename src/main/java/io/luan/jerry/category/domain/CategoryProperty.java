@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -41,6 +42,16 @@ public class CategoryProperty extends Entity {
      * Alias of the property name within its category
      */
     private String alias;
+
+    /**
+     * Type of property: key, sale, normal
+     */
+    private PropertyType propertyType = PropertyType.Normal;
+
+    /**
+     * Property Options
+     */
+    private EnumSet<PropertyOption> options = EnumSet.noneOf(PropertyOption.class);
 
     /**
      * List of CPVs
@@ -79,6 +90,22 @@ public class CategoryProperty extends Entity {
         if (!newValue.equals(this.sortOrder)) {
             firePropertyChange("sortOrder", sortOrder, newValue);
             this.sortOrder = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
+    public void setPropertyType(PropertyType newValue) {
+        if (!newValue.equals(this.propertyType)) {
+            firePropertyChange("propertyType", propertyType, newValue);
+            this.propertyType = newValue;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
+    public void setOptions(EnumSet<PropertyOption> newValue) {
+        if (!newValue.equals(this.options)) {
+            firePropertyChange("options", options, newValue);
+            this.options = newValue;
             this.gmtModified = OffsetDateTime.now().withNano(0);
         }
     }

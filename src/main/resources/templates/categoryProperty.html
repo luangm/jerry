@@ -28,12 +28,31 @@
             </td>
         </tr>
         <tr>
+            <td>Property Type:</td>
+            <td>
+                <th:block th:each="type , stat : ${propTypes}">
+                    <input type="radio" th:field="*{type}" th:value="${type.value}"/>
+                    <label th:text="${type.name()}"></label>
+                </th:block>
+            </td>
+        </tr>
+
+        <tr>
             <td>Alias:</td>
             <td><input type="text" th:field="*{alias}"/></td>
         </tr>
         <tr>
             <td>Sort Order:</td>
             <td><input type="number" th:field="*{sortOrder}"/></td>
+        </tr>
+        <tr>
+            <td>Options:</td>
+            <td>
+                <th:block th:each="option , stat : ${propOptions}">
+                    <input type="checkbox" th:field="*{options}" th:value="${option.bit}"/>
+                    <label th:text="${option.name()}"></label>
+                </th:block>
+            </td>
         </tr>
 
         <!--<tr th:if="${category.id != null}">-->

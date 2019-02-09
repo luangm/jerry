@@ -3,10 +3,7 @@ package io.luan.jerry.category.factory;
 import io.luan.jerry.category.data.CategoryDO;
 import io.luan.jerry.category.data.CategoryPropertyDO;
 import io.luan.jerry.category.data.CategoryPropertyValueDO;
-import io.luan.jerry.category.domain.Category;
-import io.luan.jerry.category.domain.CategoryProperty;
-import io.luan.jerry.category.domain.CategoryPropertyValue;
-import io.luan.jerry.category.domain.CategoryState;
+import io.luan.jerry.category.domain.*;
 import io.luan.jerry.common.domain.EntityState;
 import lombok.Value;
 import org.springframework.stereotype.Component;
@@ -73,6 +70,8 @@ public class CategoryFactory {
         cp.setPropertyId(cpDO.getPropertyId());
         cp.setAlias(cpDO.getAlias());
         cp.setSortOrder(cpDO.getSortOrder());
+        cp.setPropertyType(PropertyType.fromValue(cpDO.getType()));
+        cp.setOptions(PropertyOption.fromValue(cpDO.getOptions()));
         cp.setGmtCreate(cpDO.getGmtCreate());
 
 

@@ -1,5 +1,7 @@
 package io.luan.jerry.web;
 
+import io.luan.jerry.category.domain.PropertyOption;
+import io.luan.jerry.category.domain.PropertyType;
 import io.luan.jerry.category.service.BasePropertyService;
 import io.luan.jerry.category.service.BaseValueService;
 import io.luan.jerry.category.service.CategoryService;
@@ -37,13 +39,18 @@ public class CpController {
     public ModelAndView categoryPropertyEdit(@RequestParam(value = "categoryId") Long categoryId,
                                              @RequestParam(value = "propertyId") Long propertyId) {
         var cat = categoryService.findById(categoryId, true);
-        var cp = cat.getProperties().stream().filter(item -> item.getPropertyId().equals(propertyId)).findFirst();
+        var cp = cat.getPropertyById(propertyId);
 
-        if (cp.isPresent()) {
+        if (cp != null) {
             var mav = new ModelAndView("categoryProperty");
-            mav.addObject("cp", new CategoryPropertyVM(cp.get()));
+            mav.addObject("cp", new CategoryPropertyVM(cp));
             var props = propertyService.findAll().stream().map(BasePropertyVM::new).collect(Collectors.toList());
             mav.addObject("properties", props);
+            var propTypes = PropertyType.values();
+            mav.addObject("propTypes", propTypes);
+
+            var options = PropertyOption.values();
+            mav.addObject("propOptions", options);
             return mav;
         }
 
@@ -61,6 +68,12 @@ public class CpController {
         mav.addObject("cp", cpVM);
         var props = propertyService.findAll().stream().map(BasePropertyVM::new).collect(Collectors.toList());
         mav.addObject("properties", props);
+
+        var propTypes = PropertyType.values();
+        mav.addObject("propTypes", propTypes);
+
+        var options = PropertyOption.values();
+        mav.addObject("propOptions", options);
         return mav;
     }
 
@@ -68,9 +81,11 @@ public class CpController {
     public ModelAndView categoryPropertyList(@RequestParam(value = "categoryId") Long categoryId) {
         var cat = categoryService.findById(categoryId, true);
         var props = cat.getProperties().stream().map(CategoryPropertyVM::new).collect(Collectors.toList());
+
         var mav = new ModelAndView("categoryPropertyList");
         mav.addObject("category", cat);
         mav.addObject("properties", props);
+
         return mav;
     }
 
@@ -79,17 +94,20 @@ public class CpController {
         var user = SecurityUtils.getCurrentUser();
 
         var cat = categoryService.findById(vm.getCategoryId(), true);
-        var optCp = cat.getProperties().stream().filter(item -> item.getPropertyId().equals(vm.getPropertyId())).findFirst();
-        if (optCp.isPresent()) {
+        var cp = cat.getPropertyById(vm.getPropertyId());
+        if (cp != null) {
             // existing
-            var cp = optCp.get();
             cp.setAlias(vm.getAlias());
             cp.setSortOrder(vm.getSortOrder());
+            cp.setPropertyType(PropertyType.fromValue(vm.getType()));
+            cp.setOptions(PropertyOption.fromValues(vm.getOptions()));
             categoryService.save(cat);
         } else {
             // new
-            var cp = cat.addProperty(vm.getPropertyId(), vm.getAlias());
+            cp = cat.addProperty(vm.getPropertyId(), vm.getAlias());
             cp.setSortOrder(vm.getSortOrder());
+            cp.setPropertyType(PropertyType.fromValue(vm.getType()));
+            cp.setOptions(PropertyOption.fromValues(vm.getOptions()));
             categoryService.save(cat);
         }
         var mav = new ModelAndView("redirect:/category/property");
