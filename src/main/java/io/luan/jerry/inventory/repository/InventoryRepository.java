@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface InventoryRepository extends Repository<Inventory, Long> {
 
+    List<Inventory> findAllByItemId(Long itemId);
+
     List<Inventory> findBatch(List<Long> ids);
 
     void saveBatch(List<Inventory> list);

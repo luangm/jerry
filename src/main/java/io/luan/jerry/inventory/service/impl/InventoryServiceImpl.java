@@ -21,6 +21,11 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
+    public List<Inventory> findAllByItemId(Long itemId) {
+        return inventoryRepository.findAllByItemId(itemId);
+    }
+
+    @Override
     public Inventory findById(Long id) {
         return inventoryRepository.findById(id);
     }

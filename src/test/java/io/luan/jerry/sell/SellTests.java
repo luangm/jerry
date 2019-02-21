@@ -2,7 +2,7 @@ package io.luan.jerry.sell;
 
 import io.luan.jerry.inventory.service.InventoryService;
 import io.luan.jerry.item.service.ItemService;
-import io.luan.jerry.sell.dto.PublishItemDTO;
+import io.luan.jerry.sell.dto.PublishItemRequest;
 import io.luan.jerry.sell.service.SellService;
 import io.luan.jerry.user.domain.User;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class SellTests {
     void sellInventory() {
         var title = "Item" + System.currentTimeMillis();
 
-        var request = new PublishItemDTO();
+        var request = new PublishItemRequest();
         request.setCategoryId(1L);
         request.setTitle(title);
         request.setImgUrl("1.jpg");

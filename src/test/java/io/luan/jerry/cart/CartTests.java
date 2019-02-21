@@ -31,8 +31,8 @@ public class CartTests {
         Long item3Id = 345L;
 
         var cart = new Cart(userId);
-        cart.addItem(itemId, 2L);
-        cart.addItem(item2Id, 3L);
+        cart.addItem(itemId, 0L,2L);
+        cart.addItem(item2Id, 0L,3L);
 
         cartRepository.save(cart);
         System.out.println(cart);
@@ -44,12 +44,12 @@ public class CartTests {
         item1.setQuantity(5L);
 
         // add a new one
-        cart.addItem(item3Id, 7L);
+        cart.addItem(item3Id,0L, 7L);
 
         cartRepository.save(cart);
         System.out.println(cart);
 
-        cart.addItem(itemId, 10L);
+        cart.addItem(itemId,0L, 10L);
         Assert.assertEquals(3, cart.getItems().size());
         cartRepository.save(cart);
     }
@@ -62,12 +62,12 @@ public class CartTests {
         Long item2Id = 234L;
         Long item3Id = 345L;
 
-        var item1 = cartService.addToCart(new CartItemDTO(userId, itemId, 3L));
-        var item2 = cartService.addToCart(new CartItemDTO(userId, item2Id, 4L));
+        var item1 = cartService.addToCart(new CartItemDTO(userId, itemId, 0L, 3L));
+        var item2 = cartService.addToCart(new CartItemDTO(userId, item2Id,0L, 4L));
         Assert.assertNotNull(item1.getId());
         Assert.assertNotNull(item2.getId());
 
-        cartService.update(new CartItemDTO(userId, itemId, 5L));
+        cartService.update(new CartItemDTO(userId, itemId, 0L,5L));
 
         var cart = cartService.getCart(userId);
         Assert.assertEquals(2, cart.getItems().size());
@@ -81,16 +81,16 @@ public class CartTests {
         Long userId = System.currentTimeMillis() / 1000 + 55;
         Long itemId = 123L;
 
-        var item1 = cartService.addToCart(new CartItemDTO(userId, itemId, 3L));
+        var item1 = cartService.addToCart(new CartItemDTO(userId, itemId,0L, 3L));
         Assert.assertNotNull(item1.getId());
 
-        cartService.remove(new CartItemDTO(userId, itemId, 0L)); // quantity doesn't matter
+        cartService.remove(new CartItemDTO(userId, itemId,0L, 0L)); // quantity doesn't matter
 
         var cart = cartService.getCart(userId);
         Assert.assertEquals(0, cart.getItems().size());
 
         // add again
-        var item2 = cartService.addToCart(new CartItemDTO(userId, itemId, 4L));
+        var item2 = cartService.addToCart(new CartItemDTO(userId, itemId, 0L,4L));
         Assert.assertNotNull(item2.getId());
 
         Assert.assertNotEquals(item2.getId(), item1.getId());

@@ -36,9 +36,9 @@ public class Cart extends Entity {
         this.setState(EntityState.Unchanged);
     }
 
-    public CartItem addItem(Long itemId, Long quantity) {
+    public CartItem addItem(Long itemId, Long skuId, Long quantity) {
         for (var cartItem : this.getItems()) {
-            if (cartItem.getItemId().equals(itemId)) {
+            if (cartItem.getItemId().equals(itemId) && cartItem.getSkuId().equals(skuId)) {
                 cartItem.setQuantity(cartItem.getQuantity() + quantity);
                 return cartItem;
             }
@@ -47,6 +47,7 @@ public class Cart extends Entity {
         var cartItem = new CartItem();
         cartItem.setUserId(this.userId);
         cartItem.setItemId(itemId);
+        cartItem.setSkuId(skuId);
         cartItem.setQuantity(quantity);
         cartItem.setState(EntityState.Added);
         this.cartItems.add(cartItem);

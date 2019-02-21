@@ -1,9 +1,12 @@
 package io.luan.jerry.item.repository.impl;
 
-import io.luan.jerry.common.domain.EntityState;
+import io.luan.jerry.common.repository.RepositoryHelper;
 import io.luan.jerry.item.data.ItemDO;
 import io.luan.jerry.item.data.ItemMapper;
+import io.luan.jerry.item.data.SkuDO;
+import io.luan.jerry.item.data.SkuMapper;
 import io.luan.jerry.item.domain.Item;
+import io.luan.jerry.item.domain.Sku;
 import io.luan.jerry.item.factory.ItemFactory;
 import io.luan.jerry.item.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +21,13 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     private final ItemMapper itemMapper;
     private final ItemFactory itemFactory;
+    private final SkuMapper skuMapper;
 
     @Autowired
-    public ItemRepositoryImpl(ItemMapper itemMapper, ItemFactory itemFactory) {
+    public ItemRepositoryImpl(ItemMapper itemMapper, ItemFactory itemFactory, SkuMapper skuMapper) {
         this.itemMapper = itemMapper;
         this.itemFactory = itemFactory;
+        this.skuMapper = skuMapper;
     }
 
     @Override
@@ -57,18 +62,48 @@ public class ItemRepositoryImpl implements ItemRepository {
     @Override
     @Transactional
     public void save(Item item) {
-        var itemDO = new ItemDO(item);
-        switch (item.getState()) {
-            case Added:
-            case Detached:
-                itemMapper.insert(itemDO);
-                item.setId(itemDO.getId());
-                break;
-            case Modified:
-                itemMapper.update(itemDO);
-                break;
+        RepositoryHelper.save(item, this::insert, this::update);
+        item.getSkus().forEach(this::save);
+    }
+
+    @Override
+    public Item findById(Long id, boolean withSku) {
+        if (!withSku) {
+            return findById(id);
         }
-        item.setState(EntityState.Unchanged);
+
+        var itemDO = itemMapper.findById(id);
+        if (itemDO != null) {
+            var skuList = skuMapper.findAllByItemId(id);
+            return itemFactory.load(itemDO, skuList);
+        }
+        return null;
+    }
+
+    private void insert(Item item) {
+        var itemDO = new ItemDO(item);
+        itemMapper.insert(itemDO);
+        item.setId(itemDO.getId());
+    }
+
+    private void insert(Sku sku) {
+        var skuDO = new SkuDO(sku);
+        skuMapper.insert(skuDO);
+        sku.setId(skuDO.getId());
+    }
+
+    private void save(Sku sku) {
+        RepositoryHelper.save(sku, this::insert, this::update);
+    }
+
+    private void update(Sku sku) {
+        var skuDO = new SkuDO(sku);
+        skuMapper.update(skuDO);
+    }
+
+    private void update(Item item) {
+        var itemDO = new ItemDO(item);
+        itemMapper.update(itemDO);
     }
 
 }

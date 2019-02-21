@@ -23,6 +23,7 @@ public interface CartItemMapper {
             @Result(column = "id", property = "id"),
             @Result(column = "user_id", property = "userId"),
             @Result(column = "item_id", property = "itemId"),
+            @Result(column = "sku_id", property = "skuId"),
             @Result(column = "quantity", property = "quantity"),
             @Result(column = "gmt_create", property = "gmtCreate"),
             @Result(column = "gmt_modified", property = "gmtModified"),
@@ -73,6 +74,7 @@ public interface CartItemMapper {
                 INSERT_INTO(TABLE_CART);
                 VALUES("user_id", "#{userId}");
                 VALUES("item_id", "#{itemId}");
+                VALUES("sku_id", "#{skuId}");
                 VALUES("quantity", "#{quantity}");
                 VALUES("gmt_create", "#{gmtCreate}");
                 VALUES("gmt_modified", "#{gmtModified}");

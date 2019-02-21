@@ -28,6 +28,11 @@ public class Promotion extends Entity {
     private Long itemId;
 
     /**
+     * Sku ID
+     */
+    private Long skuId;
+
+    /**
      * New Price of item
      */
     private Long newPrice;

@@ -3,6 +3,160 @@
 <head lang="en">
     <title>Jerry E-Commerce</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var state = {
+            pv: /*[[${item.props}]]*/ {},
+            category: /*[[${category}]]*/ null
+        };
+
+        // window.addEventListener('load', function() {
+        //     console.log('All assets are loaded')
+        //     initSkuTable();
+        // });
+
+        function check(propId, valueId, evt, obj) {
+            var values = state.pv[propId];
+
+            if (obj.checked) {
+                if (!values) {
+                    values = [];
+                    state.pv[propId] = values;
+                }
+                values.push(valueId);
+            } else {
+                var idx = -1;
+                for (var i = 0; i < values.length; i++) {
+                    if (values[i] === valueId) {
+                        idx = i;
+                    }
+                }
+
+                if (idx >= 0) {
+                    values.splice(idx, 1);
+                }
+            }
+
+            console.log(JSON.stringify(state.pv));
+            initSkuTable();
+        }
+
+        function getProperty(propId) {
+            for (var i = 0; i < state.category.properties.length; i++) {
+                var prop = state.category.properties[i];
+                if (prop.propertyId == propId) {
+                    return prop;
+                }
+            }
+            return null;
+        }
+
+        function getValue(propId, valueId) {
+            var prop = getProperty(propId);
+            for (var i = 0; i < prop.values.length; i++) {
+                var value = prop.values[i];
+                if (value.valueId == valueId) {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        function initSkuTable() {
+
+            console.log(">>", state);
+
+            var table = document.getElementById("skuTable");
+            while (table.firstChild) {
+                table.removeChild(table.firstChild);
+            }
+            var row = document.createElement("tr");
+            var propList = [];
+            for (var prop in state.pv) {
+                var propTh = document.createElement("th");
+                propTh.innerText = getProperty(prop).alias;
+                row.appendChild(propTh);
+                propList.push(prop);
+            }
+            var priceTh = document.createElement("th");
+            priceTh.innerText = "Price";
+            row.appendChild(priceTh);
+            var inventoryTh = document.createElement("th");
+            inventoryTh.innerText = "Inventory";
+            row.appendChild(inventoryTh);
+            table.appendChild(row);
+
+            var list = [];
+            for (var prop in state.pv) {
+                list = expandArray(list, prop, state.pv[prop]);
+            }
+
+            console.log(list);
+            for (var i = 0; i < list.length; i++) {
+                var obj = list[i];
+                var row = document.createElement("tr");
+                for (var j = 0; j < propList.length; j++) {
+                    var prop = propList[j];
+                    var propTh = document.createElement("td");
+                    propTh.innerText = getValue(prop, obj[prop]).alias;
+                    row.appendChild(propTh);
+                }
+                var priceTd = document.createElement("td");
+                var priceInput = document.createElement("input");
+                priceInput.setAttribute('type', 'text');
+                priceInput.setAttribute('name', 'skuPrice[' + encode(obj) + ']');
+                priceTd.appendChild(priceInput);
+                row.appendChild(priceTd);
+
+                var inventoryTd = document.createElement("td");
+                var inventoryInput = document.createElement("input");
+                inventoryInput.setAttribute('type', 'text');
+                inventoryInput.setAttribute('name', 'skuInventory[' + encode(obj) + ']');
+                inventoryTd.appendChild(inventoryInput);
+                row.appendChild(inventoryTd);
+
+
+                table.appendChild(row);
+
+            }
+
+            console.log(state);
+        }
+
+        function encode(obj) {
+            var str = "";
+            for (var key in obj) {
+                if (str.length > 0) {
+                    str += ";";
+                }
+                str += key + ':' + obj[key];
+            }
+            return str;
+        }
+
+        function expandArray(array, newProp, newValues) {
+            var newArray = [];
+            for (var j = 0; j < newValues.length; j++) {
+                var value = newValues[j];
+
+                if (array.length === 0) {
+                    var obj = {};
+                    obj[newProp] = value;
+                    newArray.push(obj);
+                } else {
+                    for (var i = 0; i < array.length; i++) {
+                        var obj = Object.assign({}, array[i]);
+                        obj[newProp] = value;
+                        newArray.push(obj);
+                    }
+                }
+            }
+            return newArray;
+        }
+
+        /*]]>*/
+    </script>
 </head>
 <body>
 
@@ -10,18 +164,12 @@
 <h1 th:if="${item.itemId == null}">Publish Item</h1>
 
 <form th:action="@{/sell}" th:object="${item}" method="post">
+    <input type="hidden" name="categoryId" th:value="${category.id}"/>
     <input th:if="${item.getItemId() != null}" type="hidden" name="itemId" th:value="${item.getItemId()}"/>
     <table>
         <tr>
             <td>Category:</td>
-            <td>
-                <select id="categoryId" th:field="*{categoryId}">
-                    <option th:each="cat : ${categories}"
-                            th:value="${cat.getId()}"
-                            th:text="${cat.getName()}"
-                            th:selected="${cat.getId()==item.getCategoryId()}"></option>
-                </select>
-            </td>
+            <td th:text="${category.name}"></td>
         </tr>
         <tr>
             <td>Title:</td>
@@ -30,6 +178,36 @@
         <tr>
             <td>Image Url:</td>
             <td><input type="text" th:field="*{imgUrl}"/></td>
+        </tr>
+        <tr>
+            <td>Sale Props:</td>
+            <td>
+                <table>
+                    <tr th:each="saleProp : ${saleProps}">
+                        <td th:text="${saleProp.alias}"></td>
+                        <td>
+                            <th:block th:each="value : ${saleProp.getValues()}">
+                                <input type="checkbox" th:field="*{props[__${saleProp.propertyId}__]}"
+                                       th:value="${value.valueId}" th:text="${value.alias}"
+                                       th:onclick="|check(${saleProp.propertyId}, ${value.valueId}, event, this)|"
+                                />
+                            </th:block>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Skus:</td>
+            <td>
+                <table id="skuTable">
+                    <tr th:each="sku: *{skuPrice}">
+                        <td>
+                            <input type="text" th:field="*{skuPrice[__${sku.key}__]}" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
         </tr>
         <tr>
             <td>Price:</td>

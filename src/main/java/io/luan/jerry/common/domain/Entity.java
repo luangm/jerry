@@ -31,6 +31,14 @@ public abstract class Entity implements Serializable, PropertyChangeListener {
         }
     }
 
+    protected void fireMappedPropertyChange(String propertyName, Long mapKey, Object oldValue, Object newValue) {
+        this.pcs.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
+    protected void fireMappedPropertyChange(String propertyName, String mapKey, Object oldValue, Object newValue) {
+        this.pcs.firePropertyChange(propertyName, oldValue, newValue);
+    }
+
     protected void fireIndexedPropertyChange(String propertyName, int index, Object oldValue, Object newValue) {
         this.pcs.fireIndexedPropertyChange(propertyName, index, oldValue, newValue);
     }

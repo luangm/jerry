@@ -2,10 +2,8 @@ package io.luan.jerry.web;
 
 import io.luan.jerry.order.service.OrderService;
 import io.luan.jerry.order.vm.OrderVM;
-import io.luan.jerry.payment.domain.PaymentStatus;
 import io.luan.jerry.payment.service.PaymentService;
 import io.luan.jerry.security.SecurityUtils;
-import io.luan.jerry.shipment.domain.ShipmentStatus;
 import io.luan.jerry.shipment.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

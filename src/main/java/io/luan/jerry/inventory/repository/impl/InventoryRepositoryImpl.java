@@ -80,6 +80,15 @@ public class InventoryRepositoryImpl implements InventoryRepository {
     }
 
     @Override
+    public List<Inventory> findAllByItemId(Long itemId) {
+        List<Inventory> inventories = new ArrayList<>();
+        for (InventoryDO inventoryDO : mapper.findAllByItemId(itemId)) {
+            inventories.add(factory.load(inventoryDO));
+        }
+        return inventories;
+    }
+
+    @Override
     public List<Inventory> findBatch(List<Long> ids) {
         Map<Long, Inventory> map = new HashMap<>();
         var items = mapper.findBatch(ids);

@@ -23,7 +23,7 @@ public class CartRestController {
     public CartItemVM add(@RequestBody CartItemVM vm) {
         var user = SecurityUtils.getCurrentUser();
 
-        var cartItemDTO = new CartItemDTO(user.getId(), vm.getItemId(), vm.getQuantity());
+        var cartItemDTO = new CartItemDTO(user.getId(), vm.getItemId(), vm.getSkuId(), vm.getQuantity());
         var entity = cartService.addToCart(cartItemDTO);
 
         return new CartItemVM(entity);
@@ -33,7 +33,7 @@ public class CartRestController {
     public CartItemVM change(@RequestBody CartItemVM vm) {
         var user = SecurityUtils.getCurrentUser();
 
-        var cartItemDTO = new CartItemDTO(user.getId(), vm.getItemId(), vm.getQuantity());
+        var cartItemDTO = new CartItemDTO(user.getId(), vm.getItemId(), vm.getSkuId(), vm.getQuantity());
         var entity = cartService.update(cartItemDTO);
 
         return new CartItemVM(entity);
@@ -43,7 +43,7 @@ public class CartRestController {
     public CartItemVM remove(@RequestBody CartItemVM vm) {
         var user = SecurityUtils.getCurrentUser();
 
-        var cartItemDTO = new CartItemDTO(user.getId(), vm.getItemId(), vm.getQuantity());
+        var cartItemDTO = new CartItemDTO(user.getId(), vm.getItemId(), vm.getSkuId(), vm.getQuantity());
         var entity = cartService.remove(cartItemDTO);
 
         return new CartItemVM(entity);

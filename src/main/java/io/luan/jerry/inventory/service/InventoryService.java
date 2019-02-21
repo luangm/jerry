@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface InventoryService {
 
-    Inventory findById(Long id);
+    List<Inventory> findAllByItemId(Long itemId);
 
-    Inventory save(Inventory inventory);
+    Inventory findById(Long id);
 
     boolean freezeBatch(List<Long> ids, List<Long> quantities);
 
     boolean reduceBatch(List<Long> ids, List<Long> quantities);
+
+    Inventory save(Inventory inventory);
 }

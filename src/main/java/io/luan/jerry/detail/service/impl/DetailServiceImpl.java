@@ -1,7 +1,7 @@
 package io.luan.jerry.detail.service.impl;
 
 import io.luan.jerry.category.service.CategoryService;
-import io.luan.jerry.detail.dto.DetailDTO;
+import io.luan.jerry.detail.dto.*;
 import io.luan.jerry.detail.service.DetailService;
 import io.luan.jerry.inventory.service.InventoryService;
 import io.luan.jerry.item.service.ItemService;
@@ -9,6 +9,9 @@ import io.luan.jerry.promotion.service.PromotionService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log
@@ -31,26 +34,30 @@ public class DetailServiceImpl implements DetailService {
     }
 
     @Override
-    public DetailDTO getDetail(Long itemId) {
-        var item = itemService.findById(itemId);
-        var inventory = inventoryService.findById(item.getInventoryId());
-        var category = categoryService.findById(item.getCategoryId());
+    public ItemDetail getDetail(Long itemId, Long userId) {
+        var item = itemService.findById(itemId, true);
+//        var inventory = inventoryService.findById(item.getInventoryId());
+        var allInventory = inventoryService.findAllByItemId(item.getId());
+        var category = categoryService.findById(item.getCategoryId(), true);
         var promotions = promotionService.findByItemId(itemId);
 
-        var detailDto = new DetailDTO();
-        detailDto.setItemId(itemId);
-        detailDto.setSellerId(item.getUserId());
-        detailDto.setTitle(item.getTitle());
-        detailDto.setImgUrl(item.getImgUrl());
-        detailDto.setPrice(item.getPrice());
+        var detailDto = new ItemDetail(item);
+        detailDto.setProperties(category.getProperties().stream().map(SaleProperty::new).collect(Collectors.toList()));
 
-        if (promotions.size() > 0) {
-            var promo = promotions.get(0);
-            detailDto.setNewPrice(promo.getNewPrice());
+        var total = 0L;
+        for (var sku: detailDto.getSkuList()) {
+            var skuInventory = allInventory.stream().filter(i->i.getId().equals(sku.getInventoryId())).findFirst();
+            if (skuInventory.isPresent()) {
+                sku.setInventory(skuInventory.get().getAvailable());
+                total += skuInventory.get().getAvailable();
+            }
         }
 
-        if (inventory != null) {
-            detailDto.setInventory(inventory.getAvailable());
+        if (detailDto.getSkuList().size() > 0) {
+            detailDto.setInventory(total);
+        } else {
+            var itemInventory = allInventory.stream().filter(i -> i.getId().equals(item.getInventoryId())).findFirst();
+            itemInventory.ifPresent(inventory -> detailDto.setInventory(inventory.getAvailable()));
         }
 
         return detailDto;

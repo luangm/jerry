@@ -1,13 +1,9 @@
 package io.luan.jerry.order.vm;
 
 import io.luan.jerry.order.domain.Order;
-import io.luan.jerry.order.domain.OrderStatus;
-import io.luan.jerry.payment.domain.PaymentStatus;
-import io.luan.jerry.shipment.domain.ShipmentStatus;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

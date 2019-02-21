@@ -57,17 +57,17 @@ public class Shipment extends Entity {
     /**
      * Shipment Status
      */
-    private ShipmentStatus status = ShipmentStatus.Created;
+    private ShipmentState status = ShipmentState.Created;
 
     public Shipment() {
         this.setState(EntityState.Added);
     }
 
     public void receive() {
-        this.setStatus(ShipmentStatus.Received);
+        this.setStatus(ShipmentState.Received);
     }
 
-    public void setStatus(ShipmentStatus newValue) {
+    public void setStatus(ShipmentState newValue) {
         if (!newValue.equals(this.status)) {
             firePropertyChange("status", this.status, newValue);
             this.status = newValue;
@@ -84,6 +84,6 @@ public class Shipment extends Entity {
     }
 
     public void ship() {
-        this.setStatus(ShipmentStatus.Shipped);
+        this.setStatus(ShipmentState.Shipped);
     }
 }

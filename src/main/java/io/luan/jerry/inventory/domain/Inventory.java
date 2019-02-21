@@ -14,6 +14,8 @@ public class Inventory extends Entity {
 
     private Long itemId;
 
+    private Long skuId = 0L;
+
     private Long available = 0L;
 
     private Long withheld = 0L;

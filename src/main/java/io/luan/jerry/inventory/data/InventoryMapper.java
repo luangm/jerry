@@ -18,6 +18,10 @@ public interface InventoryMapper {
     @ResultMap("inventoryResult")
     List<InventoryDO> findAll();
 
+    @SelectProvider(type = InventorySqlProvider.class, method = "findAllByItemId")
+    @ResultMap("inventoryResult")
+    List<InventoryDO> findAllByItemId(Long itemId);
+
     @SelectProvider(type = InventorySqlProvider.class, method = "findBatch")
     @ResultMap("inventoryResult")
     List<InventoryDO> findBatch(@Param("ids") List<Long> ids);
@@ -26,6 +30,7 @@ public interface InventoryMapper {
     @Results(id = "inventoryResult", value = {
             @Result(column = "id", property = "id"),
             @Result(column = "item_id", property = "itemId"),
+            @Result(column = "sku_id", property = "skuId"),
             @Result(column = "available", property = "available"),
             @Result(column = "withheld", property = "withheld"),
             @Result(column = "gmt_create", property = "gmtCreate"),
@@ -62,6 +67,14 @@ public interface InventoryMapper {
             }}.toString();
         }
 
+        public static String findAllByItemId(final Long itemId) {
+            return new SQL() {{
+                SELECT("*");
+                FROM(TABLE_INVENTORY);
+                WHERE("item_id = #{itemId}");
+            }}.toString();
+        }
+
         public static String findBatch(final List<Long> ids) {
             var idList = ArrayUtils.arrayToString(ids, ",");
             return new SQL() {{
@@ -83,6 +96,7 @@ public interface InventoryMapper {
             return new SQL() {{
                 INSERT_INTO(TABLE_INVENTORY);
                 VALUES("item_id", "#{itemId}");
+                VALUES("sku_id", "#{skuId}");
                 VALUES("available", "#{available}");
                 VALUES("withheld", "#{withheld}");
                 VALUES("gmt_create", "#{gmtCreate}");

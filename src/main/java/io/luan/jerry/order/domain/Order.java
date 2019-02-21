@@ -1,15 +1,16 @@
 package io.luan.jerry.order.domain;
 
 import io.luan.jerry.common.domain.Entity;
-import io.luan.jerry.payment.domain.PaymentStatus;
-import io.luan.jerry.shipment.domain.ShipmentStatus;
+import io.luan.jerry.payment.domain.PaymentState;
+import io.luan.jerry.shipment.domain.ShipmentState;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -36,7 +37,7 @@ public class Order extends Entity {
      * Total Fee
      */
     private Long totalFee;
-    
+
     /**
      * Create Time
      */
@@ -50,37 +51,68 @@ public class Order extends Entity {
     /**
      * Status of the entire order
      */
-    private OrderStatus status = OrderStatus.Created;
+    private OrderState status = OrderState.Created;
 
     /**
      * Status of payment for this order. Duplicated from Payment
      */
-    private PaymentStatus payStatus = PaymentStatus.Created;
+    private PaymentState payStatus = PaymentState.Created;
 
     /**
      * Status of shipment, Duplicated from Shipment
      */
-    private ShipmentStatus shipStatus = ShipmentStatus.Created;
+    private ShipmentState shipStatus = ShipmentState.Created;
 
     /**
      * Sub Orders
      */
     private List<SubOrder> subOrders = new ArrayList<>();
+    /**
+     * Attribute Map
+     */
+    private Map<String, String> attributes = new HashMap<>();
 
     public void addSubOrder(SubOrder subOrder) {
         this.subOrders.add(subOrder);
         this.calculateTotalFee();
     }
 
+    public void enable() {
+        if (this.status == OrderState.Created) {
+            firePropertyChange("status", this.status, OrderState.Enabled);
+            this.status = OrderState.Enabled;
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
+    }
+
     public long getQuantity() {
         return subOrders.stream().mapToLong(SubOrder::getQuantity).sum();
     }
 
-    private void calculateTotalFee() {
-        this.totalFee = subOrders.stream().mapToLong(SubOrder::getTotalFee).sum();
+    /**
+     * Set an attribute to the value specified.
+     * Set the newValue to null to remove the attribute
+     */
+    public void setAttribute(String attrName, String newValue) {
+        var existing = attributes.get(attrName);
+
+        // Remove existing
+        if (newValue == null && existing != null) {
+            fireMappedPropertyChange("attributes", attrName, existing, newValue);
+            attributes.remove(attrName);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+            return;
+        }
+
+        // Set new value
+        if (newValue != null && !newValue.equals(existing)) {
+            fireMappedPropertyChange("attributes", attrName, existing, newValue);
+            attributes.put(attrName, newValue);
+            this.gmtModified = OffsetDateTime.now().withNano(0);
+        }
     }
 
-    public void setPayStatus(PaymentStatus newValue) {
+    public void setPayStatus(PaymentState newValue) {
         if (!newValue.equals(this.payStatus)) {
             firePropertyChange("payStatus", this.payStatus, newValue);
             this.payStatus = newValue;
@@ -88,7 +120,7 @@ public class Order extends Entity {
         }
     }
 
-    public void setShipStatus(ShipmentStatus newValue) {
+    public void setShipStatus(ShipmentState newValue) {
         if (!newValue.equals(this.shipStatus)) {
             firePropertyChange("shipStatus", this.shipStatus, newValue);
             this.shipStatus = newValue;
@@ -96,11 +128,7 @@ public class Order extends Entity {
         }
     }
 
-    public void enable() {
-        if (this.status == OrderStatus.Created) {
-            firePropertyChange("status", this.status, OrderStatus.Enabled);
-            this.status = OrderStatus.Enabled;
-            this.gmtModified = OffsetDateTime.now().withNano(0);
-        }
+    private void calculateTotalFee() {
+        this.totalFee = subOrders.stream().mapToLong(SubOrder::getTotalFee).sum();
     }
 }

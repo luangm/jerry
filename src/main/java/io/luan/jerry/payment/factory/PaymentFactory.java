@@ -3,7 +3,7 @@ package io.luan.jerry.payment.factory;
 import io.luan.jerry.common.domain.EntityState;
 import io.luan.jerry.payment.data.PaymentDO;
 import io.luan.jerry.payment.domain.Payment;
-import io.luan.jerry.payment.domain.PaymentStatus;
+import io.luan.jerry.payment.domain.PaymentState;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,7 +18,7 @@ public class PaymentFactory {
         payment.setChannelId(paymentDO.getChannelId());
         payment.setTotalFee(paymentDO.getTotalFee());
         payment.setGmtCreate(paymentDO.getGmtCreate());
-        payment.setStatus(PaymentStatus.fromValue(paymentDO.getStatus()));
+        payment.setStatus(PaymentState.fromValue(paymentDO.getStatus()));
 
         // Note: GmtModified and State should ALWAYS be set last in that order
         payment.setGmtModified(paymentDO.getGmtModified());

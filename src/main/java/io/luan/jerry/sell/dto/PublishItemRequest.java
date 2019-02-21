@@ -3,9 +3,11 @@ package io.luan.jerry.sell.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-public class PublishItemDTO implements Serializable {
+public class PublishItemRequest implements Serializable {
 
     static final long serialVersionUID = 1L;
 
@@ -15,5 +17,6 @@ public class PublishItemDTO implements Serializable {
     private String imgUrl;
     private Long price;
     private Long inventory;
+    private List<PublishItemSku> skuList = new ArrayList<>();
 
 }

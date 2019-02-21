@@ -5,4 +5,6 @@ import io.luan.jerry.item.domain.Item;
 
 public interface ItemRepository extends Repository<Item, Long> {
 
+    Item findById(Long id, boolean withSku);
+
 }

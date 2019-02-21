@@ -1,11 +1,11 @@
 package io.luan.jerry.order.data;
 
+import io.luan.jerry.common.utils.MapUtils;
 import io.luan.jerry.order.domain.Order;
 import io.luan.jerry.order.domain.SubOrder;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,7 @@ public class OrderDO implements Serializable {
     private Integer status;
     private Integer payStatus;
     private Integer shipStatus;
+    private String attributes;
 
     public OrderDO() {
         //
@@ -63,6 +64,8 @@ public class OrderDO implements Serializable {
         this.status = subOrder.getStatus().getValue();
         this.payStatus = subOrder.getPayStatus().getValue();
         this.shipStatus = subOrder.getShipStatus().getValue();
+
+        this.attributes = MapUtils.encode(subOrder.getAttributes());
     }
 
     public OrderDO(Order order) {
@@ -74,6 +77,7 @@ public class OrderDO implements Serializable {
         this.status = order.getStatus().getValue();
         this.payStatus = order.getPayStatus().getValue();
         this.shipStatus = order.getShipStatus().getValue();
+        this.attributes = MapUtils.encode(order.getAttributes());
 
         if (order.getSubOrders().size() == 1) {
             // Main + Sub
@@ -89,6 +93,8 @@ public class OrderDO implements Serializable {
             this.totalFee = order.getTotalFee();
             this.gmtCreate = order.getGmtCreate();
             this.gmtModified = order.getGmtModified();
+            this.attributes = MapUtils.encode(subOrder.getAttributes());
+
         } else {
             // Main only
             this.isMain = true;

@@ -1,5 +1,6 @@
 package io.luan.jerry.item.service.impl;
 
+import io.luan.jerry.category.domain.Category;
 import io.luan.jerry.item.domain.Item;
 import io.luan.jerry.item.repository.ItemRepository;
 import io.luan.jerry.item.service.ItemService;
@@ -29,6 +30,13 @@ public class ItemServiceImpl implements ItemService {
     public Item findById(Long id) {
         return itemRepository.findById(id);
     }
+
+
+    @Override
+    public Item findById(Long id, boolean withSku) {
+        return itemRepository.findById(id, withSku);
+    }
+
 
     @Override
     public Item save(Item item) {

@@ -1,5 +1,6 @@
 package io.luan.jerry.category.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.luan.jerry.common.domain.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +26,7 @@ public class CategoryProperty extends Entity {
      */
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private Category category;
 
     /**

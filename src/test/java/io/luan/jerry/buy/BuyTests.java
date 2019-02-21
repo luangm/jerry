@@ -3,15 +3,14 @@ package io.luan.jerry.buy;
 import io.luan.jerry.buy.dto.OrderDTO;
 import io.luan.jerry.buy.dto.OrderLineDTO;
 import io.luan.jerry.buy.service.BuyService;
-import io.luan.jerry.item.domain.Item;
 import io.luan.jerry.item.repository.ItemRepository;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.repository.OrderRepository;
 import io.luan.jerry.order.service.OrderService;
-import io.luan.jerry.payment.domain.PaymentStatus;
+import io.luan.jerry.payment.domain.PaymentState;
 import io.luan.jerry.payment.service.PaymentService;
 import io.luan.jerry.payment.vm.PayVM;
-import io.luan.jerry.sell.dto.PublishItemDTO;
+import io.luan.jerry.sell.dto.PublishItemRequest;
 import io.luan.jerry.sell.service.SellService;
 import io.luan.jerry.user.domain.User;
 import org.junit.Assert;
@@ -52,7 +51,7 @@ public class BuyTests {
         var user = new User();
         user.setId(1L);
         var title = "Item" + System.currentTimeMillis();
-        var request = new PublishItemDTO();
+        var request = new PublishItemRequest();
         request.setCategoryId(1L);
         request.setTitle(title);
         request.setImgUrl("1.jpg");
@@ -65,7 +64,7 @@ public class BuyTests {
         var orderReq = new OrderDTO();
         orderReq.setUserId(buyerId);
         orderReq.setAddress("Address123");
-        orderReq.getOrderLines().add(new OrderLineDTO(item.getId(), 5L));
+        orderReq.getOrderLines().add(new OrderLineDTO(item.getId(), 999L, 5L));
 
         var order = buyService.createOrder(orderReq);
 
@@ -86,7 +85,7 @@ public class BuyTests {
         user.setId(1L);
 
         var title = "Item" + System.currentTimeMillis();
-        var request = new PublishItemDTO();
+        var request = new PublishItemRequest();
         request.setCategoryId(1L);
         request.setTitle(title);
         request.setImgUrl("1.jpg");
@@ -95,7 +94,7 @@ public class BuyTests {
         var item1 = sellService.publish(user, request);
 
         var title2 = "Item" + System.currentTimeMillis();
-        var request2 = new PublishItemDTO();
+        var request2 = new PublishItemRequest();
         request2.setCategoryId(1L);
         request2.setTitle(title2);
         request2.setImgUrl("1.jpg");
@@ -154,16 +153,16 @@ public class BuyTests {
 
         System.out.println(payment);
 
-        Assert.assertEquals(PaymentStatus.Created, orderFromDb.getPayStatus());
+        Assert.assertEquals(PaymentState.Created, orderFromDb.getPayStatus());
 
         var payVM = new PayVM();
         payVM.setPaymentId(payment.getId());
         payVM.setPassword("111");
         var paidOrder = buyService.payOrder(payVM);
         Assert.assertNotNull(paidOrder);
-        Assert.assertEquals(paidOrder.getPayStatus(), PaymentStatus.Paid);
+        Assert.assertEquals(paidOrder.getPayStatus(), PaymentState.Paid);
 
         var paidOrderFromDb = orderService.findById(paidOrder.getId());
-        Assert.assertEquals(PaymentStatus.Paid, paidOrderFromDb.getPayStatus());
+        Assert.assertEquals(PaymentState.Paid, paidOrderFromDb.getPayStatus());
     }
 }

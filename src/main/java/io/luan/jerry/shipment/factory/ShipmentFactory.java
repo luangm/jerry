@@ -5,7 +5,7 @@ import io.luan.jerry.common.domain.EntityState;
 import io.luan.jerry.shipment.data.ShipmentDO;
 import io.luan.jerry.shipment.domain.Shipment;
 import io.luan.jerry.shipment.domain.ShipmentMethod;
-import io.luan.jerry.shipment.domain.ShipmentStatus;
+import io.luan.jerry.shipment.domain.ShipmentState;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,7 +20,7 @@ public class ShipmentFactory {
         shipment.setMethod(ShipmentMethod.fromValue(shipmentDO.getMethod()));
         shipment.setAddress(new Address(shipmentDO.getAddressAddress()));
         shipment.setGmtCreate(shipmentDO.getGmtCreate());
-        shipment.setStatus(ShipmentStatus.fromValue(shipmentDO.getStatus()));
+        shipment.setStatus(ShipmentState.fromValue(shipmentDO.getStatus()));
 
         // Note: GmtModified and State should ALWAYS be set last in that order
         shipment.setGmtModified(shipmentDO.getGmtModified());

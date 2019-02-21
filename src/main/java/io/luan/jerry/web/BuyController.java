@@ -42,7 +42,7 @@ public class BuyController {
         orderDTO.setSource("cart");
         orderDTO.setAddress(confirmOrderVM.getAddress());
         for (var subOrder : confirmOrderVM.getSubOrders()) {
-            var subOrderDTO = new OrderLineDTO(subOrder.getItemId(), subOrder.getQuantity());
+            var subOrderDTO = new OrderLineDTO(subOrder.getItemId(), subOrder.getSkuId(), subOrder.getQuantity());
             orderDTO.getOrderLines().add(subOrderDTO);
         }
 
@@ -66,7 +66,9 @@ public class BuyController {
     }
 
     @GetMapping(value = "/confirmOrder", params = "buyNow")
-    public ModelAndView confirmOrder(@RequestParam("itemId") Long itemId, @RequestParam(value = "quantity", required = false) Long quantity) {
+    public ModelAndView confirmOrder(@RequestParam("itemId") Long itemId,
+                                     @RequestParam(value = "skuId", required = false) Long skuId,
+                                     @RequestParam(value = "quantity", required = false) Long quantity) {
         var user = SecurityUtils.getCurrentUser();
 
         var orderDTO = new OrderDTO();
@@ -75,7 +77,7 @@ public class BuyController {
         if (quantity == null) {
             quantity = 1L;
         }
-        var subOrderDTO = new OrderLineDTO(itemId, quantity);
+        var subOrderDTO = new OrderLineDTO(itemId, skuId, quantity);
         orderDTO.getOrderLines().add(subOrderDTO);
 
         try {
@@ -104,7 +106,7 @@ public class BuyController {
 
         for (var cartItem : request.getCartItems()) {
             if (cartItem.getSelected() != null && cartItem.getSelected()) {
-                var subOrderDTO = new OrderLineDTO(cartItem.getItemId(), cartItem.getQuantity());
+                var subOrderDTO = new OrderLineDTO(cartItem.getItemId(), cartItem.getSkuId(), cartItem.getQuantity());
                 orderDTO.getOrderLines().add(subOrderDTO);
             }
         }

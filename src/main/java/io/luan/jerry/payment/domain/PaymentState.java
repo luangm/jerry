@@ -1,27 +1,30 @@
-package io.luan.jerry.order.domain;
+package io.luan.jerry.payment.domain;
 
 import lombok.Getter;
 
-public enum OrderStatus {
+public enum PaymentState {
 
-    Created(0),
-    Enabled(1),
+    Created(0), // Not yet paid
+    Paid(1), // already paid
+    Refunded(2), // Refunded
     Canceled(-1),
     Exception(-2);
 
     @Getter
     private int value;
 
-    OrderStatus(int value) {
+    PaymentState(int value) {
         this.value = value;
     }
 
-    public static OrderStatus fromValue(int value) {
+    public static PaymentState fromValue(int value) {
         switch (value) {
             case 0:
                 return Created;
             case 1:
-                return Enabled;
+                return Paid;
+            case 2:
+                return Refunded;
             case -1:
                 return Canceled;
             default:

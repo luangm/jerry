@@ -14,6 +14,7 @@ public class InventoryDO implements Serializable {
 
     private Long id;
     private Long itemId;
+    private Long skuId = 0L;
     private Long available;
     private Long withheld;
     private OffsetDateTime gmtCreate;
@@ -27,6 +28,7 @@ public class InventoryDO implements Serializable {
     public InventoryDO(Inventory inventory) {
         this.id = inventory.getId();
         this.itemId = inventory.getItemId();
+        this.skuId = inventory.getSkuId();
         this.available = inventory.getAvailable();
         this.withheld = inventory.getWithheld();
         this.gmtCreate = inventory.getGmtCreate();

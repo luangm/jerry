@@ -5,9 +5,11 @@ import io.luan.jerry.address.service.DeliveryAddressService;
 import io.luan.jerry.buy.dto.ConfirmOrderResult;
 import io.luan.jerry.buy.dto.OrderDTO;
 import io.luan.jerry.buy.service.BuyService;
+import io.luan.jerry.inventory.domain.Inventory;
 import io.luan.jerry.inventory.service.InventoryService;
 import io.luan.jerry.item.service.ItemService;
 import io.luan.jerry.order.domain.Order;
+import io.luan.jerry.order.domain.OrderAttributes;
 import io.luan.jerry.order.domain.SubOrder;
 import io.luan.jerry.order.service.OrderService;
 import io.luan.jerry.payment.domain.Payment;
@@ -110,10 +112,21 @@ public class BuyServiceImpl implements BuyService {
 
         List<Long> invIds = new ArrayList<>();
         List<Long> quantities = new ArrayList<>();
-        for (var subOrder: order.getSubOrders()) {
-            var item = itemService.findById(subOrder.getItemId());
-            invIds.add(item.getInventoryId());
+        for (var subOrder : order.getSubOrders()) {
             quantities.add(subOrder.getQuantity());
+            Long skuId = null;
+            var skuIdStr = subOrder.getAttribute(OrderAttributes.SKU_ID);
+            if (skuIdStr != null) {
+                skuId = Long.parseLong(skuIdStr);
+            }
+
+            var item = itemService.findById(subOrder.getItemId(), true);
+            var sku = item.getSkuById(skuId);
+            if (sku != null) {
+                invIds.add(sku.getInventoryId());
+            } else {
+                invIds.add(item.getInventoryId());
+            }
         }
 
         inventoryService.reduceBatch(invIds, quantities);
@@ -156,30 +169,49 @@ public class BuyServiceImpl implements BuyService {
         var promoMap = promotionService.findByItemIds(itemIds);
 
         for (var subOrderDTO : request.getOrderLines()) {
-            var item = itemService.findById(subOrderDTO.getItemId());
-            var inventory = inventoryService.findById(item.getInventoryId());
+            var item = itemService.findById(subOrderDTO.getItemId(), true);
+            var sku = item.getSkus().stream().filter(i -> i.getId().equals(subOrderDTO.getSkuId())).findFirst().orElse(null);
 
-            if (inventory.getAvailable() < subOrderDTO.getQuantity()) {
+            Inventory inventory = null;
+            Long originalPrice = item.getPrice();
+
+            if (sku != null) {
+                inventory = inventoryService.findById(sku.getInventoryId());
+                originalPrice = sku.getPrice();
+            } else {
+                inventory = inventoryService.findById(item.getInventoryId());
+            }
+
+            if (inventory == null || inventory.getAvailable() < subOrderDTO.getQuantity()) {
                 throw new IllegalArgumentException("Insufficient Inventory");
             }
 
+
+            var newPrice = originalPrice;
+
+            // TODO: Sku Promo
             var promo = promoMap.get(item.getId());
-            var price = item.getPrice();
             if (promo != null) {
-                price = promo.getNewPrice();
+                newPrice = promo.getNewPrice();
             }
-            var discount = item.getPrice() - price;
+
+            var discount = originalPrice - newPrice;
             var totalDiscount = discount * subOrderDTO.getQuantity();
 
             var subOrder = new SubOrder();
             subOrder.setBuyerId(request.getUserId());
             subOrder.setSellerId(item.getUserId());
             subOrder.setItemId(subOrderDTO.getItemId());
-            subOrder.setItemPrice(item.getPrice());
+            subOrder.setItemPrice(originalPrice);
             subOrder.setItemTitle(item.getTitle());
             subOrder.setItemImgUrl(item.getImgUrl());
             subOrder.setQuantity(subOrderDTO.getQuantity());
             subOrder.setDiscountFee(totalDiscount);
+
+            if (subOrderDTO.getSkuId() != null) {
+                subOrder.setAttribute(OrderAttributes.SKU_ID, subOrderDTO.getSkuId() + "");
+            }
+
             order.addSubOrder(subOrder);
 
             if (order.getSellerId() != null && !order.getSellerId().equals(subOrder.getSellerId())) {
@@ -214,9 +246,15 @@ public class BuyServiceImpl implements BuyService {
         List<Long> invIds = new ArrayList<>();
         List<Long> quantities = new ArrayList<>();
         for (var subOrderDTO : request.getOrderLines()) {
-            var item = itemService.findById(subOrderDTO.getItemId());
-            invIds.add(item.getInventoryId());
+            var item = itemService.findById(subOrderDTO.getItemId(), true);
+            var sku = item.getSkuById(subOrderDTO.getSkuId());
+            if (sku != null) {
+                invIds.add(sku.getInventoryId());
+            } else {
+                invIds.add(item.getInventoryId());
+            }
             quantities.add(subOrderDTO.getQuantity());
+
         }
         return inventoryService.freezeBatch(invIds, quantities);
     }

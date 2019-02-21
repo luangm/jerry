@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Jerry E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<form th:action="@{/sell}" method="get">
+    <table>
+        <tr>
+            <td>Category:</td>
+            <td>
+                <select id="categoryId" name="categoryId">
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.getId()}"
+                            th:text="${cat.getName()}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit"/></td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

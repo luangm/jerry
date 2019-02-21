@@ -1,9 +1,9 @@
 package io.luan.jerry.detail.service;
 
-import io.luan.jerry.detail.dto.DetailDTO;
+import io.luan.jerry.detail.dto.ItemDetail;
 
 public interface DetailService {
 
-    DetailDTO getDetail(Long itemId);
+    ItemDetail getDetail(Long itemId, Long userId);
 
 }

@@ -14,6 +14,7 @@ public class CartItemDO implements Serializable {
     private Long id;
     private Long userId;
     private Long itemId;
+    private Long skuId;
     private Long quantity;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
@@ -26,6 +27,7 @@ public class CartItemDO implements Serializable {
     public CartItemDO(CartItem cartItem) {
         this.id = cartItem.getId();
         this.itemId = cartItem.getItemId();
+        this.skuId = cartItem.getSkuId();
         this.userId = cartItem.getUserId();
         this.quantity = cartItem.getQuantity();
         this.gmtCreate = cartItem.getGmtCreate();

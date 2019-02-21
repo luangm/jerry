@@ -10,5 +10,7 @@ public interface ItemService {
 
     Item findById(Long id);
 
+    Item findById(Long id, boolean withSku);
+
     Item save(Item item);
 }

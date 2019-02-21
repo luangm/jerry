@@ -19,6 +19,7 @@
         <td th:text="${order.payStatus}"></td>
     </tr>
     <tr>
+        <td>Order Lines:</td>
         <td>
 
             <table>
@@ -31,6 +32,7 @@
                     <th>itemPrice</th>
                     <th>discountFee</th>
                     <th>totalFee</th>
+                    <th>attributes</th>
                 </tr>
                 <th:block th:each="subOrder: ${order.subOrders}">
                     <tr>
@@ -42,6 +44,7 @@
                         <td th:text="${subOrder.itemPrice}"></td>
                         <td th:text="${subOrder.discountFee}"></td>
                         <td th:text="${subOrder.totalFee}"></td>
+                        <td th:text="${subOrder.attributes}"></td>
                     </tr>
                 </th:block>
             </table>

@@ -1,7 +1,7 @@
 package io.luan.jerry.payment.service.impl;
 
 import io.luan.jerry.payment.domain.Payment;
-import io.luan.jerry.payment.domain.PaymentStatus;
+import io.luan.jerry.payment.domain.PaymentState;
 import io.luan.jerry.payment.repository.PaymentRepository;
 import io.luan.jerry.payment.service.PaymentService;
 import lombok.extern.java.Log;
@@ -31,7 +31,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment pay(Payment payment) {
-        payment.setStatus(PaymentStatus.Paid);
+        payment.setStatus(PaymentState.Paid);
         paymentRepository.save(payment);
         return payment;
     }

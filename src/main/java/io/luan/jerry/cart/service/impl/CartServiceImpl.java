@@ -23,7 +23,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartItem addToCart(CartItemDTO request) {
         var cart = getCart(request.getUserId());
-        var cartItem = cart.addItem(request.getItemId(), request.getQuantity());
+        var cartItem = cart.addItem(request.getItemId(), request.getSkuId(), request.getQuantity());
         cartRepository.save(cart);
         return cartItem;
     }
@@ -38,7 +38,7 @@ public class CartServiceImpl implements CartService {
         var cart = getCart(request.getUserId());
         CartItem existing = null;
         for (var cartItem : cart.getItems()) {
-            if (cartItem.getItemId().equals(request.getItemId())) {
+            if (cartItem.getItemId().equals(request.getItemId()) && cartItem.getSkuId().equals(request.getSkuId())) {
                 existing = cartItem;
                 cart.removeItem(existing);
             }
@@ -52,7 +52,7 @@ public class CartServiceImpl implements CartService {
         var cart = getCart(request.getUserId());
         CartItem existing = null;
         for (var cartItem : cart.getItems()) {
-            if (cartItem.getItemId().equals(request.getItemId())) {
+            if (cartItem.getItemId().equals(request.getItemId()) && cartItem.getSkuId().equals(request.getSkuId())) {
                 existing = cartItem;
                 cart.updateItem(existing, request.getQuantity());
             }

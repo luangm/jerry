@@ -2,7 +2,6 @@ package io.luan.jerry.payment.domain;
 
 import io.luan.jerry.common.domain.Entity;
 import io.luan.jerry.common.domain.EntityState;
-import io.luan.jerry.payment.service.PaymentService;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -57,13 +56,13 @@ public class Payment extends Entity {
     /**
      * Status
      */
-    private PaymentStatus status = PaymentStatus.Created;
+    private PaymentState status = PaymentState.Created;
 
     public Payment() {
         this.setState(EntityState.Added);
     }
 
-    public void setStatus(PaymentStatus newValue) {
+    public void setStatus(PaymentState newValue) {
         if (!newValue.equals(this.status)) {
             firePropertyChange("status", this.status, newValue);
             this.status = newValue;

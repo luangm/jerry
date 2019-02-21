@@ -14,6 +14,7 @@ public class CartItemFactory {
         cartItem.setId(cartItemDO.getId());
         cartItem.setUserId(cartItemDO.getUserId());
         cartItem.setItemId(cartItemDO.getItemId());
+        cartItem.setSkuId(cartItemDO.getSkuId());
         cartItem.setQuantity(cartItemDO.getQuantity());
         cartItem.setGmtCreate(cartItemDO.getGmtCreate());
         cartItem.setStatus(CartItemState.fromValue(cartItemDO.getStatus()));

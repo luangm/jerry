@@ -27,6 +27,11 @@ public class CartItem extends Entity {
     private Long itemId;
 
     /**
+     * Sku ID, if no sku then = 0
+     */
+    private Long skuId = 0L;
+
+    /**
      * Quantity of Item
      */
     private Long quantity;
