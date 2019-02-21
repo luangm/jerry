@@ -69,10 +69,10 @@ public class BuyTests {
         var order = buyService.createOrder(orderReq);
 
         Assert.assertNotNull(order.getId());
-        Assert.assertEquals(1, order.getSubOrders().size());
-        Assert.assertNotNull(order.getSubOrders().get(0).getId());
+        Assert.assertEquals(1, order.getOrderLines().size());
+        Assert.assertNotNull(order.getOrderLines().get(0).getId());
         Assert.assertEquals(Long.valueOf(5 * item.getPrice()), order.getTotalFee());
-        Assert.assertEquals(order.getId(), order.getSubOrders().get(0).getParentId());
+        Assert.assertEquals(order.getId(), order.getOrderLines().get(0).getParentId());
 
         System.out.println(order);
     }
@@ -117,27 +117,27 @@ public class BuyTests {
         System.out.println(order);
 
         Assert.assertNotNull(order.getId());
-        Assert.assertEquals(2, order.getSubOrders().size());
-        Assert.assertNotNull(order.getSubOrders().get(0).getId());
-        Assert.assertNotNull(order.getSubOrders().get(1).getId());
+        Assert.assertEquals(2, order.getOrderLines().size());
+        Assert.assertNotNull(order.getOrderLines().get(0).getId());
+        Assert.assertNotNull(order.getOrderLines().get(1).getId());
         Assert.assertEquals(totalFee, order.getTotalFee());
-        Assert.assertEquals(order.getId(), order.getSubOrders().get(0).getParentId());
-        Assert.assertEquals(order.getId(), order.getSubOrders().get(1).getParentId());
-        Assert.assertEquals(order.getBuyerId(), order.getSubOrders().get(0).getBuyerId());
-        Assert.assertEquals(order.getBuyerId(), order.getSubOrders().get(1).getBuyerId());
+        Assert.assertEquals(order.getId(), order.getOrderLines().get(0).getParentId());
+        Assert.assertEquals(order.getId(), order.getOrderLines().get(1).getParentId());
+        Assert.assertEquals(order.getBuyerId(), order.getOrderLines().get(0).getBuyerId());
+        Assert.assertEquals(order.getBuyerId(), order.getOrderLines().get(1).getBuyerId());
 
 
         var orderFromDb = orderRepository.findById(order.getId());
         Assert.assertNotNull(orderFromDb);
         Assert.assertEquals(order.getBuyerId(), orderFromDb.getBuyerId());
         Assert.assertEquals(order.getSellerId(), orderFromDb.getSellerId());
-        Assert.assertEquals(2, orderFromDb.getSubOrders().size());
-        Assert.assertEquals(order.getSubOrders().get(0).getId(), orderFromDb.getSubOrders().get(0).getId());
+        Assert.assertEquals(2, orderFromDb.getOrderLines().size());
+        Assert.assertEquals(order.getOrderLines().get(0).getId(), orderFromDb.getOrderLines().get(0).getId());
         Assert.assertEquals(totalFee, orderFromDb.getTotalFee());
-        Assert.assertEquals(order.getId(), orderFromDb.getSubOrders().get(0).getParentId());
-        Assert.assertEquals(order.getId(), orderFromDb.getSubOrders().get(1).getParentId());
-        Assert.assertEquals(order.getBuyerId(), orderFromDb.getSubOrders().get(0).getBuyerId());
-        Assert.assertEquals(order.getBuyerId(), orderFromDb.getSubOrders().get(1).getBuyerId());
+        Assert.assertEquals(order.getId(), orderFromDb.getOrderLines().get(0).getParentId());
+        Assert.assertEquals(order.getId(), orderFromDb.getOrderLines().get(1).getParentId());
+        Assert.assertEquals(order.getBuyerId(), orderFromDb.getOrderLines().get(0).getBuyerId());
+        Assert.assertEquals(order.getBuyerId(), orderFromDb.getOrderLines().get(1).getBuyerId());
 
         System.out.println(order);
         System.out.println(orderFromDb);

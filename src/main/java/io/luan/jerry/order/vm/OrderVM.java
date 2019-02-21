@@ -30,7 +30,7 @@ public class OrderVM implements Serializable {
 
     private String shipStatus;
 
-    private List<SubOrderVM> subOrders = new ArrayList<>();
+    private List<OrderLineVM> orderLines = new ArrayList<>();
 
     private Long quantity;
 
@@ -49,6 +49,6 @@ public class OrderVM implements Serializable {
         this.payStatus = order.getPayStatus().name();
         this.shipStatus = order.getShipStatus().name();
         this.quantity = order.getQuantity();
-        this.subOrders = order.getSubOrders().stream().map(SubOrderVM::new).collect(Collectors.toList());
+        this.orderLines = order.getOrderLines().stream().map(OrderLineVM::new).collect(Collectors.toList());
     }
 }

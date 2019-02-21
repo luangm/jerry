@@ -1,21 +1,21 @@
 #8 - CartBuy
 
 Modify Order Entity to support multiple line items in an order.
-Create SubOrder Entity
+Create OrderLine Entity
 Order become the aggregate root, remove itemId, quantity etc. from Order and send to SubOrder
 Order for now keeps track of BuyerId
 
-Modify OrderDO to include subOrders (OrderDO[]).
+Modify OrderDO to include orderLines (OrderDO[]).
 Note this is another case of Object-Relational impedance mismatch.
-All Orders and SubOrders are stored in the same table, not two tables.
+All Orders and OrderLines are stored in the same table, not two tables.
 This is beneficial performance-wise since only one query is required.
 
 Add isMain, isSub and parentId in the data model (Not Entity Model).
 
 Modify Repository to handle save and read
 
-Notice now that OrderMapper is only reading and loading single OrderDO, this could be Order or SubOrder
-OrderRepository on the other hand only read and write Order, NOT SubOrder. (Each Repository should only handle aggregate roots)
+Notice now that OrderMapper is only reading and loading single OrderDO, this could be Order or OrderLine
+OrderRepository on the other hand only read and write Order, NOT OrderLine. (Each Repository should only handle aggregate roots)
 OrderRepo method should have transaction on. In this case since it's all in the same table, its very easy and guaranteed.
 
 Now Add support for buying multiple items, must be from cart:

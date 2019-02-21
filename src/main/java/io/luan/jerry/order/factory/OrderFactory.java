@@ -4,8 +4,8 @@ import io.luan.jerry.common.domain.EntityState;
 import io.luan.jerry.common.utils.MapUtils;
 import io.luan.jerry.order.data.OrderDO;
 import io.luan.jerry.order.domain.Order;
+import io.luan.jerry.order.domain.OrderLine;
 import io.luan.jerry.order.domain.OrderState;
-import io.luan.jerry.order.domain.SubOrder;
 import io.luan.jerry.payment.domain.PaymentState;
 import io.luan.jerry.shipment.domain.ShipmentState;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class OrderFactory {
         order.setStatus(OrderState.fromValue(orderDO.getStatus()));
         order.setPayStatus(PaymentState.fromValue(orderDO.getPayStatus()));
         order.setShipStatus(ShipmentState.fromValue(orderDO.getShipStatus()));
-        order.setSubOrders(orderDO.getSubOrders().stream().map(this::loadSubOrder).collect(Collectors.toList()));
+        order.setOrderLines(orderDO.getOrderLines().stream().map(this::loadOrderLine).collect(Collectors.toList()));
         order.setGmtCreate(orderDO.getGmtCreate());
         order.setAttributes(MapUtils.decodeStringString(orderDO.getAttributes()));
 
@@ -34,27 +34,27 @@ public class OrderFactory {
         return order;
     }
 
-    private SubOrder loadSubOrder(OrderDO subOrderDO) {
-        var subOrder = new SubOrder();
-        subOrder.setId(subOrderDO.getId());
-        subOrder.setParentId(subOrderDO.getParentId());
-        subOrder.setBuyerId(subOrderDO.getBuyerId());
-        subOrder.setSellerId(subOrderDO.getSellerId());
-        subOrder.setItemId(subOrderDO.getItemId());
-        subOrder.setItemPrice(subOrderDO.getItemPrice());
-        subOrder.setItemTitle(subOrderDO.getItemTitle());
-        subOrder.setItemImgUrl(subOrderDO.getItemImgUrl());
-        subOrder.setQuantity(subOrderDO.getQuantity());
-        subOrder.setDiscountFee(subOrderDO.getDiscountFee());
-        subOrder.setGmtCreate(subOrderDO.getGmtCreate());
-        subOrder.setStatus(OrderState.fromValue(subOrderDO.getStatus()));
-        subOrder.setPayStatus(PaymentState.fromValue(subOrderDO.getPayStatus()));
-        subOrder.setShipStatus(ShipmentState.fromValue(subOrderDO.getShipStatus()));
-        subOrder.setAttributes(MapUtils.decodeStringString(subOrderDO.getAttributes()));
+    private OrderLine loadOrderLine(OrderDO orderLineDO) {
+        var orderLine = new OrderLine();
+        orderLine.setId(orderLineDO.getId());
+        orderLine.setParentId(orderLineDO.getParentId());
+        orderLine.setBuyerId(orderLineDO.getBuyerId());
+        orderLine.setSellerId(orderLineDO.getSellerId());
+        orderLine.setItemId(orderLineDO.getItemId());
+        orderLine.setItemPrice(orderLineDO.getItemPrice());
+        orderLine.setItemTitle(orderLineDO.getItemTitle());
+        orderLine.setItemImgUrl(orderLineDO.getItemImgUrl());
+        orderLine.setQuantity(orderLineDO.getQuantity());
+        orderLine.setDiscountFee(orderLineDO.getDiscountFee());
+        orderLine.setGmtCreate(orderLineDO.getGmtCreate());
+        orderLine.setStatus(OrderState.fromValue(orderLineDO.getStatus()));
+        orderLine.setPayStatus(PaymentState.fromValue(orderLineDO.getPayStatus()));
+        orderLine.setShipStatus(ShipmentState.fromValue(orderLineDO.getShipStatus()));
+        orderLine.setAttributes(MapUtils.decodeStringString(orderLineDO.getAttributes()));
 
         // Note: GmtModified and State should ALWAYS be set last in that order
-        subOrder.setGmtModified(subOrderDO.getGmtModified());
-        subOrder.setState(EntityState.Unchanged);
-        return subOrder;
+        orderLine.setGmtModified(orderLineDO.getGmtModified());
+        orderLine.setState(EntityState.Unchanged);
+        return orderLine;
     }
 }

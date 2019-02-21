@@ -122,7 +122,7 @@ public class PromotionTests {
         var order = buyService.createOrder(buyRequest);
         Assert.assertNotNull(order);
         Assert.assertEquals(Long.valueOf(95L * 5), order.getTotalFee());
-        Assert.assertEquals(Long.valueOf(4L * 5), order.getSubOrders().get(0).getDiscountFee());
+        Assert.assertEquals(Long.valueOf(4L * 5), order.getOrderLines().get(0).getDiscountFee());
     }
 
     @Test

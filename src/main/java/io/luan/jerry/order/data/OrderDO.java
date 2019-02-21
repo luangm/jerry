@@ -2,7 +2,7 @@ package io.luan.jerry.order.data;
 
 import io.luan.jerry.common.utils.MapUtils;
 import io.luan.jerry.order.domain.Order;
-import io.luan.jerry.order.domain.SubOrder;
+import io.luan.jerry.order.domain.OrderLine;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -31,7 +31,7 @@ public class OrderDO implements Serializable {
     private Long totalFee; // main
     private OffsetDateTime gmtCreate;
     private OffsetDateTime gmtModified;
-    private List<OrderDO> subOrders = new ArrayList<>();
+    private List<OrderDO> orderLines = new ArrayList<>();
     private Integer status;
     private Integer payStatus;
     private Integer shipStatus;
@@ -41,31 +41,31 @@ public class OrderDO implements Serializable {
         //
     }
 
-    private OrderDO(SubOrder subOrder) {
-        this.id = subOrder.getId();
+    private OrderDO(OrderLine orderLine) {
+        this.id = orderLine.getId();
         this.isMain = false;
         this.isSub = true;
         this.parentId = 0L;
-        this.buyerId = subOrder.getBuyerId();
-        this.sellerId = subOrder.getSellerId();
+        this.buyerId = orderLine.getBuyerId();
+        this.sellerId = orderLine.getSellerId();
 
-        this.itemId = subOrder.getItemId();
-        this.itemPrice = subOrder.getItemPrice();
-        this.itemTitle = subOrder.getItemTitle();
-        this.itemImgUrl = subOrder.getItemImgUrl();
+        this.itemId = orderLine.getItemId();
+        this.itemPrice = orderLine.getItemPrice();
+        this.itemTitle = orderLine.getItemTitle();
+        this.itemImgUrl = orderLine.getItemImgUrl();
 
-        this.quantity = subOrder.getQuantity();
-        this.discountFee = subOrder.getDiscountFee();
+        this.quantity = orderLine.getQuantity();
+        this.discountFee = orderLine.getDiscountFee();
         this.totalFee = 0L;
 
-        this.gmtCreate = subOrder.getGmtCreate();
-        this.gmtModified = subOrder.getGmtModified();
+        this.gmtCreate = orderLine.getGmtCreate();
+        this.gmtModified = orderLine.getGmtModified();
 
-        this.status = subOrder.getStatus().getValue();
-        this.payStatus = subOrder.getPayStatus().getValue();
-        this.shipStatus = subOrder.getShipStatus().getValue();
+        this.status = orderLine.getStatus().getValue();
+        this.payStatus = orderLine.getPayStatus().getValue();
+        this.shipStatus = orderLine.getShipStatus().getValue();
 
-        this.attributes = MapUtils.encode(subOrder.getAttributes());
+        this.attributes = MapUtils.encode(orderLine.getAttributes());
     }
 
     public OrderDO(Order order) {
@@ -79,21 +79,21 @@ public class OrderDO implements Serializable {
         this.shipStatus = order.getShipStatus().getValue();
         this.attributes = MapUtils.encode(order.getAttributes());
 
-        if (order.getSubOrders().size() == 1) {
+        if (order.getOrderLines().size() == 1) {
             // Main + Sub
-            var subOrder = order.getSubOrders().get(0);
+            var orderLine = order.getOrderLines().get(0);
             this.isMain = true;
             this.isSub = true;
-            this.itemId = subOrder.getItemId();
-            this.itemPrice = subOrder.getItemPrice();
-            this.itemTitle = subOrder.getItemTitle();
-            this.itemImgUrl = subOrder.getItemImgUrl();
-            this.discountFee = subOrder.getDiscountFee();
+            this.itemId = orderLine.getItemId();
+            this.itemPrice = orderLine.getItemPrice();
+            this.itemTitle = orderLine.getItemTitle();
+            this.itemImgUrl = orderLine.getItemImgUrl();
+            this.discountFee = orderLine.getDiscountFee();
             this.quantity = order.getQuantity();
             this.totalFee = order.getTotalFee();
             this.gmtCreate = order.getGmtCreate();
             this.gmtModified = order.getGmtModified();
-            this.attributes = MapUtils.encode(subOrder.getAttributes());
+            this.attributes = MapUtils.encode(orderLine.getAttributes());
 
         } else {
             // Main only
@@ -108,7 +108,7 @@ public class OrderDO implements Serializable {
             this.totalFee = order.getTotalFee();
             this.gmtCreate = order.getGmtCreate();
             this.gmtModified = order.getGmtModified();
-            this.subOrders = order.getSubOrders().stream().map(OrderDO::new).collect(Collectors.toList());
+            this.orderLines = order.getOrderLines().stream().map(OrderDO::new).collect(Collectors.toList());
         }
 
     }

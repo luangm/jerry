@@ -12,10 +12,10 @@ import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SubOrder extends Entity {
+public class OrderLine extends Entity {
 
     /**
-     * SubOrder ID
+     * OrderLine ID
      */
     private Long id;
 
@@ -96,6 +96,22 @@ public class SubOrder extends Entity {
 
     public String getAttribute(String attrName) {
         return attributes.get(attrName);
+    }
+
+    public Long getSkuId() {
+        var attr = attributes.get(OrderAttributes.SKU_ID);
+        if (attr != null) {
+            return Long.parseLong(attr);
+        }
+        return null;
+    }
+
+    public void setSkuId(Long skuId) {
+        if (skuId != null) {
+            attributes.put(OrderAttributes.SKU_ID, skuId.toString());
+        } else {
+            attributes.remove(OrderAttributes.SKU_ID);
+        }
     }
 
     public Long getTotalFee() {

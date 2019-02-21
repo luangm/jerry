@@ -41,9 +41,9 @@ public class BuyController {
         orderDTO.setUserId(user.getId());
         orderDTO.setSource("cart");
         orderDTO.setAddress(confirmOrderVM.getAddress());
-        for (var subOrder : confirmOrderVM.getSubOrders()) {
-            var subOrderDTO = new OrderLineDTO(subOrder.getItemId(), subOrder.getSkuId(), subOrder.getQuantity());
-            orderDTO.getOrderLines().add(subOrderDTO);
+        for (var orderLineVM : confirmOrderVM.getOrderLines()) {
+            var orderLineDTO = new OrderLineDTO(orderLineVM.getItemId(), orderLineVM.getSkuId(), orderLineVM.getQuantity());
+            orderDTO.getOrderLines().add(orderLineDTO);
         }
 
         var order = buyService.createOrder(orderDTO);
@@ -77,8 +77,8 @@ public class BuyController {
         if (quantity == null) {
             quantity = 1L;
         }
-        var subOrderDTO = new OrderLineDTO(itemId, skuId, quantity);
-        orderDTO.getOrderLines().add(subOrderDTO);
+        var orderLineDTO = new OrderLineDTO(itemId, skuId, quantity);
+        orderDTO.getOrderLines().add(orderLineDTO);
 
         try {
             var order = buyService.confirmOrder(orderDTO);
@@ -106,8 +106,8 @@ public class BuyController {
 
         for (var cartItem : request.getCartItems()) {
             if (cartItem.getSelected() != null && cartItem.getSelected()) {
-                var subOrderDTO = new OrderLineDTO(cartItem.getItemId(), cartItem.getSkuId(), cartItem.getQuantity());
-                orderDTO.getOrderLines().add(subOrderDTO);
+                var orderLineDTO = new OrderLineDTO(cartItem.getItemId(), cartItem.getSkuId(), cartItem.getQuantity());
+                orderDTO.getOrderLines().add(orderLineDTO);
             }
         }
 

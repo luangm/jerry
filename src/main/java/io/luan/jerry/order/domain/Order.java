@@ -66,14 +66,14 @@ public class Order extends Entity {
     /**
      * Sub Orders
      */
-    private List<SubOrder> subOrders = new ArrayList<>();
+    private List<OrderLine> orderLines = new ArrayList<>();
     /**
      * Attribute Map
      */
     private Map<String, String> attributes = new HashMap<>();
 
-    public void addSubOrder(SubOrder subOrder) {
-        this.subOrders.add(subOrder);
+    public void addOrderLine(OrderLine orderLine) {
+        this.orderLines.add(orderLine);
         this.calculateTotalFee();
     }
 
@@ -86,7 +86,7 @@ public class Order extends Entity {
     }
 
     public long getQuantity() {
-        return subOrders.stream().mapToLong(SubOrder::getQuantity).sum();
+        return orderLines.stream().mapToLong(OrderLine::getQuantity).sum();
     }
 
     /**
@@ -129,6 +129,6 @@ public class Order extends Entity {
     }
 
     private void calculateTotalFee() {
-        this.totalFee = subOrders.stream().mapToLong(SubOrder::getTotalFee).sum();
+        this.totalFee = orderLines.stream().mapToLong(OrderLine::getTotalFee).sum();
     }
 }

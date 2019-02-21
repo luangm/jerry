@@ -1,7 +1,7 @@
 package io.luan.jerry.buy.vm;
 
 import io.luan.jerry.buy.dto.ConfirmOrderResult;
-import io.luan.jerry.order.vm.SubOrderVM;
+import io.luan.jerry.order.vm.OrderLineVM;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,7 +21,7 @@ public class ConfirmOrderVM implements Serializable {
 
     private String address;
 
-    private List<SubOrderVM> subOrders = new ArrayList<>();
+    private List<OrderLineVM> orderLines = new ArrayList<>();
 
     public ConfirmOrderVM() {
         //
@@ -32,8 +32,8 @@ public class ConfirmOrderVM implements Serializable {
 
         this.orderId = order.getId();
         this.buyerId = order.getBuyerId();
-        for (var subOrder : order.getSubOrders()) {
-            subOrders.add(new SubOrderVM(subOrder));
+        for (var orderLine : order.getOrderLines()) {
+            orderLines.add(new OrderLineVM(orderLine));
         }
         this.totalFee = order.getTotalFee();
         this.quantity = order.getQuantity();
